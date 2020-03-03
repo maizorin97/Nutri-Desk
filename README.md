@@ -20,17 +20,29 @@ _Nuestro proyecto pretende ser una herramienta informativa y de concientización
 
 * Instalar Anaconda o Miniconda en su equipo, puede descargarlo [aquí](https://www.anaconda.com/distribution/).
 * Crear un nuevo entorno virtual, para ello use el comando
-    ~~~conda create -n nombre_de_entorno python==3.8.1~~~
+```
+conda create -n nombre_de_entorno python==3.8.1
+```
 * Active el entorno que acaba de crear usando el comando
-    ~~~conda activate nombre_de_entorno~~~
+```
+conda activate nombre_de_entorno
+```
 * Instale Django 3.0 en su entorno virtual
-    ~~~python -m pip install Django==3.0~~~
+```
+python -m pip install Django==3.0
+```
 * Instale Pillow 7.0.0 en su entorno virtual
-    ~~~pip install Pillow==7.0.0~~~
+```
+pip install Pillow==7.0.0
+```
 * Instale Ck Editor para Django en su entorno virtual
-    ~~~pip install django-ckeditor==5.9.0~~~
+```
+pip install django-ckeditor==5.9.0
+```
 * Corra el archivo manage.py con el siguiente comando en su terminal (debe tener su entorno virtual activado)
-    ~~~python manage.py runserver~~~
+```
+python manage.py runserver
+```
 
 ## Construido con 🛠️
 
