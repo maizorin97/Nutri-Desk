@@ -141,6 +141,9 @@ CKEDITOR_CONFIGS = {
     }
 }
 
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
 # informacion adicional
 # para facilitar las pruebas hemos creado un super usuario
 # que tiene acceso al panel de administrador

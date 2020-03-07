@@ -4,13 +4,24 @@
 {% block content %}
 <div class="container">
   <div class="row">
-    <div class="col-lg-12 text-center">
-      <h1 class="mt-5">Ingresar</h1>
-      <p class="lead">Aqui inician sesion los usuarios</p>
-      <ul class="list-unstyled">
-        <li>Bootstrap 4.3.1</li>
-        <li>jQuery 3.4.1</li>
-      </ul>
+    <div class="signup-form">
+      <h2>Inicio de sesión</h2>
+      <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="form-group">
+          {{ field.label_tag }}
+          {{ field }}
+          {% for error in field.errors %}
+          <p style="color: red">{{ error }}</p>
+          {% endfor %}
+        </div>
+        {% endfor %}
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary btn-lg btn-block">Iniciar sesión</button>
+        </div>
+      </form>
+      <div class="text-center">¿Aún no tienes una cuenta? <a href="{% url 'registro' %}">Crea una nueva cuenta aquí</a></div>
     </div>
   </div>
 </div>
