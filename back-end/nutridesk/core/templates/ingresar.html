@@ -3,25 +3,24 @@
 {% block title %}Ingresar{% endblock %}
 {% block content %}
 <div class="container">
-  <div class="row">
-    <div class="signup-form">
-      <h2>Inicio de sesión</h2>
-      <form method="post">
-        {% csrf_token %}
-        {% for field in form %}
-        <div class="form-group">
-          {{ field.label_tag }}
-          {{ field }}
-          {% for error in field.errors %}
-          <p style="color: red">{{ error }}</p>
-          {% endfor %}
-        </div>
+  <div class="signup-form">
+    <h2>Inicio de sesión</h2>
+    <form method="post">
+      {% csrf_token %}
+      {% for field in form %}
+      <div class="form-group">
+        {{ field.label_tag }}
+        {{ field }}
+        {% for error in field.errors %}
+        <p style="color: red">{{ error }}</p>
         {% endfor %}
-        <div class="form-group">
-          <button type="submit" class="btn btn-primary btn-lg btn-block">Iniciar sesión</button>
-        </div>
-      </form>
-      <div class="text-center">¿Aún no tienes una cuenta? <a href="{% url 'registro' %}">Crea una nueva cuenta aquí</a></div>
+      </div>
+      {% endfor %}
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary btn-lg btn-block">Iniciar sesión</button>
+      </div>
+    </form>
+    <div class="text-center">¿Aún no tienes una cuenta? <a href="{% url 'registro' %}">Crea una nueva cuenta aquí</a>
     </div>
   </div>
 </div>

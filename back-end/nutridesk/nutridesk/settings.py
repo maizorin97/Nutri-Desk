@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     # apps instaladas
     'ckeditor',
     'core',
+    'smae',
 ]
 
 MIDDLEWARE = [

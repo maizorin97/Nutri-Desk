@@ -18,6 +18,8 @@ from django.urls import path, include
 from django.conf import settings
 
 urlpatterns = [
+    #rutas de smae
+    path('smae/', include('smae.urls')),
     #rutas de core
     path('', include('core.urls')),
     #rutas de admin
