@@ -13,7 +13,12 @@ class Grupo(models.Model):
         ordering = ('idGrupo',)
 
     def __str__(self):
-        return '{0} - {1}.{2}'.format(self.idGrupo, self.nombre, self.subgrupo)
+        id_grupo = self.idGrupo
+        nom = self.nombre
+        subg = self.subgrupo
+        if (subg is "None"):
+            subg = ""
+        return '{0} - {1} {2}'.format(self.idGrupo, self.nombre, self.subgrupo)
 
 
 class Alimento(models.Model):
@@ -26,7 +31,7 @@ class Alimento(models.Model):
         ordering = ('idAlimento',)
 
     def __str__(self):
-        return '{0}-{1}.{2}'.format(self.idAlimento, self.idGrupo, self.nombre)
+        return 'id:{0} - {1}'.format(self.idAlimento, self.nombre)
 
 # inserciones de datos mediante codigo
 # grupo = Grupo.objects.get(idGrupo=1)

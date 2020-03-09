@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}SMAE{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-lg-12 text-justify">
+      <h1 class="mt-5">Lista de Alimentos</h1>
+      <input type="text" id="filtroBusqueda" onkeyup="busca()" placeholder="Buscar por...">
+      <select id="tipofiltro">
+        <option value="0">Nombre</option>
+        <option value="1">Racion</option>
+        <option value="2">Grupo al que pertenece</option>
+        <option value="3">Subgrupo</option>
+      </select>
+      <table class="table" id="tabla_lista">
+        <tr>
+          <th>Nombre</th>
+          <th>Racion</th>
+          <th>Grupo</th>
+          <th>Subgrupo</th>
+          <th>Energia (kcal)</th>
+          <th>Proteina (g)</th>
+          <th>Lipidos (g)</th>
+          <th>Hidratos de carbono (g)</th>
+        </tr>
+        {% for alimento in lista_alimentos %}
+        <tr>
+          <td>{{ alimento.nombre }}</td>
+          <td>{{ alimento.racion }}</td>
+          <td>{{ alimento.idGrupo.nombre }}</td>
+          <td>
+            {% if alimento.idGrupo.subgrupo is not None %}
+              {{ alimento.idGrupo.subgrupo }}
+            {% else %}
+              -
+            {% endif %}
+          </td>
+          <td>{{ alimento.idGrupo.energia }}</td>
+          <td>{{ alimento.idGrupo.proteina }}</td>
+          <td>{{ alimento.idGrupo.lipidos }}</td>
+          <td>{{ alimento.idGrupo.carbohidratos }}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+<!--  Busqueda en tabla -->
+{% block script %}
+<script>
+function busca() {
+  // Declare variables
+  var filtroBusqueda, filtro, tabla, tr, td, i, txtValor, tipoFiltro,nRegistros=0;
+  tipoFiltro = document.getElementById("tipofiltro");
+  filtroBusqueda = document.getElementById("filtroBusqueda");
+  filtro = filtroBusqueda.value.toUpperCase();
+  tabla = document.getElementById("tabla_lista");
+  tr = tabla.getElementsByTagName("tr");
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[tipoFiltro.value];
+    if (td) {
+      txtValor = td.textContent || td.innerText;
+      if (txtValor.toUpperCase().indexOf(filtro) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+</script>
+{% endblock %}
