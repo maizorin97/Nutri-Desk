@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'core',
     'smae',
+    'planes',
 ]
 
 MIDDLEWARE = [
