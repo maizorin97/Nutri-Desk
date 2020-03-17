@@ -37,7 +37,19 @@ class FormaRegistroUsuario(UserCreationForm):
         attrs={'class':'form-control', 'placeholder':'Apellido(s)'}
     ), min_length=2, max_length=200)
 
-
     class Meta:
         model = User
         fields = ('username', 'password1', 'password2', 'first_name', 'last_name')
+
+class FormaDatosFisiologicos(forms.ModelForm):
+    fecha_nacimiento = forms.DateField(label="Fecha de nacimiento", required=True, widget=forms.DateInput(
+        attrs={'class':'form-control', 'placeholder':'Fecha de nacimiento','type':'date'}))
+    altura = forms.FloatField(label="Altura en centimetros", required=True, widget=forms.NumberInput(
+        attrs={'class':'form-control', 'placeholder':'Altura en centimetros'}))
+    peso = forms.FloatField(label="Peso en kilogramos", required=True, widget=forms.NumberInput(
+        attrs={'class':'form-control', 'placeholder':'Peso en kilogramos'}))
+    sexo = forms.CharField(label="Sexo", required=True, widget=forms.Select(
+        attrs={'class':'form-control', 'placeholder':'Elige tu sexo'}, choices=(('H','Hombre'),('M','Mujer'))))
+    class Meta:
+        model = InfoUsuario
+        fields = ('fecha_nacimiento', 'altura', 'peso', 'sexo')

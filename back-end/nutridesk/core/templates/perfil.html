@@ -2,8 +2,21 @@
 {% load static %}
 {% block title %}Registro{% endblock %}
 {% block content %}
-<form method="post">{% csrf_token %}
+<!--falta checar permisos de visualizacion-->
+{{request.path}}
+{% if user.is_authenticated %}
+<h1>Información de perfil</h1>
+<p>Id de Usuario: {{user.username}} ({{user.id}})</p>
+<p>Nombre: {{user.first_name}} {{user.last_name}}</p>
+<form method="post">
+  {% csrf_token %}
   {{ form.as_p }}
   <input type="submit" value="Actualizar datos">
 </form>
+<p>
+  <a href="{% url 'panel' %}"><- Regresar al panel de control</a>
+</p>
+{% else %}
+<h1>Acceso denegado</h1>
+{% endif %}
 {% endblock %}

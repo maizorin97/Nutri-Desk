@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 
 from django.views.generic import TemplateView, CreateView, UpdateView
@@ -22,25 +22,35 @@ class ingresar(LoginView):
     def get_success_url(self):
         return super().get_success_url()
 
-class registro(CreateView):
-    template_name = "registro.html"
-    form_class = forms.FormaRegistroUsuario
-    success_url = "/ingresar"
-
-    def get_success_url(self):
-        return super().get_success_url()
+def registro(request):
+    if request.method == 'POST':
+        user_form = forms.FormaRegistroUsuario(request.POST)
+        info_form = forms.FormaDatosFisiologicos(request.POST)
+        if user_form.is_valid() and info_form.is_valid():
+            user = user_form.save()
+            info = info_form.save(commit=False)
+            info.usuario = user
+            info.save()
+            # exito
+            return redirect("ingresar")
+        else:
+            return render(request, "registro.html",{'user_form':user_form,'info_form':info_form})
+    else:
+        user_form = forms.FormaRegistroUsuario()
+        info_form = forms.FormaDatosFisiologicos()
+        return render(request,'registro.html',{'user_form':user_form,'info_form':info_form})
 
 class panel_control(TemplateView):
     template_name = "panel_control.html"
 
 class perfil(UpdateView):
-    model = models.User
+    model = models.InfoUsuario
     template_name = "perfil.html"
-    pk_url_kwarg = 'id' 
-    fields = ['first_name','last_name','password']
+    pk_url_kwarg = 'id'
+    fields = ['sexo','fecha_nacimiento','peso','altura']
+    #form_class = forms.FormaInicioSesion
     success_url = "/panel"
     
-
 class cerrar(LogoutView):
     template_name = "cerrar.html"
 
