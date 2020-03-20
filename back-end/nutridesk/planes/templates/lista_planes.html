@@ -2,7 +2,39 @@
 {% load static %}
 {% block title %}Planes de alimentacion{% endblock %}
 {% block content %}
-<h1>Vista de lista de planes de alimentación</h1>
+
+<div class="container">
+    <div class="row">
+      <div class="col-lg-12 text-justify">
+        <h1 class="mt-5">Lista de planes de alimentación</h1>
+        <table class="table" id="tabla_lista">
+          <tr>
+            <th>Id del plan</th>
+            <th>Descripción del plan</th>
+            <th>Aporte calórico</th>
+            <th></th>
+            <th></th>
+          </tr>
+          {% for plan in lista_planes %}
+          {% if plan.idUsuario.username == user.username%}
+          <tr>
+            <td>{{ plan.idPlan }}</td>
+            <td>{{ plan.descripcion }}</td>
+            <td>{{ plan.calorias }}</td>
+            <td><a href="#">Ver plan</a></td>
+            <td><a href="#">Eliminar plan</a></td>
+          </tr>
+          {% endif %}
+          {% endfor %}
+          <tr>
+            <td colspan="5"><center><a href="{% url 'generar_plan' %}">Crear un nuevo plan</a></center></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <a href="{% url 'panel' %}"><- Regresar al panel de control</a>
+  </div>
+
 {% endblock %}
 {% block script %}
 <script>

@@ -1,0 +1,177 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Plan de alimentación{% endblock %}
+{% block content %}
+<h1>Vista de generacion de plan de alimentacion</h1>
+
+<table border="1px">
+    <tr>
+        <td>Peso:</td>
+        <td>{{infoUser.peso}}</td>
+    </tr>
+    <tr>
+        <td>Altura:</td>
+        <td>{{infoUser.altura}}</td>
+    </tr>
+    <tr>
+        <td>Edad:</td>
+        <td>{{edad}}</td>
+    </tr>
+    <tr>
+        <td>Objetivo:</td>
+        <td>
+            <select id="txtObjetivo">
+                <option>Mantener peso</option>
+                <option>Bajar de peso</option>
+                <option>Subir de peso</option>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td>Actividad Fisica:</td>
+        <td>
+            <select id="txtActividadFisica">
+                <option>No hace nada de ejercicio</option>
+                <option>Ejercicio ligero dos días por semana</option>
+                <option>Ejercicio moderado, unos cuatro días por semana</option>
+                <option>Deporte regular seis días a la semana</option>
+                <option>Deportista de élite o entrena muy intenso cada día</option>
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2"><button onclick="calcular_requisitos()">Calcular requerimientos</button></td>
+    </tr>
+    <tr>
+        <td>IMC: <a href="#">?</a></td>
+        <td>
+            <label id='txtIMC'></label>
+            <br/>
+            <label id="txtMsjIMC"/></label>
+        </td>
+    </tr>
+    <tr>
+        <td>TMB: <a href="#">?</a></td>
+        <td>
+            <label id='txtTMB'></label> Kcal
+        </td>
+    </tr>
+</table>
+<br/>
+<br/>
+<table border="1px">
+    <tr>
+        <th>Desayuno</th>
+        <th>Colación</th>
+        <th>Comida</th>
+        <th>Colación</th>
+        <th>Cena</th>
+    </tr>
+</table>
+<a href="{% url 'planes' %}"><- Regresar a la lista de planes</a>
+{% endblock %}
+{% block script %}
+<script>
+    function calcular_requisitos() {
+        var peso = {{infoUser.peso}};
+        var altura = {{infoUser.altura}};
+        var sexo = '{{infoUser.sexo}}';
+        var edad = {{edad}};
+        var imc = (peso/Math.pow(altura/100,2));
+        var objetivo = document.getElementById("txtObjetivo").selectedIndex;
+        var actividad = document.getElementById("txtActividadFisica").selectedIndex;
+
+        var txt_imc = document.getElementById("txtIMC");
+        var txt_msj_imc = document.getElementById("txtMsjIMC");
+        var txt_tmb = document.getElementById("txtTMB");
+
+        txt_imc.innerHTML = imc.toPrecision(4);
+        txt_msj_imc.innerHTML = indice_masa_corporal(imc);
+        txt_tmb.innerHTML = tasa_metabolica_basal(sexo, edad, peso, altura, objetivo, actividad);
+        construir_plan();
+    }
+
+    function construir_plan(){
+        var alimentos = get_alimentos_dict();
+    }
+
+    function get_alimentos_dict(){
+        var alimentos = {};
+        {%for grupo in listaGrupos%}
+            alimentos["{{grupo.nombre}}"] = {};
+        {% endfor %}
+        {%for alimento in listaAlimentos%}
+            alimentos["{{alimento.idGrupo.nombre}}"].push("{{alimento.nombre}}");
+        {% endfor %}
+        return alimentos;
+    }
+
+    function indice_masa_corporal(imc) {
+        //fuente
+        //https://www.seedo.es/index.php/pacientes/calculo-imc
+        if (imc < 18.5){
+            return "Peso insuficiente";
+        } else if (imc < 25){
+            return "Peso normal";
+        } else if (imc < 27) {
+            return "Sobrepeso grado I";
+        } else if (imc < 30) {
+            return "Sobrepeso grado II (preobesidad)";
+        } else if (imc < 35) {
+            return "Obesidad de tipo I";
+        } else if (imc < 40) {
+            return "Obesidad de tipo II";
+        } else if (imc < 50) {
+            return "Obesidad de tipo III (mórbida)";
+        } else if (imc >= 50) {
+            return "Obesidad de tipo IV (extrema)";
+        }
+    }
+
+    function tasa_metabolica_basal(sexo, edad, peso, altura, meta, actividad_fisica){
+        //fuente
+        //https://www.axahealthkeeper.com/blog/calculo-de-calorias-diarias-cuantas-calorias-debo-consumir-al-dia/
+        //https://www.axahealthkeeper.com/blog/que-es-y-como-calcular-la-tasa-metabolica-basal/
+        var tmb = 0;
+        switch(sexo) {
+            case 'H'://si es hombre
+                tmb = (10 * peso) + (6.5 * altura) - (5 * edad) - 161;
+                break;
+            case 'M':// si es mujer
+                tmb = (10 * peso) + (6.5 * altura) - (5 * edad) + 5;
+                break;
+            default:
+                tmb = -1;
+        }
+
+        switch(actividad_fisica) {
+            case 0://nada de ejercicio
+                tmb *= 1.2;
+                break;
+            case 1://ejercicio ligero dos días por semana
+                tmb *= 1.375;
+                break;
+            case 2://ejercicio moderado, unos cuatro días por semana
+                tmb *= 1.55;
+                break;
+            case 3://deporte regular seis días a la semana
+                tmb *= 1.725;
+                break;
+            default://deportista de élite
+                tmb *= 1.9;
+        }
+
+        switch(meta) {
+            case 0:
+                tmb *= 1;
+                break;
+            case 1:
+                tmb *= 0.75; // 15%-20%
+                break;
+            default:
+                tmb *= 1.15;
+        }
+        return tmb;
+    }
+</script>
+{% endblock %}

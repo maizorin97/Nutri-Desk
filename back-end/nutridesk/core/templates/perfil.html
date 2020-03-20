@@ -3,7 +3,6 @@
 {% block title %}Registro{% endblock %}
 {% block content %}
 <!--falta checar permisos de visualizacion-->
-{{request.path}}
 {% if user.is_authenticated %}
 <h1>Información de perfil</h1>
 <p>Id de Usuario: {{user.username}} ({{user.id}})</p>
