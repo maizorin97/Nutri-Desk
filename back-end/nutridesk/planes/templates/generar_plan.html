@@ -63,17 +63,22 @@
 </table>
 <br/>
 <br/>
-<table border="1px">
-    <tr>
-        <th>Desayuno</th>
-        <th>Colación</th>
-        <th>Comida</th>
-        <th>Colación</th>
-        <th>Cena</th>
-    </tr>
-    <tr id="txtColaciones"> 
-    </tr>
-</table>
+<form method="POST">{% csrf_token %}
+nombre del plan: <input type="text" name="txtNombrePlan" required/> <br/>
+aporte de calorias del plan actual: <input type="text" name="txtAporteCalorico" required/> <br/>
+    <table border="1px" name="tabla_plan">
+        <tr>
+            <th>Desayuno</th>
+            <th>Colación</th>
+            <th>Comida</th>
+            <th>Colación</th>
+            <th>Cena</th>
+        </tr>
+        <tr id="txtColaciones"> 
+        </tr>
+    </table>
+    <button type="submit">Guardar plan</button>
+</form>
 <a href="{% url 'planes' %}"><- Regresar a la lista de planes</a>
 {% endblock %}
 {% block script %}
@@ -170,11 +175,11 @@
         var dict_alimentos = get_alimentos_dict();
         var plan = get_plan(tmb);
         var tabla_plan = document.getElementById("txtColaciones");
-        tabla_plan.innerHTML = construir_colacion(plan[0],dict_alimentos); //desayuno
-        tabla_plan.innerHTML += construir_colacion(plan[1],dict_alimentos); //colacion1
-        tabla_plan.innerHTML += construir_colacion(plan[2],dict_alimentos); //comida
-        tabla_plan.innerHTML += construir_colacion(plan[3],dict_alimentos); //colacon2
-        tabla_plan.innerHTML += construir_colacion(plan[4],dict_alimentos); //cena
+        tabla_plan.innerHTML = construir_colacion( 0, plan[0],dict_alimentos); //desayuno
+        tabla_plan.innerHTML += construir_colacion(1, plan[1],dict_alimentos); //colacion1
+        tabla_plan.innerHTML += construir_colacion(2, plan[2],dict_alimentos); //comida
+        tabla_plan.innerHTML += construir_colacion(3, plan[3],dict_alimentos); //colacon2
+        tabla_plan.innerHTML += construir_colacion(4, plan[4],dict_alimentos); //cena
     }
 
     function get_alimentos_dict() {
@@ -207,15 +212,16 @@
         }
     }
 
-    function construir_colacion(plan,dic) {
+    function construir_colacion(tc,plan,dic) {
+        var llave_comida = ["Desayuno","Colacion1","Comida","Colacion2","Cena"]
         var llave_alimentos = ["Cereales y tubérculos", "Verduras","Frutas","Alimentos de origen animal",
         "Leche", "Leguminosas", "Grasas", "Azúcares", "Alimentos libres en energía"];
         var html_code = "<td>";
         for(var i=0; i<plan.length;i++) {//[]
             for(var j=0; j<plan[i];j++) {//n
-                html_code += "<select id='#'>"
+                html_code += "<select name='" + llave_comida[tc] + "'>"
                 for(var k=0; k<dic[llave_alimentos[i]].length;k++) {
-                    html_code += "<option>" + dic[llave_alimentos[i]][k] + "</option>"
+                    html_code += "<option value = '" + dic[llave_alimentos[i]][k] + "'>" + dic[llave_alimentos[i]][k] + "</option>"
                 }
                 html_code += "</select><br/>";
             }
