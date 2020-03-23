@@ -14,7 +14,7 @@ class Plan(models.Model):
         verbose_name_plural = "Planes"
 
     def __str__(self):
-        return '{1}[{0}]'.format(self.idPlan,self.idUsuario.username)
+        return 'plan {0} de {1}'.format(self.idPlan,self.idUsuario.username)
 
 class TipoComida(models.Model):
     idTipoComida= models.AutoField(primary_key=True, verbose_name="Id Tipo Comida")
@@ -38,4 +38,4 @@ class Colacion(models.Model):
         verbose_name_plural = "Colaciones"
 
     def __str__(self):
-        return 'Plan {0} -> {1}, {2}'.format(self.idPlan, self.idAlimento, self.idTipoComida)
+        return 'plan {0} -> {1}, {2}'.format(self.idPlan, self.idAlimento, self.idTipoComida)
