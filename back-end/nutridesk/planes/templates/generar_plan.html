@@ -188,7 +188,7 @@ aporte de calorias del plan actual: <input type="text" name="txtAporteCalorico" 
             alimentos["{{grupo.nombre}}"] = [];
         {% endfor %}
         {%for alimento in listaAlimentos%}
-            alimentos["{{alimento.idGrupo.nombre}}"].push("{{alimento.nombre}}");
+            alimentos["{{alimento.idGrupo.nombre}}"].push(["{{alimento.nombre}}","{{alimento.idAlimento}}"]);
         {% endfor %}
         return alimentos;
     }
@@ -221,7 +221,7 @@ aporte de calorias del plan actual: <input type="text" name="txtAporteCalorico" 
             for(var j=0; j<plan[i];j++) {//n
                 html_code += "<select name='" + llave_comida[tc] + "'>"
                 for(var k=0; k<dic[llave_alimentos[i]].length;k++) {
-                    html_code += "<option value = '" + dic[llave_alimentos[i]][k] + "'>" + dic[llave_alimentos[i]][k] + "</option>"
+                    html_code += "<option value = '" + dic[llave_alimentos[i]][k][1] + "'>" + dic[llave_alimentos[i]][k][0] + "</option>"
                 }
                 html_code += "</select><br/>";
             }
