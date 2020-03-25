@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 from django.views.generic import CreateView, ListView, TemplateView
 
@@ -34,6 +34,17 @@ def ver_plan(request, plan_id):
         tipos_comidas = TipoComida.objects.all()
         return render(request, "ver_plan.html", {"plan": plan,"colaciones":colaciones,"tipos_comidas":tipos_comidas})
 
+def eliminar_plan(request, plan_id):
+    context = {}
+    obj_plan = get_object_or_404(Plan, idPlan=plan_id)
+
+    if request.method == "POST":
+        obj_plan.delete()
+        return redirect("planes")
+    else:
+        return render(request, "eliminar_plan.html", context)
+
+# ------------------------funciones para las views-----------------------------------
 
 def preparar_plan(current_user, request):
     # filter(usuario=current_user)#.all()
