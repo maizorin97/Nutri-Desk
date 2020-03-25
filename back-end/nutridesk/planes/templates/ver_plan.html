@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Plan de alimentación{% endblock %}
+{% block content %}
+{{plan.descripcion}}
+<table border="1px">
+    <tr>
+        <th>Desyuno</th>
+        <th>Colacion 1</th>
+        <th>Comida</th>
+        <th>Colacion 2</th>
+        <th>Cena</th>
+    </tr>
+    <tr>
+        {% for tipo_comida in tipos_comidas %}
+        <td>
+            {% for colacion in colaciones %}
+                {% if colacion.idTipoComida.idTipoComida == tipo_comida.idTipoComida %}
+                    {{colacion.idAlimento.nombre}} - {{colacion.idAlimento.racion}} <br/>
+                {% endif %}
+            {% endfor%}
+        </td>
+        {% endfor%}
+    </tr>
+</table>
+<a href="{% url 'planes' %}"><- Regresar a la lista de planes</a>
+{% endblock %}

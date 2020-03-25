@@ -21,8 +21,8 @@
             <td>{{ plan.idPlan }}</td>
             <td>{{ plan.descripcion }}</td>
             <td>{{ plan.calorias }}</td>
-            <td><a href="#">Ver plan</a></td>
-            <td><a href="#">Eliminar plan</a></td>
+            <td><a href="ver_plan/{{ plan.idPlan }}">Ver plan</a></td>
+            <td><a href="eliminar_plan/{{ plan.idPlan }}">Eliminar plan</a></td>
           </tr>
           {% endif %}
           {% endfor %}

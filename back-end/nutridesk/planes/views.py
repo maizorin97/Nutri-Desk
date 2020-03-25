@@ -21,18 +21,18 @@ def generar_planes(request):
         usuario: User = InfoUsuario.objects.get(usuario=request.user).usuario
         guardar_plan(request.POST, usuario)
         return redirect("planes")
-        # valida
-        """if user_form.is_valid() and info_form.is_valid():
-            user = user_form.save()
-            info = info_form.save(commit=False)
-            info.usuario = user
-            info.save()
-            # exito
-            return redirect("ingresar")
-        else:
-            return render(request, "registro.html",{'user_form':user_form,'info_form':info_form})"""
     else:
         return preparar_plan(request.user, request)
+
+
+def ver_plan(request, plan_id):
+    if request.method == "POST":
+        pass
+    else:
+        plan = Plan.objects.get(idPlan=plan_id)
+        colaciones = Colacion.objects.filter(idPlan=plan)
+        tipos_comidas = TipoComida.objects.all()
+        return render(request, "ver_plan.html", {"plan": plan,"colaciones":colaciones,"tipos_comidas":tipos_comidas})
 
 
 def preparar_plan(current_user, request):
@@ -75,7 +75,7 @@ def guardar_plan(req_post, current_user):
     for comida in llave_comida:
         comidas.append(req_post.getlist(comida))
 
-    i:int = 1
+    i: int = 1
     for comida in comidas:
         tipo_comida: TipoComida = TipoComida.objects.get(idTipoComida=i)
         print(i)

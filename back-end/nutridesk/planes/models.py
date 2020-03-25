@@ -21,7 +21,8 @@ class Plan(models.Model):
 
 
 class TipoComida(models.Model):
-    idTipoComida = models.AutoField(primary_key=True, verbose_name="Id Tipo Comida")
+    idTipoComida = models.AutoField(
+        primary_key=True, verbose_name="Id Tipo Comida")
     nombre = models.CharField(verbose_name="Nombre", max_length=20)
 
     class Meta:
@@ -34,7 +35,8 @@ class TipoComida(models.Model):
 
 class Colacion(models.Model):
     idColacion = models.AutoField(primary_key=True, verbose_name="Id Colacion")
-    idPlan = models.ForeignKey(Plan, on_delete=models.CASCADE, verbose_name="Id Plan")
+    idPlan = models.ForeignKey(
+        Plan, on_delete=models.CASCADE, verbose_name="Id Plan")
     idAlimento = models.ForeignKey(
         Alimento, on_delete=models.CASCADE, verbose_name="Id Alimento"
     )
