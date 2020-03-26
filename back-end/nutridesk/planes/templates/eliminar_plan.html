@@ -2,11 +2,15 @@
 {% load static %}
 {% block title %}Plan de alimentación{% endblock %}
 {% block content %}
-<form method="POST">{% csrf_token %} 
-    ¿Estas seguro de querer eliminar este plan?
-    <br/>
-    <button type="submit">Si</button>
-    <br/>
-    <a href="{% url 'planes' %}"><- Regresar a la lista de planes</a>
-</form> 
+<div class="container">
+    <div class="row">
+        <form method="POST">{% csrf_token %} 
+            ¿Estas seguro de querer eliminar este plan?
+            <br/>
+            <button type="submit">Si</button>
+            <br/>
+            <a href="{% url 'planes' %}"><- Regresar a la lista de planes</a>
+        </form>
+    </div>
+</div>
 {% endblock %}

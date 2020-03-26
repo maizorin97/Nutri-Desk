@@ -3,83 +3,86 @@
 {% block title %}Plan de alimentación{% endblock %}
 {% block content %}
 <h1>Vista de generacion de plan de alimentacion</h1>
-
-<table border="1px">
-    <tr>
-        <td>Peso:</td>
-        <td>{{infoUser.peso}}</td>
-    </tr>
-    <tr>
-        <td>Altura:</td>
-        <td>{{infoUser.altura}}</td>
-    </tr>
-    <tr>
-        <td>Edad:</td>
-        <td>{{edad}}</td>
-    </tr>
-    <tr>
-        <td>Sexo:</td>
-        <td>{{infoUser.sexo}}</td>
-    </tr>
-    <tr>
-        <td>Objetivo:</td>
-        <td>
-            <select id="txtObjetivo">
-                <option>Mantener peso</option>
-                <option>Bajar de peso</option>
-                <option>Subir de peso</option>
-            </select>
-        </td>
-    </tr>
-    <tr>
-        <td>Actividad Fisica:</td>
-        <td>
-            <select id="txtActividadFisica">
-                <option>No hace nada de ejercicio</option>
-                <option>Ejercicio ligero dos días por semana</option>
-                <option>Ejercicio moderado, unos cuatro días por semana</option>
-                <option>Deporte regular seis días a la semana</option>
-                <option>Deportista de élite o entrena muy intenso cada día</option>
-            </select>
-        </td>
-    </tr>
-    <tr>
-        <td colspan="2"><button onclick="calcular_requisitos()">Calcular requerimientos</button></td>
-    </tr>
-    <tr>
-        <td>IMC: <a href="#">?</a></td>
-        <td>
-            <label id='txtIMC'></label>
-            <br/>
-            <label id="txtMsjIMC"/></label>
-        </td>
-    </tr>
-    <tr>
-        <td>TMB: <a href="#">?</a></td>
-        <td>
-            <label id='txtTMB'></label> Kcal
-        </td>
-    </tr>
-</table>
-<br/>
-<br/>
-<form method="POST">{% csrf_token %}
-nombre del plan: <input type="text" name="txtNombrePlan" required/> <br/>
-aporte de calorias del plan actual: <input type="text" name="txtAporteCalorico" required/> <br/>
-    <table border="1px" name="tabla_plan">
-        <tr>
-            <th>Desayuno</th>
-            <th>Colación</th>
-            <th>Comida</th>
-            <th>Colación</th>
-            <th>Cena</th>
-        </tr>
-        <tr id="txtColaciones"> 
-        </tr>
-    </table>
-    <button type="submit">Guardar plan</button>
-</form>
-<a href="{% url 'planes' %}"><- Regresar a la lista de planes</a>
+<div class="container">
+    <div class="row">
+        <table border="1px">
+            <tr>
+                <td>Peso:</td>
+                <td>{{infoUser.peso}}</td>
+            </tr>
+            <tr>
+                <td>Altura:</td>
+                <td>{{infoUser.altura}}</td>
+            </tr>
+            <tr>
+                <td>Edad:</td>
+                <td>{{edad}}</td>
+            </tr>
+            <tr>
+                <td>Sexo:</td>
+                <td>{{infoUser.sexo}}</td>
+            </tr>
+            <tr>
+                <td>Objetivo:</td>
+                <td>
+                    <select id="txtObjetivo">
+                        <option>Mantener peso</option>
+                        <option>Bajar de peso</option>
+                        <option>Subir de peso</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Actividad Fisica:</td>
+                <td>
+                    <select id="txtActividadFisica">
+                        <option>No hace nada de ejercicio</option>
+                        <option>Ejercicio ligero dos días por semana</option>
+                        <option>Ejercicio moderado, unos cuatro días por semana</option>
+                        <option>Deporte regular seis días a la semana</option>
+                        <option>Deportista de élite o entrena muy intenso cada día</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2"><button onclick="calcular_requisitos()">Calcular requerimientos</button></td>
+            </tr>
+            <tr>
+                <td>IMC: <a href="#">?</a></td>
+                <td>
+                    <label id='txtIMC'></label>
+                    <br/>
+                    <label id="txtMsjIMC"/></label>
+                </td>
+            </tr>
+            <tr>
+                <td>TMB: <a href="#">?</a></td>
+                <td>
+                    <label id='txtTMB'></label> Kcal
+                </td>
+            </tr>
+        </table>
+        <br/>
+        <br/>
+        <form method="POST">{% csrf_token %}
+        nombre del plan: <input type="text" name="txtNombrePlan" required/> <br/>
+        aporte de calorias del plan actual: <input type="text" name="txtAporteCalorico" required/> <br/>
+            <table border="1px" name="tabla_plan">
+                <tr>
+                    <th>Desayuno</th>
+                    <th>Colación</th>
+                    <th>Comida</th>
+                    <th>Colación</th>
+                    <th>Cena</th>
+                </tr>
+                <tr id="txtColaciones"> 
+                </tr>
+            </table>
+            <button type="submit">Guardar plan</button>
+        </form>
+        <a href="{% url 'planes' %}"><- Regresar a la lista de planes</a>
+    </div>
+</div>
 {% endblock %}
 {% block script %}
 <script>
