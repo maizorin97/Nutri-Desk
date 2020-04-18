@@ -91,7 +91,7 @@
             </div>
             <!-- Nav Item - Acerca de -->
             <li class="nav-item">
-                <a class="nav-link" href="about.html">
+                <a class="nav-link" href="{% url 'index' %}">
                     <i class="fas fa-fw fa-universal-access"></i>
                     <span>Acerca de Nutridesk</span></a>
             </li>
@@ -236,7 +236,7 @@
                 <div class="modal-body">Selecciona la opción "Cerrar Sesión" si estás listo para salir.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                    <a class="btn btn-primary" href="login.html">Cerrar Sesión</a>
+                    <a class="btn btn-primary" href="{% url 'cerrar' %}">Cerrar Sesión</a>
                 </div>
             </div>
         </div>

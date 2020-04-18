@@ -1,42 +1,51 @@
-{% extends 'base.html' %}
+{% extends 'base_navbar.html' %}
+{% block title %}Planes{% endblock %}
 {% load static %}
-{% block title %}Planes de alimentacion{% endblock %}
-{% block content %}
+{% block main_content %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
 
-<div class="container">
-    <div class="row">
-      <div class="col-lg-12 text-justify">
-        <h1 class="mt-5">Lista de planes de alimentación</h1>
-        <table class="table" id="tabla_lista">
-          <tr>
-            <th>Id del plan</th>
-            <th>Descripción del plan</th>
-            <th>Aporte calórico</th>
-            <th></th>
-            <th></th>
-          </tr>
-          {% for plan in lista_planes %}
-          {% if plan.idUsuario.username == user.username%}
-          <tr>
-            <td>{{ plan.idPlan }}</td>
-            <td>{{ plan.descripcion }}</td>
-            <td>{{ plan.calorias }}</td>
-            <td><a href="ver_plan/{{ plan.idPlan }}">Ver plan</a></td>
-            <td><a href="eliminar_plan/{{ plan.idPlan }}">Eliminar plan</a></td>
-          </tr>
-          {% endif %}
-          {% endfor %}
-          <tr>
-            <td colspan="5"><center><a href="{% url 'generar_plan' %}">Crear un nuevo plan</a></center></td>
-          </tr>
-        </table>
+  <!-- Page Heading -->
+  <h1 class="h3 mb-2 text-gray-800">Planes de Alimentación</h1>
+  <p class="mb-4">De acuerdo a tus características físicas, se han sugerido planes de alimentación a corde a tus necesidades. En la siguiente
+      tabla, se describen tus posibles planes de alimentación actuales, según sea el enfoque que desees.
+      Es importante que sigas estrictamente estas indicaciones para lograr realizar un avance en el proceso.</p>
+
+  <!-- DataTales Example -->
+  <div class="card shadow mb-4">
+      <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">Planes activos</h6>
       </div>
-    </div>
-    <a href="{% url 'panel' %}"><- Regresar al panel de control</a>
+      <div class="card-body">
+          <div class="table-responsive">
+              <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                  <thead>
+                  <tr>
+                      <th>ID del Plan</th>
+                      <th>Descripción</th>
+                      <th>Aporte Calórico</th>
+                      <th></th>
+                      <th></th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  {% for plan in lista_planes %}
+                    {% if plan.idUsuario.username == user.username%}
+                    <tr>
+                      <td>{{ plan.idPlan }}</td>
+                      <td>{{ plan.descripcion }}</td>
+                      <td>{{ plan.calorias }}</td>
+                      <td><a href="ver_plan/{{ plan.idPlan }}">Ver plan</a></td>
+                      <td><a href="eliminar_plan/{{ plan.idPlan }}">Eliminar plan</a></td>
+                    </tr>
+                    {% endif %}
+                  {% endfor %}
+                  </tbody>
+              </table>
+              <a class="align-middle btn btn-primary" href="{% url 'generar_plan' %}">Crear nuevo</a>
+          </div>
+      </div>
   </div>
-
-{% endblock %}
-{% block script %}
-<script>
-</script>
+</div>
+<!-- /.container-fluid -->
 {% endblock %}

@@ -1,21 +1,76 @@
-{% extends 'base.html' %}
+{% extends 'base_navbar.html' %}
+{% block title %}Panel de control{% endblock %}
 {% load static %}
-{% block title %}Registro{% endblock %}
-{% block content %}
+{% block main_content %}
 <!--falta checar permisos de visualizacion-->
-{% if user.is_authenticated %}
-<h1>Información de perfil</h1>
-<p>Id de Usuario: {{user.username}} ({{user.id}})</p>
-<p>Nombre: {{user.first_name}} {{user.last_name}}</p>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <input type="submit" value="Actualizar datos">
-</form>
-<p>
-  <a href="{% url 'panel' %}"><- Regresar al panel de control</a>
-</p>
-{% else %}
-<h1>Acceso denegado</h1>
-{% endif %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+  <!-- Page Heading -->
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Información del Perfil</h1>
+  </div>
+
+  <!-- Content Row -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow mb-4">
+        <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">{{user.first_name}} {{user.last_name}}</h6>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-sm-12 col-md-4 align-self-center">
+              <img alt="" style="width:100%;" title="" class="img-circle img-thumbnail isTooltip"
+                src="{% static 'img/user1.jpg' %}" data-original-title="Usuario">
+            </div>
+            <div class="col-sm-12 col-md-8 align-self-center">
+              <div class="table-responsive align-content-center">
+                <form method="POST">
+                  {% csrf_token %}
+                  {{form.as_p}}
+                  <!--<table class="table table-condensed table-responsive table-user-information">
+                    <tbody>
+                      <tr>
+                        <td><strong><i class="fas fa-id-card text-primary"></i> Nombre</strong></td>
+                        <td class="text-secondary">{{user.first_name}}</td>
+                      </tr>
+                      <tr>
+                        <td><strong><i class="fas fa-id-card text-primary"></i> Apellido</strong></td>
+                        <td class="text-secondary">{{user.last_name}}</td>
+                      </tr>
+                      <tr>
+                        <td><strong><i class="fas fa-venus-mars text-primary"></i> Sexo</strong></td>
+                        <td class="text-secondary">Masculino</td>
+                      </tr>
+                      <tr>
+                        <td><strong><i class="fas fa-envelope text-primary"></i> Email</strong></td>
+                        <td class="text-secondary">{{user.username}}</td>
+                      </tr>
+                      <tr>
+                        <td><strong><i class="fas fa-weight text-primary"></i> Peso</strong></td>
+                        <td class="text-secondary">{{form.peso}} kg</td>
+                      </tr>
+                      <tr>
+                        <td><strong><i class="fas fa-arrows-alt-v text-primary"></i> Altura</strong></td>
+                        <td class="text-secondary">{{form.altura}} cm</td>
+                      </tr>
+                      <tr>
+                        <td><strong><i class="fas fa-birthday-cake text-primary"></i> Cumpleaños</strong></td>
+                        <td class="text-secondary">{{form.fecha_nacimiento}}</td>
+                      </tr>
+                    </tbody>
+                  </table>-->
+                  <button type="submit" class="btn btn-primary">Actualizar datos</button>
+                  <button class="btn btn-dark btn-user">Modificar foto de perfil</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /.container-fluid -->
 {% endblock %}
