@@ -1,27 +1,53 @@
 {% extends 'base.html' %}
-{% load static %}
 {% block title %}Ingresar{% endblock %}
 {% block content %}
-<div class="container">
-  <div class="signup-form">
-    <h2>Inicio de sesión</h2>
-    <form method="post">
-      {% csrf_token %}
-      {% for field in form %}
-      <div class="form-group">
-        {{ field.label_tag }}
-        {{ field }}
-        {% for error in field.errors %}
-        <p style="color: red">{{ error }}</p>
-        {% endfor %}
+
+<body class="bg-gradient-primary">
+
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-xl-10 col-lg-12 col-md-9">
+        <div class="card o-hidden border-0 shadow-lg my-5">
+          <div class="card-body p-0">
+            <div class="row">
+              <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+              <div class="col-lg-6">
+                <div class="p-5">
+                  
+                  <div class="text-center">
+                    <h1 class="h4 text-gray-900 mb-4">¡Bienvenido de Nuevo!</h1>
+                  </div>
+
+                  <form class="user" method="POST">
+                    {% csrf_token %}
+                    {% for field in form %}
+                    <div class="form-group">
+                      <!--{{ field.label_tag }}-->
+                      {{ field }}
+                      {% for error in field.errors %}
+                      <p style="color: red">{{ error }}</p>
+                      {% endfor %}
+                    </div>
+                    {% endfor %}
+                    <div class="form-group">
+                      <button type="submit" class="btn btn-primary btn-user btn-block">Iniciar Sesión</button>
+                    </div>
+                  </form>
+
+                  <hr>
+                  <div class="text-center">
+                    <a class="small" href="forgot-password.html">¿Olvidaste tu contraseña?</a>
+                  </div>
+                  <div class="text-center">
+                    <a class="small" href="register.html">Crear una cuenta</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      {% endfor %}
-      <div class="form-group">
-        <button type="submit" class="btn btn-primary btn-lg btn-block">Iniciar sesión</button>
-      </div>
-    </form>
-    <div class="text-center">¿Aún no tienes una cuenta? <a href="{% url 'registro' %}">Crea una nueva cuenta aquí</a>
     </div>
   </div>
-</div>
+</body>
 {% endblock %}

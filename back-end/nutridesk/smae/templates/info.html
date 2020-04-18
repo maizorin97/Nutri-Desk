@@ -1,39 +1,185 @@
-{% extends 'base.html' %}
+{% extends 'base_navbar.html' %}
 {% load static %}
 {% block title %}SMAE{% endblock %}
-{% block content %}
-<div class="container">
+{% block main_content %}
+<div class="container-fluid">
+
+  <!-- Page Heading -->
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Sistema Mexicano de Alimentos Equivalentes</h1>
+  </div>
+
+  <!-- Content Row -->
   <div class="row">
-    <div class="col-lg-12 text-justify">
-      <h1 class="mt-5">SMAE</h1>
-      <p class="lead">Sistema Méxicano de Alimentos Equivalentes</p>
-      <p>El Sistema de Equivalentes es un método útil para el diseño de planes de alimentación
-        normales, modificados y personalizados; en especial para las personas que necesitan
-        controlar la ingestión de nutrimentos para obtener un peso corporal saludable.</p>
-      <p>Se basa en el concepto de “Alimento Equivalente”, que es aquella porción (o ración) de
-        alimento cuyo aporte nutrimental es similar a los de su mismo grupo en calidad y en cantidad,
-        lo que permite que puedan ser intercambiables entre sí. De este modo, por ejemplo, 1
-        manzana y 1⁄2 plátano corresponden ambos a 1 equivalente de fruta, y por lo tanto contienen
-        el mismo aporte nutricional. Los alimentos equivalentes están calculados con base en el peso
-        neto de los alimentos o con base en el peso de los alimentos cocidos.</p>
-      <p>Los alimentos equivalentes están divididos en subgrupos a partir del esquema de Grupos
-        Alimentarios propuestos por la “NOM-043-SSA2-2005. Servicios básicos de salud.
-        Promoción para la salud en materia alimentaria. Criterios para bridar información”. Para cada
-        subgrupo de alimentos equivalentes se indica su aporte nutrimental promedio, mostrándonos
-        así la cantidad de energía y los gramos de cada macronutrimento (carbohidratos, lípidos y
-        proteínas) que aporta 1 equivalente de dicho subgrupo alimentario. En la siguiente página se
-        muestra una tabla con el aporte nutrimental promedio de los grupos en el Sistema de
-        Equivalentes.</p>
-      <p>De esta manera, por ejemplo, las tortillas y los bolillos forman parte del mismo subgrupo
-        alimentario, el de los cereales y tubérculos sin grasa. 1 tortilla y 1⁄2
-        bolillo, ambos corresponden a 1 equivalente de cereales y tubérculos sin grasa. Por consiguiente, ambos
-        contienen el mismo contenido energético aproximadamente (es decir que ambos aportan 70
-        kcal, distribuidas en 2 gramos de proteínas y 15 gramos de carbohidratos). En consecuencia,
-        es equiparable comer 1 tortilla y 1⁄2 bolillo.</p>
-      <p>
-        <a href="{% url 'lista_smae' %}" class="btn btn-primary btn-lg">Ver lista de alimentos y sus equivalencias</a>
-      </p>
+
+    <div class="col-lg-6">
+
+      <!-- Illustrations -->
+      <div class="card shadow mb-4">
+        <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">¿Qué es el SMAE?</h6>
+        </div>
+        <div class="card-body">
+          <div class="text-center">
+            <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="{% static 'img/smae.png' %}"
+              alt="">
+          </div>
+          <p class="text-justify">Es un método útil para el diseño de planes de alimentación comunes, modificados y
+            personalizados; en especial para
+            las personas que necesitan controlar la ingesta de nutrientes para obtener un peso corporal adecuado y
+            saludable.</p>
+
+          <p class="text-justify">Se basa en el concepto de "Alimento Equivalente", que es aquella porción (o ración) de
+            alimento cuyo aporte nutrimental
+            es similar a los de su mismo grupo en calidad y en cantidad, lo que permite que puedan ser intercambiables
+            entre sí. De
+            este modo, por ejemplo, 1 manzana y 1/2 plátano corresponden ambos a 1 equivalente de fruta y, por lo tanto,
+            contienen el
+            mismo aporte nutricional. Los alimentos equivalentes están calculador con base en el peso neto de los
+            alimentos naturales
+            o el peso de los alimentos cocidos.</p>
+          <a target="_blank" rel="nofollow"
+            href="http://www.imss.gob.mx/sites/all/statics/salud/guia-alimentos.pdf">Consúltalo a través del IMSS
+            &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+
+      <!-- Illustrations -->
+      <div class="card shadow mb-4">
+        <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">Alimentos Equivalentes</h6>
+        </div>
+        <div class="card-body">
+          <div class="text-center">
+            <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="{% static 'img/equivalente.png' %}"
+              alt="">
+          </div>
+
+          <p class="text-justify">Los alimentos equivalentes están divididos en subgrupos a partir del esquema de Grupos
+            Alimentarios propuestos por la
+            <b>"NOM-043-SSA2-2005 Servicios básicos de salud. Promoción para la salud en materia alimentaria. Criterios
+              para brindar información".</b>
+            Así, para cada subgrupo de alimentos equivalentes se indica su aporte nutrimental promedio, mostrando el
+            aporte en energía
+            y gramaje de cada macronutrimento (carbohidratos, lípidos, etc) que aporta 1 equivalente de dicho subgrupo
+            alimentario.</p>
+          <h4 class="fas">Ejemplo</h4>
+          <p class="text-justify">Las tortillas y los bolillos forman parte del mismo subgrupo (cereales y tubérculos
+            sin grasa). 1 tortilla y 1/2 bolillo corresponden
+            ambos a 1 equivalente de cereales y tubérculos. Por consiguiente, ambos contienen aproximadamente el mismo
+            contenido energético(
+            aportan 70kcal, distribuidas en 2 gramos de proteínas y 15 gramos de carbohidratos). En consecuencia, es
+            equiparable comer 1 tortilla ó 1/2
+            bolillo.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+
+      <div class="card shadow mb-4">
+        <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">Tabla de Alimentos Equivalentes</h6>
+        </div>
+
+        <div class="card-body">
+          <div class="text-center">
+            <p>En la siguiente tabla son mostrados todos los alimentos descritos en el SMAE desarrollado por el IMSS, su
+              ración, subgrupo y contenido nutrimental,
+              así como sus equivalentes del mismo subgrupo, aquí puedes buscar sustitutos para alimentos que sean o no
+              de tu agrado.</p>
+          </div>
+          <p>
+            <input type="text" id="filtroBusqueda" onkeyup="busca()" placeholder="Buscar por...">
+            <select id="tipofiltro">
+              <option value="0">Nombre</option>
+              <option value="1">Racion</option>
+              <option value="2">Grupo al que pertenece</option>
+              <option value="3">Subgrupo</option>
+            </select>
+          </p>
+          <!-- DataTales Example -->
+          <div class="card shadow mb-4">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th>Nombre</th>
+                      <th>Ración</th>
+                      <th>Grupo</th>
+                      <th>Subgrupo</th>
+                      <th>Energía (kcal)</th>
+                      <th>Proteína (g)</th>
+                      <th>Lípidos (g)</th>
+                      <th>Hidratos de carbono (g)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for alimento in lista_alimentos %}
+                    <tr>
+                      <td>{{ alimento.nombre }}</td>
+                      <td>{{ alimento.racion }}</td>
+                      <td>{{ alimento.idGrupo.nombre }}</td>
+                      <td>
+                        {% if alimento.idGrupo.subgrupo is not None %}
+                        {{ alimento.idGrupo.subgrupo }}
+                        {% else %}
+                        -
+                        {% endif %}
+                      </td>
+                      <td>{{ alimento.idGrupo.energia }}</td>
+                      <td>{{ alimento.idGrupo.proteina }}</td>
+                      <td>{{ alimento.idGrupo.lipidos }}</td>
+                      <td>{{ alimento.idGrupo.carbohidratos }}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
+{% endblock %}
+
+{% block script %}
+<script>
+  function busca() {
+    // Declare variables
+    var filtroBusqueda, filtro, tabla, tr, td, i, txtValor, tipoFiltro, nRegistros = 0;
+    tipoFiltro = document.getElementById("tipofiltro");
+    filtroBusqueda = document.getElementById("filtroBusqueda");
+    filtro = filtroBusqueda.value.toUpperCase();
+    tabla = document.getElementById("dataTable");
+    tr = tabla.getElementsByTagName("tr");
+    // Loop through all table rows, and hide those who don't match the search query
+    for (i = 0; i < tr.length; i++) {
+      td = tr[i].getElementsByTagName("td")[tipoFiltro.value];
+      if (td) {
+        txtValor = td.textContent || td.innerText;
+        if (txtValor.toUpperCase().indexOf(filtro) > -1) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
+      }
+    }
+  }
+</script>
+<!-- Page level plugins -->
+<script src="{% static 'vendor/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
+
+<!-- Page level custom scripts -->
+<script src="{% static 'js/demo/datatables-demo.js' %}"></script>
+
 {% endblock %}
