@@ -18,6 +18,8 @@ from django.urls import path, include
 from django.conf import settings
 
 urlpatterns = [
+    #rutas de diagnosticos
+    path('diagnosticos/', include('diagnosticos.urls')),
     #rutas de smae
     path('smae/', include('smae.urls')),
     #rutas de planes
