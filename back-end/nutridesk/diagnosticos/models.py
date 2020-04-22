@@ -13,12 +13,19 @@ class Diagnostico(models.Model):
         ('M','Mujer'),
     )
     sexo = models.CharField(max_length=1, choices=SEXOS, verbose_name="Sexo")
+    pres_hi = models.IntegerField(verbose_name="P.A. Sistólica mmHg")
+    pres_lo = models.IntegerField(verbose_name="P.A. Diastólica mmHg")
+    TRES = (
+        (0,'Normal'),
+        (1,'Arriba de lo normal'),
+        (2,'Muy arriba de lo normal'),
+    )
+    glucosa = models.IntegerField(choices=TRES, verbose_name="Nivel de glucosa")
+    colesterol = models.IntegerField(choices=TRES, verbose_name="Nivel de colesterol")
     BINARIO = (
         (0,'No'),
         (1,'Si'),
     )
-    pres_hi = models.IntegerField(verbose_name="P.A. Sistólica mmHg")
-    pres_lo = models.IntegerField(verbose_name="P.A. Diastólica mmHg")
     fumador = models.IntegerField(choices=BINARIO, verbose_name="Fumador")
     alcoholico = models.IntegerField(choices=BINARIO, verbose_name="Acoholico")
     deporte = models.IntegerField(choices=BINARIO, verbose_name="Hace deporte")

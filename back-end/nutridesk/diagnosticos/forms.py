@@ -20,6 +20,10 @@ class FormaDiagnostico(forms.ModelForm):
         attrs={'class':'form-control', 'placeholder':'¿Bebe alcohol?'}, choices=((0,'No'),(1,'Si'))))
     deporte = forms.CharField(label="¿Realiza deporte?", required=True, widget=forms.Select(
         attrs={'class':'form-control', 'placeholder':'¿Realiza deporte?'}, choices=((0,'No'),(1,'Si'))))
+    glucosa = forms.CharField(label="Nivel de glucosa", required=True, widget=forms.Select(
+        attrs={'class':'form-control', 'placeholder':'Glucosa'}, choices=((0,'Normal'),(1,'Arriba de lo normal'),(2,'Muy arriba de lo normal'))))
+    colesterol = forms.CharField(label="Nivel de colesterol", required=True, widget=forms.Select(
+        attrs={'class':'form-control', 'placeholder':'Colesterol'}, choices=((0,'Normal'),(1,'Arriba de lo normal'),(2,'Muy arriba de lo normal'))))
     class Meta:
         model = Diagnostico
-        fields = ('fecha_nacimiento', 'altura', 'peso', 'sexo', 'pres_hi', 'pres_lo','fumador', 'alcoholico', 'deporte')
+        fields = ('colesterol', 'glucosa', 'fecha_nacimiento', 'altura', 'peso', 'sexo', 'pres_hi', 'pres_lo','fumador', 'alcoholico', 'deporte')

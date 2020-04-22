@@ -11,9 +11,8 @@ def diagnostico(request):
         if diagnos_form.is_valid():
             fd = diagnos_form.save(commit=False)
             fd.idUsuario = User.objects.get(id=request.user.id)
-            resultado = 0
+            resultado = genera_diagnostico(fd)
             fd.resultado = resultado
-            print(fd.idUsuario)
             fd.save()
             return render(request, "diagnostico.html",{"diagnos_form": diagnos_form, "resultado":resultado})
         else:
@@ -31,3 +30,41 @@ STD_DATA = {
     "ap_lo": {"mean": 81.23238358959411, "std": 9.434938684142596},
     "imc": {"mean": 27.400558527904764, "std": 5.19677882901518},
 }
+
+
+def genera_diagnostico(info:Diagnostico):
+    import joblib
+    import pandas as pd
+    from datetime import datetime as dt
+
+    nombre_archivo = "./diagnosticos/svm_nutridesk_v1.model"
+    modelo_cargado = joblib.load(nombre_archivo)
+
+    age = (
+        dt.now().year
+        - info.fecha_nacimiento.year
+        + (dt.now().month - info.fecha_nacimiento.month) * (1 / 12)
+    )
+
+    sex = 0
+    if info.sexo == 'H':
+        sex = 1
+    
+    heigth = info.altura/100
+
+    imc = info.peso / heigth**2
+
+    prueba =[[age,sex,heigth,info.peso,info.pres_hi,info.pres_lo,info.colesterol,
+    info.glucosa,info.fumador,info.alcoholico,info.deporte,imc]]
+
+    p_data = pd.DataFrame(data=prueba, columns = ['age','gender','height','weight','ap_hi',
+        'ap_lo','cholesterol','gluc','smoke','alco','active','imc'])
+
+    s_list = ["age", "height", "weight", "ap_hi", "ap_lo", "imc"]
+
+    de = STD_DATA
+
+    for column in s_list:
+        p_data[column] = (p_data[column]-de[column]['mean'])/de[column]['std']
+    
+    return modelo_cargado.predict(p_data)[0]
