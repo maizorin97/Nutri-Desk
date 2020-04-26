@@ -1,0 +1,1523 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Nutri-desk | Planes</title>
+
+    <!-- Custom fonts for this template -->
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this page -->
+    <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+    <script>
+        function calcular_requisitos() {
+            var peso = 65.0;
+            var altura = 174.0;
+            var sexo = 'H';
+            var edad = 22.333333333333332;
+            var imc = (peso/Math.pow(altura/100,2));
+            var objetivo = document.getElementById("txtObjetivo").selectedIndex;
+            var actividad = document.getElementById("txtActividadFisica").selectedIndex;
+
+            var txt_imc = document.getElementById("txtIMC");
+            var txt_msj_imc = document.getElementById("txtMsjIMC");
+            var txt_tmb = document.getElementById("txtTMB");
+
+            txt_imc.innerHTML = imc.toPrecision(4);
+            txt_msj_imc.innerHTML = indice_masa_corporal(imc);
+            var tmb = tasa_metabolica_basal(sexo, edad, peso, altura, objetivo, actividad);
+            txt_tmb.innerHTML = tmb;
+            mostrar_plan(tmb);
+        }
+
+        function indice_masa_corporal(imc) {
+            //fuente
+            //https://www.seedo.es/index.php/pacientes/calculo-imc
+            if (imc < 18.5){
+                return "Peso insuficiente";
+            } else if (imc < 25){
+                return "Peso normal";
+            } else if (imc < 27) {
+                return "Sobrepeso grado I";
+            } else if (imc < 30) {
+                return "Sobrepeso grado II (preobesidad)";
+            } else if (imc < 35) {
+                return "Obesidad de tipo I";
+            } else if (imc < 40) {
+                return "Obesidad de tipo II";
+            } else if (imc < 50) {
+                return "Obesidad de tipo III (mórbida)";
+            } else if (imc >= 50) {
+                return "Obesidad de tipo IV (extrema)";
+            }
+        }
+
+        function tasa_metabolica_basal(sexo, edad, peso, altura, meta, actividad_fisica){
+            //fuente
+            //https://www.axahealthkeeper.com/blog/calculo-de-calorias-diarias-cuantas-calorias-debo-consumir-al-dia/
+            //https://www.axahealthkeeper.com/blog/que-es-y-como-calcular-la-tasa-metabolica-basal/
+            var tmb = 0;
+            switch(sexo) {
+                case 'H'://si es hombre
+                    tmb = (10 * peso) + (6.5 * altura) - (5 * edad) - 161;
+                    break;
+                case 'M':// si es mujer
+                    tmb = (10 * peso) + (6.5 * altura) - (5 * edad) + 5;
+                    break;
+                default:
+                    tmb = -1;
+            }
+
+            switch(actividad_fisica) {
+                case 0://nada de ejercicio
+                    tmb *= 1.2;
+                    break;
+                case 1://ejercicio ligero dos días por semana
+                    tmb *= 1.375;
+                    break;
+                case 2://ejercicio moderado, unos cuatro días por semana
+                    tmb *= 1.55;
+                    break;
+                case 3://deporte regular seis días a la semana
+                    tmb *= 1.725;
+                    break;
+                default://deportista de élite
+                    tmb *= 1.9;
+            }
+
+            switch(meta) {
+                case 0:
+                    tmb *= 1;
+                    break;
+                case 1:
+                    tmb *= 0.75; // 15%-20%
+                    break;
+                default:
+                    tmb *= 1.15;
+            }
+            return tmb;
+        }
+
+        function mostrar_plan(tmb) {
+            var dict_alimentos = get_alimentos_dict();
+            var plan = get_plan(tmb);
+            var tabla_plan = document.getElementById("txtColaciones");
+            tabla_plan.innerHTML = construir_colacion( 0, plan[0],dict_alimentos); //desayuno
+            tabla_plan.innerHTML += construir_colacion(1, plan[1],dict_alimentos); //colacion1
+            tabla_plan.innerHTML += construir_colacion(2, plan[2],dict_alimentos); //comida
+            tabla_plan.innerHTML += construir_colacion(3, plan[3],dict_alimentos); //colacon2
+            tabla_plan.innerHTML += construir_colacion(4, plan[4],dict_alimentos); //cena
+        }
+
+        function get_alimentos_dict() {
+            var alimentos = {};
+
+            alimentos["Verduras"] = [];
+
+            alimentos["Frutas"] = [];
+
+            alimentos["Cereales y tubérculos"] = [];
+
+            alimentos["Cereales y tubérculos"] = [];
+
+            alimentos["Leguminosas"] = [];
+
+            alimentos["Alimentos de origen animal"] = [];
+
+            alimentos["Alimentos de origen animal"] = [];
+
+            alimentos["Alimentos de origen animal"] = [];
+
+            alimentos["Alimentos de origen animal"] = [];
+
+            alimentos["Leche"] = [];
+
+            alimentos["Leche"] = [];
+
+            alimentos["Leche"] = [];
+
+            alimentos["Leche"] = [];
+
+            alimentos["Aceites y grasas"] = [];
+
+            alimentos["Aceites y grasas"] = [];
+
+            alimentos["Azúcares"] = [];
+
+            alimentos["Azúcares"] = [];
+
+            alimentos["Alimentos libres en energía"] = [];
+
+            alimentos["Bebidas alcohólicas"] = [];
+
+            alimentos["Grasas"] = [];
+
+            alimentos["Grasas"] = [];
+
+            alimentos["Grasas"] = [];
+
+
+            alimentos["Verduras"].push(["Acelga cocida","4"]);
+
+            alimentos["Verduras"].push(["Acelga cruda","5"]);
+
+            alimentos["Verduras"].push(["Alcachofa","6"]);
+
+            alimentos["Verduras"].push(["Apio cocido","7"]);
+
+            alimentos["Verduras"].push(["Apio crudo","8"]);
+
+            alimentos["Verduras"].push(["Champiñón cocido rebanado","9"]);
+
+            alimentos["Verduras"].push(["Champiñón crudo entero","10"]);
+
+            alimentos["Verduras"].push(["Chilacas","11"]);
+
+            alimentos["Verduras"].push(["Chilacayote","12"]);
+
+            alimentos["Verduras"].push(["Cilantro","13"]);
+
+            alimentos["Verduras"].push(["Col cruda","14"]);
+
+            alimentos["Verduras"].push(["Colecita de bruselas","15"]);
+
+            alimentos["Verduras"].push(["Coliflor cocida","16"]);
+
+            alimentos["Verduras"].push(["Ejotes cocidos picados","17"]);
+
+            alimentos["Verduras"].push(["Espárragos crudos","18"]);
+
+            alimentos["Verduras"].push(["Espinaca cocida","19"]);
+
+            alimentos["Verduras"].push(["Espinaca cruda","20"]);
+
+            alimentos["Verduras"].push(["Flor de calabaza cocida","21"]);
+
+            alimentos["Verduras"].push(["Flor de Maguey","22"]);
+
+            alimentos["Verduras"].push(["Huitlacoche cocido","23"]);
+
+            alimentos["Verduras"].push(["Lechuga","24"]);
+
+            alimentos["Verduras"].push(["Nabo","25"]);
+
+            alimentos["Verduras"].push(["Nopal Cocido","26"]);
+
+            alimentos["Verduras"].push(["Nopal Crudo","27"]);
+
+            alimentos["Verduras"].push(["Nopal de Cambray","28"]);
+
+            alimentos["Verduras"].push(["Papaloquelite","29"]);
+
+            alimentos["Verduras"].push(["Pepino rebanado","30"]);
+
+            alimentos["Verduras"].push(["Pimiento morrón (rojo, amarillo, verde)","31"]);
+
+            alimentos["Verduras"].push(["Rábano","32"]);
+
+            alimentos["Verduras"].push(["Salsa mexicana, pico de gallo, taquera, roja o verde","33"]);
+
+            alimentos["Verduras"].push(["Setas cocidas","34"]);
+
+            alimentos["Verduras"].push(["Tomate Verde","35"]);
+
+            alimentos["Verduras"].push(["Berenjena","36"]);
+
+            alimentos["Verduras"].push(["Berro cocido","37"]);
+
+            alimentos["Verduras"].push(["Berro crudo","38"]);
+
+            alimentos["Verduras"].push(["Betabel rallado","39"]);
+
+            alimentos["Verduras"].push(["Brócoli cocido","40"]);
+
+            alimentos["Verduras"].push(["Brocoli crudo","41"]);
+
+            alimentos["Verduras"].push(["Calabacita alargada ó redonda cruda","42"]);
+
+            alimentos["Verduras"].push(["Calabacita cocida","43"]);
+
+            alimentos["Verduras"].push(["Calabaza de castilla cocida","44"]);
+
+            alimentos["Verduras"].push(["Cebolla blanca rebanada cruda","45"]);
+
+            alimentos["Verduras"].push(["Cebolla cocida","46"]);
+
+            alimentos["Verduras"].push(["Cebolla de cambray","47"]);
+
+            alimentos["Verduras"].push(["Chayote cocido","48"]);
+
+            alimentos["Verduras"].push(["Chepil","49"]);
+
+            alimentos["Verduras"].push(["Chícharo","50"]);
+
+            alimentos["Verduras"].push(["Chicoria","51"]);
+
+            alimentos["Verduras"].push(["Chile de árbol","52"]);
+
+            alimentos["Verduras"].push(["Chile Habanero","53"]);
+
+            alimentos["Verduras"].push(["Chile Jalapeño","54"]);
+
+            alimentos["Verduras"].push(["Chile Poblano","55"]);
+
+            alimentos["Verduras"].push(["Germen de Alfafa","56"]);
+
+            alimentos["Verduras"].push(["Germen de lenteja","57"]);
+
+            alimentos["Verduras"].push(["Huazontle","58"]);
+
+            alimentos["Verduras"].push(["Jicama picada","59"]);
+
+            alimentos["Verduras"].push(["Jitomate bola","60"]);
+
+            alimentos["Verduras"].push(["Jitomate cereza","61"]);
+
+            alimentos["Verduras"].push(["Jugo de tomate natural","62"]);
+
+            alimentos["Verduras"].push(["Jugo de verduras","63"]);
+
+            alimentos["Verduras"].push(["Jugo de zanahoria","64"]);
+
+            alimentos["Verduras"].push(["Pepinillos","65"]);
+
+            alimentos["Verduras"].push(["Poro crudo","66"]);
+
+            alimentos["Verduras"].push(["Puré de tomate","67"]);
+
+            alimentos["Verduras"].push(["Quelite","68"]);
+
+            alimentos["Verduras"].push(["Romeritos cocidos","69"]);
+
+            alimentos["Verduras"].push(["Romeritos crudos","70"]);
+
+            alimentos["Verduras"].push(["Verdolagas","71"]);
+
+            alimentos["Verduras"].push(["Xoconostle","72"]);
+
+            alimentos["Verduras"].push(["Zanahoria miniatura","73"]);
+
+            alimentos["Verduras"].push(["Zanahoria Picada o rallada","74"]);
+
+            alimentos["Frutas"].push(["Agua de coco","75"]);
+
+            alimentos["Frutas"].push(["Arándano","76"]);
+
+            alimentos["Frutas"].push(["Capulín","77"]);
+
+            alimentos["Frutas"].push(["Carambolo","78"]);
+
+            alimentos["Frutas"].push(["Chabacano","79"]);
+
+            alimentos["Frutas"].push(["Chicozapote","80"]);
+
+            alimentos["Frutas"].push(["Chirimoya","81"]);
+
+            alimentos["Frutas"].push(["Ciruela","82"]);
+
+            alimentos["Frutas"].push(["Ciruela pasa deshuesada","83"]);
+
+            alimentos["Frutas"].push(["Dátil","84"]);
+
+            alimentos["Frutas"].push(["Durazno (chico)","85"]);
+
+            alimentos["Frutas"].push(["Frambuesa","86"]);
+
+            alimentos["Frutas"].push(["Fresa rebanada","87"]);
+
+            alimentos["Frutas"].push(["Fruta picada","88"]);
+
+            alimentos["Frutas"].push(["Gajos de mandarina, toronja y naranja","89"]);
+
+            alimentos["Frutas"].push(["Granada china","90"]);
+
+            alimentos["Frutas"].push(["Granada roja","91"]);
+
+            alimentos["Frutas"].push(["Guanábana","92"]);
+
+            alimentos["Frutas"].push(["Guayaba","93"]);
+
+            alimentos["Frutas"].push(["Guayaba rosa","94"]);
+
+            alimentos["Frutas"].push(["Higo","95"]);
+
+            alimentos["Frutas"].push(["Jugo de naranja, toronja o mandarina natural","96"]);
+
+            alimentos["Frutas"].push(["Kiwi","97"]);
+
+            alimentos["Frutas"].push(["Lichis","98"]);
+
+            alimentos["Frutas"].push(["Lima","99"]);
+
+            alimentos["Frutas"].push(["Limón real","100"]);
+
+            alimentos["Frutas"].push(["Mamey","101"]);
+
+            alimentos["Frutas"].push(["Mandarina (chica)","102"]);
+
+            alimentos["Frutas"].push(["Mandarina reina","103"]);
+
+            alimentos["Frutas"].push(["Mango ataulfo","104"]);
+
+            alimentos["Frutas"].push(["Mango petacón","105"]);
+
+            alimentos["Frutas"].push(["Manzana (chica)","106"]);
+
+            alimentos["Frutas"].push(["Melón picado","107"]);
+
+            alimentos["Frutas"].push(["Nanche","108"]);
+
+            alimentos["Frutas"].push(["Naranja","109"]);
+
+            alimentos["Frutas"].push(["Nectarina","110"]);
+
+            alimentos["Frutas"].push(["Níspero","111"]);
+
+            alimentos["Frutas"].push(["Papaya hawaiana","112"]);
+
+            alimentos["Frutas"].push(["Papaya picada","113"]);
+
+            alimentos["Frutas"].push(["Pasas","114"]);
+
+            alimentos["Frutas"].push(["Pera","115"]);
+
+            alimentos["Frutas"].push(["Perón","116"]);
+
+            alimentos["Frutas"].push(["Piña picada","117"]);
+
+            alimentos["Frutas"].push(["Plátano dominico","118"]);
+
+            alimentos["Frutas"].push(["Plátano macho","119"]);
+
+            alimentos["Frutas"].push(["Plátano tabasco","120"]);
+
+            alimentos["Frutas"].push(["Sandía picada","121"]);
+
+            alimentos["Frutas"].push(["Tangerina","122"]);
+
+            alimentos["Frutas"].push(["Tejocote","123"]);
+
+            alimentos["Frutas"].push(["Toronja","124"]);
+
+            alimentos["Frutas"].push(["Tuna","125"]);
+
+            alimentos["Frutas"].push(["Uva roja o verde","126"]);
+
+            alimentos["Frutas"].push(["Zapote negro","127"]);
+
+            alimentos["Frutas"].push(["Zarzamora","128"]);
+
+            alimentos["Alimentos de origen animal"].push(["Abulón fresco","129"]);
+
+            alimentos["Alimentos de origen animal"].push(["Acociles","130"]);
+
+            alimentos["Alimentos de origen animal"].push(["Aguayón","131"]);
+
+            alimentos["Alimentos de origen animal"].push(["Almeja fresca","132"]);
+
+            alimentos["Alimentos de origen animal"].push(["Atún en agua","133"]);
+
+            alimentos["Alimentos de origen animal"].push(["Bacalao seco","134"]);
+
+            alimentos["Alimentos de origen animal"].push(["Bagre","135"]);
+
+            alimentos["Alimentos de origen animal"].push(["Bistec de res","136"]);
+
+            alimentos["Alimentos de origen animal"].push(["Blanco de nilo","137"]);
+
+            alimentos["Alimentos de origen animal"].push(["Cabeza de pescado","138"]);
+
+            alimentos["Alimentos de origen animal"].push(["Cabrito","139"]);
+
+            alimentos["Alimentos de origen animal"].push(["Calamar","140"]);
+
+            alimentos["Alimentos de origen animal"].push(["Camarón cocido","141"]);
+
+            alimentos["Alimentos de origen animal"].push(["Camarón gigante","142"]);
+
+            alimentos["Alimentos de origen animal"].push(["Camarón pacotilla","143"]);
+
+            alimentos["Alimentos de origen animal"].push(["Camarón seco","144"]);
+
+            alimentos["Alimentos de origen animal"].push(["Cangrejo","145"]);
+
+            alimentos["Alimentos de origen animal"].push(["Carne de avestruz","146"]);
+
+            alimentos["Alimentos de origen animal"].push(["Carne de jaiba","147"]);
+
+            alimentos["Alimentos de origen animal"].push(["Carne de res seca","148"]);
+
+            alimentos["Alimentos de origen animal"].push(["Carne molida de pollo y pavo","149"]);
+
+            alimentos["Alimentos de origen animal"].push(["Cazón","150"]);
+
+            alimentos["Alimentos de origen animal"].push(["Chambarete","151"]);
+
+            alimentos["Alimentos de origen animal"].push(["Charales frescos","152"]);
+
+            alimentos["Alimentos de origen animal"].push(["Charales secos","153"]);
+
+            alimentos["Alimentos de origen animal"].push(["Clara de huevo","154"]);
+
+            alimentos["Alimentos de origen animal"].push(["Cuete de res","155"]);
+
+            alimentos["Alimentos de origen animal"].push(["Escalopa de res","156"]);
+
+            alimentos["Alimentos de origen animal"].push(["Escamoles","157"]);
+
+            alimentos["Alimentos de origen animal"].push(["Fajitas de pollo sin piel","158"]);
+
+            alimentos["Alimentos de origen animal"].push(["Falda de res","159"]);
+
+            alimentos["Alimentos de origen animal"].push(["Filete de guachinango","160"]);
+
+            alimentos["Alimentos de origen animal"].push(["Filete de pescado, mero, mojarra, merluza","161"]);
+
+            alimentos["Alimentos de origen animal"].push(["Filete de res y tampiqueña","162"]);
+
+            alimentos["Alimentos de origen animal"].push(["Guachinango","163"]);
+
+            alimentos["Alimentos de origen animal"].push(["Jaiba cocida entera","164"]);
+
+            alimentos["Alimentos de origen animal"].push(["Jugo de almeja","165"]);
+
+            alimentos["Alimentos de origen animal"].push(["Liebre","166"]);
+
+            alimentos["Alimentos de origen animal"].push(["Machaca","167"]);
+
+            alimentos["Alimentos de origen animal"].push(["Maciza de res","168"]);
+
+            alimentos["Alimentos de origen animal"].push(["Medallón de filete de res","169"]);
+
+            alimentos["Alimentos de origen animal"].push(["Mejillones","170"]);
+
+            alimentos["Alimentos de origen animal"].push(["Milanesa de pollo y res","171"]);
+
+            alimentos["Alimentos de origen animal"].push(["Molida de pollo","172"]);
+
+            alimentos["Alimentos de origen animal"].push(["Molleja de pollo","173"]);
+
+            alimentos["Alimentos de origen animal"].push(["Muslo de pollo sin piel","174"]);
+
+            alimentos["Alimentos de origen animal"].push(["Pancita de res","175"]);
+
+            alimentos["Alimentos de origen animal"].push(["Pargo","176"]);
+
+            alimentos["Alimentos de origen animal"].push(["Pata de res","177"]);
+
+            alimentos["Alimentos de origen animal"].push(["Pechuga a la plancha, asada, cocida","178"]);
+
+            alimentos["Alimentos de origen animal"].push(["Pechuga de pavo","179"]);
+
+            alimentos["Alimentos de origen animal"].push(["Pechuga de pollo deshuesada","180"]);
+
+            alimentos["Alimentos de origen animal"].push(["Pescado en trozo","181"]);
+
+            alimentos["Alimentos de origen animal"].push(["Pierna de pollo sin piel","182"]);
+
+            alimentos["Alimentos de origen animal"].push(["Puntas de res","183"]);
+
+            alimentos["Alimentos de origen animal"].push(["Queso cottage","184"]);
+
+            alimentos["Alimentos de origen animal"].push(["Requesón","185"]);
+
+            alimentos["Alimentos de origen animal"].push(["Riñones de res","186"]);
+
+            alimentos["Alimentos de origen animal"].push(["Róbalo","187"]);
+
+            alimentos["Alimentos de origen animal"].push(["Surimi","188"]);
+
+            alimentos["Alimentos de origen animal"].push(["Tampiqueña","189"]);
+
+            alimentos["Alimentos de origen animal"].push(["Venado cocido","190"]);
+
+            alimentos["Alimentos de origen animal"].push(["Agujas de res","191"]);
+
+            alimentos["Alimentos de origen animal"].push(["Anchoa con aceite","192"]);
+
+            alimentos["Alimentos de origen animal"].push(["Arrachera","193"]);
+
+            alimentos["Alimentos de origen animal"].push(["Atún en aceite","194"]);
+
+            alimentos["Alimentos de origen animal"].push(["Barbacoa Maciza","195"]);
+
+            alimentos["Alimentos de origen animal"].push(["Bistec de ternera","196"]);
+
+            alimentos["Alimentos de origen animal"].push(["Bonito","197"]);
+
+            alimentos["Alimentos de origen animal"].push(["Carne de cerdo","198"]);
+
+            alimentos["Alimentos de origen animal"].push(["Carpa cocida","199"]);
+
+            alimentos["Alimentos de origen animal"].push(["Cecina","200"]);
+
+            alimentos["Alimentos de origen animal"].push(["Conejo","201"]);
+
+            alimentos["Alimentos de origen animal"].push(["Falda de cerdo","202"]);
+
+            alimentos["Alimentos de origen animal"].push(["Filete de cerdo","203"]);
+
+            alimentos["Alimentos de origen animal"].push(["Filete de salmón","204"]);
+
+            alimentos["Alimentos de origen animal"].push(["Guajolote de Pavo","205"]);
+
+            alimentos["Alimentos de origen animal"].push(["Hígado de pollo","206"]);
+
+            alimentos["Alimentos de origen animal"].push(["Hígado de res","207"]);
+
+            alimentos["Alimentos de origen animal"].push(["Jamón de pavo y/o pierna","208"]);
+
+            alimentos["Alimentos de origen animal"].push(["Lomo de cerdo","209"]);
+
+            alimentos["Alimentos de origen animal"].push(["Maciza de res","210"]);
+
+            alimentos["Alimentos de origen animal"].push(["Molida de cerdo","211"]);
+
+            alimentos["Alimentos de origen animal"].push(["Molida de res (sirloin)","212"]);
+
+            alimentos["Alimentos de origen animal"].push(["Ostión","213"]);
+
+            alimentos["Alimentos de origen animal"].push(["Ostión en lata","214"]);
+
+            alimentos["Alimentos de origen animal"].push(["Pescuezo de pollo s/piel","215"]);
+
+            alimentos["Alimentos de origen animal"].push(["Pierna de cerdo","216"]);
+
+            alimentos["Alimentos de origen animal"].push(["Queso de cabra","217"]);
+
+            alimentos["Alimentos de origen animal"].push(["Queso fresco","218"]);
+
+            alimentos["Alimentos de origen animal"].push(["Queso panela","219"]);
+
+            alimentos["Alimentos de origen animal"].push(["Salmón","220"]);
+
+            alimentos["Alimentos de origen animal"].push(["Trucha cocida","221"]);
+
+            alimentos["Alimentos de origen animal"].push(["Bistec de bola","222"]);
+
+            alimentos["Alimentos de origen animal"].push(["Carne de suadero","223"]);
+
+            alimentos["Alimentos de origen animal"].push(["Chicharrón","224"]);
+
+            alimentos["Alimentos de origen animal"].push(["Costillas de cerdo","225"]);
+
+            alimentos["Alimentos de origen animal"].push(["Gusanos de maguey","226"]);
+
+            alimentos["Alimentos de origen animal"].push(["Huevo","227"]);
+
+            alimentos["Alimentos de origen animal"].push(["Longaniza","228"]);
+
+            alimentos["Alimentos de origen animal"].push(["Pecho de res","229"]);
+
+            alimentos["Alimentos de origen animal"].push(["Queso mozarella","230"]);
+
+            alimentos["Alimentos de origen animal"].push(["Queso parmesano","231"]);
+
+            alimentos["Alimentos de origen animal"].push(["Salami de pavo","232"]);
+
+            alimentos["Alimentos de origen animal"].push(["Salchicha de cerdo","233"]);
+
+            alimentos["Alimentos de origen animal"].push(["Salchicha de pavo","234"]);
+
+            alimentos["Alimentos de origen animal"].push(["Sardina en aceite","235"]);
+
+            alimentos["Alimentos de origen animal"].push(["Sardinas en Tomate","236"]);
+
+            alimentos["Alimentos de origen animal"].push(["Sierra","237"]);
+
+            alimentos["Alimentos de origen animal"].push(["Suadero","238"]);
+
+            alimentos["Alimentos de origen animal"].push(["Alón de pollo con piel cocido","239"]);
+
+            alimentos["Alimentos de origen animal"].push(["Cerdo en canal","240"]);
+
+            alimentos["Alimentos de origen animal"].push(["Costilla de res","241"]);
+
+            alimentos["Alimentos de origen animal"].push(["Espaldilla","242"]);
+
+            alimentos["Alimentos de origen animal"].push(["Lengua de cerdo","243"]);
+
+            alimentos["Alimentos de origen animal"].push(["Maciza de cerdo","244"]);
+
+            alimentos["Alimentos de origen animal"].push(["Moronga","245"]);
+
+            alimentos["Alimentos de origen animal"].push(["Mortadela","246"]);
+
+            alimentos["Alimentos de origen animal"].push(["Nuggets de pollo","247"]);
+
+            alimentos["Alimentos de origen animal"].push(["Ostión ahumado","248"]);
+
+            alimentos["Alimentos de origen animal"].push(["Palitos de pescado congelados","249"]);
+
+            alimentos["Alimentos de origen animal"].push(["Paloma","250"]);
+
+            alimentos["Alimentos de origen animal"].push(["Pastel de pavo y puerco","251"]);
+
+            alimentos["Alimentos de origen animal"].push(["Pepperoni","252"]);
+
+            alimentos["Alimentos de origen animal"].push(["Pollo rostizado","253"]);
+
+            alimentos["Alimentos de origen animal"].push(["Queso amarillo","254"]);
+
+            alimentos["Alimentos de origen animal"].push(["Queso americano","255"]);
+
+            alimentos["Alimentos de origen animal"].push(["Queso asadero","256"]);
+
+            alimentos["Alimentos de origen animal"].push(["Queso blanco","257"]);
+
+            alimentos["Alimentos de origen animal"].push(["Queso canasto","258"]);
+
+            alimentos["Alimentos de origen animal"].push(["Queso chihuahua","259"]);
+
+            alimentos["Alimentos de origen animal"].push(["Queso fundido","260"]);
+
+            alimentos["Alimentos de origen animal"].push(["Queso gouda","261"]);
+
+            alimentos["Alimentos de origen animal"].push(["Queso manchego","262"]);
+
+            alimentos["Alimentos de origen animal"].push(["Queso Oaxaca","263"]);
+
+            alimentos["Alimentos de origen animal"].push(["Retazo de pollo","264"]);
+
+            alimentos["Alimentos de origen animal"].push(["Salchicha","265"]);
+
+            alimentos["Alimentos de origen animal"].push(["Sesos de cerdo","266"]);
+
+            alimentos["Alimentos de origen animal"].push(["Sesos de res","267"]);
+
+            alimentos["Alimentos de origen animal"].push(["Tripas de res","268"]);
+
+            alimentos["Alimentos de origen animal"].push(["Yema de huevo","269"]);
+
+            alimentos["Leche"].push(["Leche de soya baja en grasa","270"]);
+
+            alimentos["Leche"].push(["Leche descremada","271"]);
+
+            alimentos["Leche"].push(["Leche en polvo descremada","272"]);
+
+            alimentos["Leche"].push(["Leche evaporada descremada","273"]);
+
+            alimentos["Leche"].push(["Yogurt light","274"]);
+
+            alimentos["Leche"].push(["Yogurt para beber bajo en grasa y azúcar","275"]);
+
+            alimentos["Leche"].push(["Leche en polvo","276"]);
+
+            alimentos["Leche"].push(["Leche entera","277"]);
+
+            alimentos["Leche"].push(["Leche evaporada","278"]);
+
+            alimentos["Leche"].push(["Leche liconsa en polvo","279"]);
+
+            alimentos["Leche"].push(["Leche liconsa liquida","280"]);
+
+            alimentos["Leche"].push(["Yogurt natural","281"]);
+
+            alimentos["Leche"].push(["Yogurt para beber con fruta","282"]);
+
+            alimentos["Leguminosas"].push(["Alubias, garbanzos, habas, lentejas cocidas","283"]);
+
+            alimentos["Leguminosas"].push(["Alverjón","284"]);
+
+            alimentos["Leguminosas"].push(["Frijol canario, negro cocido","285"]);
+
+            alimentos["Leguminosas"].push(["Soya cocida","286"]);
+
+            alimentos["Leguminosas"].push(["Soya texturizada seca","287"]);
+
+            alimentos["Azúcares"].push(["Agua quina","288"]);
+
+            alimentos["Azúcares"].push(["Ate","289"]);
+
+            alimentos["Azúcares"].push(["Azúcar blanca y morena","290"]);
+
+            alimentos["Azúcares"].push(["Bebida energética con cafeína","291"]);
+
+            alimentos["Azúcares"].push(["Bebida láctea fermentada","292"]);
+
+            alimentos["Azúcares"].push(["Cajeta","293"]);
+
+            alimentos["Azúcares"].push(["Caramelo macizo","294"]);
+
+            alimentos["Azúcares"].push(["Caramelo salvavidas","295"]);
+
+            alimentos["Azúcares"].push(["Chicle","296"]);
+
+            alimentos["Azúcares"].push(["Chicloso","297"]);
+
+            alimentos["Azúcares"].push(["Gelatina preparada con agua","298"]);
+
+            alimentos["Azúcares"].push(["Gomitas","299"]);
+
+            alimentos["Azúcares"].push(["Jugo de fruta industrializado","300"]);
+
+            alimentos["Azúcares"].push(["Leche condensada","301"]);
+
+            alimentos["Azúcares"].push(["Malvavisco","302"]);
+
+            alimentos["Azúcares"].push(["Malvavisco miniatura","303"]);
+
+            alimentos["Azúcares"].push(["Mermelada de frutas","304"]);
+
+            alimentos["Azúcares"].push(["Mermelada de frutas baja en azúcar","305"]);
+
+            alimentos["Azúcares"].push(["Miel (de abeja, maíz o maple)","306"]);
+
+            alimentos["Azúcares"].push(["Néctar de fruta","307"]);
+
+            alimentos["Azúcares"].push(["Nieve de frutas","308"]);
+
+            alimentos["Azúcares"].push(["Obleas de cajeta","309"]);
+
+            alimentos["Azúcares"].push(["Paleta de caramelo","310"]);
+
+            alimentos["Azúcares"].push(["Paleta helada de agua","311"]);
+
+            alimentos["Azúcares"].push(["Paleta helada de fruta sin azúcar","312"]);
+
+            alimentos["Azúcares"].push(["Piloncillo","313"]);
+
+            alimentos["Azúcares"].push(["Ponche de fruta","314"]);
+
+            alimentos["Azúcares"].push(["Queso de tuna","315"]);
+
+            alimentos["Azúcares"].push(["Refrescos embotellados","316"]);
+
+            alimentos["Azúcares"].push(["Salsa catsup","317"]);
+
+            alimentos["Azúcares"].push(["Aderezos bajos en calorías","318"]);
+
+            alimentos["Azúcares"].push(["Almendra con chocolate","319"]);
+
+            alimentos["Azúcares"].push(["Cacahuate confitado","320"]);
+
+            alimentos["Azúcares"].push(["Chocolate amargo","321"]);
+
+            alimentos["Azúcares"].push(["Chocolate blanco","322"]);
+
+            alimentos["Azúcares"].push(["Chocolate con arroz tostado","323"]);
+
+            alimentos["Azúcares"].push(["Chocolate con galleta y caramelo","324"]);
+
+            alimentos["Azúcares"].push(["Chocolate con nugat","325"]);
+
+            alimentos["Azúcares"].push(["Chocolate de menta","326"]);
+
+            alimentos["Azúcares"].push(["Chocolate sin azúcar","327"]);
+
+            alimentos["Azúcares"].push(["Chongos zamoranos","328"]);
+
+            alimentos["Azúcares"].push(["Flan de caja","329"]);
+
+            alimentos["Azúcares"].push(["Helado de leche","330"]);
+
+            alimentos["Azúcares"].push(["Lunetas","331"]);
+
+            alimentos["Azúcares"].push(["Malvavisco de chocolate","332"]);
+
+            alimentos["Azúcares"].push(["Mayonesa baja en calorías","333"]);
+
+            alimentos["Azúcares"].push(["Mole","334"]);
+
+            alimentos["Azúcares"].push(["Mole poblano","335"]);
+
+            alimentos["Azúcares"].push(["Palanqueta","336"]);
+
+            alimentos["Azúcares"].push(["Palanqueta de Cacahuate","337"]);
+
+            alimentos["Azúcares"].push(["Paleta de crema","338"]);
+
+            alimentos["Azúcares"].push(["Paleta helada con leche o crema","339"]);
+
+            alimentos["Azúcares"].push(["Pasitas con chocolate","340"]);
+
+            alimentos["Azúcares"].push(["Pipián","341"]);
+
+            alimentos["Azúcares"].push(["Sustituto de crema para café en polvo","342"]);
+
+            alimentos["Alimentos libres en energía"].push(["Achiote","343"]);
+
+            alimentos["Alimentos libres en energía"].push(["Agua mineral","344"]);
+
+            alimentos["Alimentos libres en energía"].push(["Ajo en polvo","345"]);
+
+            alimentos["Alimentos libres en energía"].push(["Alcaparras **alto contenido de sodio","346"]);
+
+            alimentos["Alimentos libres en energía"].push(["Café americano descafeinado","347"]);
+
+            alimentos["Alimentos libres en energía"].push(["Caldo de pollo / res, desgrasado**","348"]);
+
+            alimentos["Alimentos libres en energía"].push(["Canela en polvo","349"]);
+
+            alimentos["Alimentos libres en energía"].push(["Chicles sin azúcar","350"]);
+
+            alimentos["Alimentos libres en energía"].push(["Chile en polvo","351"]);
+
+            alimentos["Alimentos libres en energía"].push(["Cocoa en polvo, con sustituto de azúcar","352"]);
+
+            alimentos["Alimentos libres en energía"].push(["Consomé de pollo /res /camarón en polvo **alto contenido de sodio","353"]);
+
+            alimentos["Alimentos libres en energía"].push(["Eneldo","354"]);
+
+            alimentos["Alimentos libres en energía"].push(["Flor de jamaica","355"]);
+
+            alimentos["Alimentos libres en energía"].push(["Gelatina baja en calorías","356"]);
+
+            alimentos["Alimentos libres en energía"].push(["Hierbabuena","357"]);
+
+            alimentos["Alimentos libres en energía"].push(["Hierbas de olor","358"]);
+
+            alimentos["Alimentos libres en energía"].push(["Hojas de laurel","359"]);
+
+            alimentos["Alimentos libres en energía"].push(["Limón","360"]);
+
+            alimentos["Alimentos libres en energía"].push(["Manzanilla","361"]);
+
+            alimentos["Alimentos libres en energía"].push(["Mejorana","362"]);
+
+            alimentos["Alimentos libres en energía"].push(["Mostaza","363"]);
+
+            alimentos["Alimentos libres en energía"].push(["Orégano","364"]);
+
+            alimentos["Alimentos libres en energía"].push(["Pimienta","365"]);
+
+            alimentos["Alimentos libres en energía"].push(["Refrescos de dieta","366"]);
+
+            alimentos["Alimentos libres en energía"].push(["Romero","367"]);
+
+            alimentos["Alimentos libres en energía"].push(["Sal de ajo **alto contenido de sodio","368"]);
+
+            alimentos["Alimentos libres en energía"].push(["Sal **alto contenido de sodio","369"]);
+
+            alimentos["Alimentos libres en energía"].push(["Salsa de barbecue","370"]);
+
+            alimentos["Alimentos libres en energía"].push(["Salsa de soya **alto contenido de sodio","371"]);
+
+            alimentos["Alimentos libres en energía"].push(["Salsa inglesa","372"]);
+
+            alimentos["Alimentos libres en energía"].push(["Salsa Tabasco","373"]);
+
+            alimentos["Alimentos libres en energía"].push(["Salsa teriyaki **alto contenido de sodio","374"]);
+
+            alimentos["Alimentos libres en energía"].push(["Sustituto de azúcar","375"]);
+
+            alimentos["Alimentos libres en energía"].push(["Té sin azúcar (manzanilla, canela, hierbabuena, jamaica)","376"]);
+
+            alimentos["Alimentos libres en energía"].push(["Tomillo","377"]);
+
+            alimentos["Alimentos libres en energía"].push(["Vainilla","378"]);
+
+            alimentos["Alimentos libres en energía"].push(["Vinagre","379"]);
+
+            alimentos["Cereales y tubérculos"].push(["Amaranto tostado","380"]);
+
+            alimentos["Cereales y tubérculos"].push(["Avena en hojuelas","381"]);
+
+            alimentos["Cereales y tubérculos"].push(["Avena Cocida","382"]);
+
+            alimentos["Cereales y tubérculos"].push(["Arroz blanco o integral cocido","383"]);
+
+            alimentos["Cereales y tubérculos"].push(["Baguette","384"]);
+
+            alimentos["Cereales y tubérculos"].push(["Barrita de granola o avena","385"]);
+
+            alimentos["Cereales y tubérculos"].push(["Bolillo sin migajón","386"]);
+
+            alimentos["Cereales y tubérculos"].push(["Bollo de hamburguesa","387"]);
+
+            alimentos["Cereales y tubérculos"].push(["Camote","388"]);
+
+            alimentos["Cereales y tubérculos"].push(["Canelones","389"]);
+
+            alimentos["Cereales y tubérculos"].push(["Cáscara de papa sin freir","390"]);
+
+            alimentos["Cereales y tubérculos"].push(["Cereal de caja con azúcar","391"]);
+
+            alimentos["Cereales y tubérculos"].push(["Cereal de caja sin azúcar","392"]);
+
+            alimentos["Cereales y tubérculos"].push(["Crepas","393"]);
+
+            alimentos["Cereales y tubérculos"].push(["Elote cocido","394"]);
+
+            alimentos["Cereales y tubérculos"].push(["Elote blanco desgranado","395"]);
+
+            alimentos["Cereales y tubérculos"].push(["Galleta de animalitos","396"]);
+
+            alimentos["Cereales y tubérculos"].push(["Galletas habaneras","397"]);
+
+            alimentos["Cereales y tubérculos"].push(["Galleta María","398"]);
+
+            alimentos["Cereales y tubérculos"].push(["Galleta para sopa","399"]);
+
+            alimentos["Cereales y tubérculos"].push(["Galleta salada","400"]);
+
+            alimentos["Cereales y tubérculos"].push(["Granola con fruta seca, baja en grasa","401"]);
+
+            alimentos["Cereales y tubérculos"].push(["Harina de arroz","402"]);
+
+            alimentos["Cereales y tubérculos"].push(["Harina de maíz para atole","403"]);
+
+            alimentos["Cereales y tubérculos"].push(["Hot cake ( 1 pieza chica)","404"]);
+
+            alimentos["Cereales y tubérculos"].push(["Maicena de sabor","405"]);
+
+            alimentos["Cereales y tubérculos"].push(["Maíz (blanco, cacahuazintle, palomero)","406"]);
+
+            alimentos["Cereales y tubérculos"].push(["Masa de maíz","407"]);
+
+            alimentos["Cereales y tubérculos"].push(["Palitos de pan","408"]);
+
+            alimentos["Cereales y tubérculos"].push(["Palomitas naturales","409"]);
+
+            alimentos["Cereales y tubérculos"].push(["Pan para hot dog (media noche)","410"]);
+
+            alimentos["Cereales y tubérculos"].push(["Pan árabe","411"]);
+
+            alimentos["Cereales y tubérculos"].push(["Pan birote","412"]);
+
+            alimentos["Cereales y tubérculos"].push(["Pan de caja (blanco, integral, multigrano)","413"]);
+
+            alimentos["Cereales y tubérculos"].push(["Pan molido","414"]);
+
+            alimentos["Cereales y tubérculos"].push(["Pan tostado","415"]);
+
+            alimentos["Cereales y tubérculos"].push(["Papa (hervida o al horno)","416"]);
+
+            alimentos["Cereales y tubérculos"].push(["Papa cambray","417"]);
+
+            alimentos["Cereales y tubérculos"].push(["Pasta hervida (fideo, espagueti, lasaña, etc.)","418"]);
+
+            alimentos["Cereales y tubérculos"].push(["Peneques (sin freír)","419"]);
+
+            alimentos["Cereales y tubérculos"].push(["Tlacoyo (sin freír)","420"]);
+
+            alimentos["Cereales y tubérculos"].push(["Tortilla de maíz","421"]);
+
+            alimentos["Cereales y tubérculos"].push(["Tortilla de maíz azul","422"]);
+
+            alimentos["Cereales y tubérculos"].push(["Tortilla de harina","423"]);
+
+            alimentos["Cereales y tubérculos"].push(["Tortilla de harina light","424"]);
+
+            alimentos["Cereales y tubérculos"].push(["Tostada horneada","425"]);
+
+            alimentos["Cereales y tubérculos"].push(["Salvado de maíz","426"]);
+
+            alimentos["Cereales y tubérculos"].push(["Salvado de trigo","427"]);
+
+            alimentos["Cereales y tubérculos"].push(["Yuca","428"]);
+
+            alimentos["Cereales y tubérculos"].push(["Barra de granola","429"]);
+
+            alimentos["Cereales y tubérculos"].push(["Chicharrón de harina enchilado","430"]);
+
+            alimentos["Cereales y tubérculos"].push(["Frituras de maíz","431"]);
+
+            alimentos["Cereales y tubérculos"].push(["Galleta con chispas de chocolate","432"]);
+
+            alimentos["Cereales y tubérculos"].push(["Galleta de avena con pasas","433"]);
+
+            alimentos["Cereales y tubérculos"].push(["Galleta integral con miel","434"]);
+
+            alimentos["Cereales y tubérculos"].push(["Galleta tipo sándwich","435"]);
+
+            alimentos["Cereales y tubérculos"].push(["Palomitas con mantequilla","436"]);
+
+            alimentos["Cereales y tubérculos"].push(["Pan dulce (bisquet, cuernito, o concha)","437"]);
+
+            alimentos["Cereales y tubérculos"].push(["Panqué","438"]);
+
+            alimentos["Cereales y tubérculos"].push(["Papas fritas","439"]);
+
+            alimentos["Cereales y tubérculos"].push(["Papas fritas reducidas en grasa","440"]);
+
+            alimentos["Cereales y tubérculos"].push(["Puré de papa preparado","441"]);
+
+            alimentos["Cereales y tubérculos"].push(["Roles de canela ó pasas","442"]);
+
+            alimentos["Cereales y tubérculos"].push(["Tamal","443"]);
+
+            alimentos["Cereales y tubérculos"].push(["Tostada","444"]);
+
+            alimentos["Cereales y tubérculos"].push(["Totopos y nachos","445"]);
+
+            alimentos["Cereales y tubérculos"].push(["Waffle","446"]);
+
+            alimentos["Grasas"].push(["Aceituna negra","447"]);
+
+            alimentos["Grasas"].push(["Aceituna verde","448"]);
+
+            alimentos["Grasas"].push(["Aguacate","449"]);
+
+            alimentos["Grasas"].push(["Ajonjolí","450"]);
+
+            alimentos["Grasas"].push(["Almendras","451"]);
+
+            alimentos["Grasas"].push(["Avellana","452"]);
+
+            alimentos["Grasas"].push(["Cacahuates","453"]);
+
+            alimentos["Grasas"].push(["Cacahuates con cáscara","454"]);
+
+            alimentos["Grasas"].push(["Guacamole","455"]);
+
+            alimentos["Grasas"].push(["Mayonesa","456"]);
+
+            alimentos["Grasas"].push(["Nuez","457"]);
+
+            alimentos["Grasas"].push(["Nuez de la india","458"]);
+
+            alimentos["Grasas"].push(["Pistaches","459"]);
+
+            alimentos["Grasas"].push(["Aceite de canola, soya, oliva","460"]);
+
+            alimentos["Grasas"].push(["Aceite de girasol, maíz, cártamo","461"]);
+
+            alimentos["Grasas"].push(["Aceite en spray","462"]);
+
+            alimentos["Grasas"].push(["Pepitas sin cáscara","463"]);
+
+            alimentos["Grasas"].push(["Piñón","464"]);
+
+            alimentos["Grasas"].push(["Chilorio de pavo","465"]);
+
+            alimentos["Grasas"].push(["Chistorra","466"]);
+
+            alimentos["Grasas"].push(["Chorizo","467"]);
+
+            alimentos["Grasas"].push(["Chorizo de pavo","468"]);
+
+            alimentos["Grasas"].push(["Coco","469"]);
+
+            alimentos["Grasas"].push(["Coco rallado","470"]);
+
+            alimentos["Grasas"].push(["Crema","471"]);
+
+            alimentos["Grasas"].push(["Crema ácida","472"]);
+
+            alimentos["Grasas"].push(["Crema chantilly","473"]);
+
+            alimentos["Grasas"].push(["Crema para café","474"]);
+
+            alimentos["Grasas"].push(["Manteca de cerdo vegetal","475"]);
+
+            alimentos["Grasas"].push(["Mantequilla","476"]);
+
+            alimentos["Grasas"].push(["Mantequilla de cacahuate","477"]);
+
+            alimentos["Grasas"].push(["Margarina baja en grasa","478"]);
+
+            alimentos["Grasas"].push(["Media crema","479"]);
+
+            alimentos["Grasas"].push(["Mole poblano en pasta","480"]);
+
+            alimentos["Grasas"].push(["Paté de cerdo","481"]);
+
+            alimentos["Grasas"].push(["Paté de ganso","482"]);
+
+            alimentos["Grasas"].push(["Paté de pollo","483"]);
+
+            alimentos["Grasas"].push(["Pepperoni","484"]);
+
+            alimentos["Grasas"].push(["Queso crema","485"]);
+
+            alimentos["Grasas"].push(["Queso de puerco","486"]);
+
+            alimentos["Grasas"].push(["Tocino en tira","487"]);
+
+            return alimentos;
+        }
+
+        function get_plan(kcal) {
+            /* [[desayuno],[colacion1],[comida],[colacion2],[cena]]
+            [CEREALES Y TUBÉRCULOS,VERDURAS,FRUTAS,ALIMENTOS DE ORIGEN ANIMAL,LECHE Y SUSTITUTOS,
+            LEGUMINOSAS,GRASAS,AZÚCARES,ALIMENTOS LIBRES DE ENERGÍA]*/
+            if(kcal < 1000) {
+                return [[1,1,1,1,1,0,1,0,0],[0,0,0,0,0,0,0,0,0],[2,2,1,1,1,0,1,0,0],[0,0,0,0,1,0,0,0,0],[1,1,1,0,0,0,0,0,1]];
+            } else if (kcal < 1200) {
+                return [[2,1,1,0,0,0,1,0,1],[1,0,0,0,1,0,0,0,0],[2,2,1,2,1,0,1,0,0],[0,1,0,0,1,0,0,0,0],[1,1,0,0,1,0,0,0,0]];
+            } else if (kcal < 1400) {
+                return [[2,1,1,1,1,0,1,0,0],[0,0,1,0,1,0,0,0,0],[2,2,0,2,0,0,1,0,0],[1,0,0,0,1,0,0,0,0],[1,1,1,1,1,0,0,0,0]];
+            } else if (kcal < 1600) {
+                return [[2,2,1,0,1,0,1,0,0],[0,1,0,1,0,0,0,0,0],[2,2,1,2,1,0,1,0,0],[1,0,1,0,0,0,0,0,0],[1,2,1,1,0,0,0,0,1]];
+            } else if (kcal < 1800) {
+                return [[3,1,2,1,1,0,1,0,0],[1,1,0,0,0,0,0,0,0],[2,2,1,2,1,0,1,0,0],[1,0,0,0,1,0,0,0,0],[1,2,1,1,0,0,0,0,1]];
+            } else if (kcal < 2000) {
+                return [[3,1,2,2,1,0,1,0,0],[1,1,0,0,0,0,0,0,0],[2,2,1,2,1,0,1,0,1],[1,0,1,0,0,0,0,0,0],[1,2,1,1,1,0,0,0,0]];
+            }
+        }
+
+        function construir_colacion(tc,plan,dic) {
+            var llave_comida = ["Desayuno","Colacion1","Comida","Colacion2","Cena"]
+            var llave_alimentos = ["Cereales y tubérculos", "Verduras","Frutas","Alimentos de origen animal",
+                "Leche", "Leguminosas", "Grasas", "Azúcares", "Alimentos libres en energía"];
+            var html_code = "<td>";
+            for(var i=0; i<plan.length;i++) {//[]
+                for(var j=0; j<plan[i];j++) {//n
+                    html_code += "<select class= "form-control" name='" + llave_comida[tc] + "'>"
+                    for(var k=0; k<dic[llave_alimentos[i]].length;k++) {
+                        html_code += "<option value = '" + dic[llave_alimentos[i]][k][1] + "'>" + dic[llave_alimentos[i]][k][0] + "</option>"
+                    }
+                    html_code += "</select><br/>";
+                }
+            }
+            html_code += "</td>";
+            return html_code;
+        }
+    </script>
+</head>
+
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <!-- Sidebar -->
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+        <!-- Sidebar - Brand -->
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <div class="sidebar-brand-icon rotate-n-15">
+                <i class="fab fa-nutritionix"></i>
+            </div>
+            <div class="sidebar-brand-text mx-3">Nutridesk</div>
+        </a>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider my-0">
+
+        <!-- Nav Item - Dashboard -->
+        <li class="nav-item">
+            <a class="nav-link" href="index.html">
+                <i class="fas fa-fw fa-chart-pie"></i>
+                <span>Resumen</span></a>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+
+        <!-- Heading -->
+        <div class="sidebar-heading">
+            Perfil de Usuario
+        </div>
+
+        <!-- Nav Item - Perfil -->
+        <li class="nav-item">
+            <a class="nav-link" href="perfil.html">
+                <i class="fas fa-fw fa-address-card"></i>
+                <span>Perfil</span></a>
+        </li>
+
+        <!-- Nav Item - Pages Collapse Menu -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>Ajustes</span>
+            </a>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">¿Qué deseas ver?</h6>
+                    <a class="collapse-item" href="buttons.html">Buttons</a>
+                    <a class="collapse-item" href="cards.html">Cards</a>
+                </div>
+            </div>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+
+        <!-- Heading -->
+        <div class="sidebar-heading">
+            Seguimiento
+        </div>
+
+        <!-- Nav Item - Pages Collapse Menu -->
+        <li class="nav-item active">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
+                <i class="fas fa-fw fa-apple-alt"></i>
+                <span>Planes de Alimentación</span>
+            </a>
+            <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <h6 class="collapse-header">Actuales:</h6>
+                    <a class="collapse-item" href="planes.html">Lista de Planes</a>
+                    <div class="collapse-divider"></div>
+                    <h6 class="collapse-header">Otros posibles planes:</h6>
+                    <a class="collapse-item" href="nuevoPlan.html">Nuevo Plan</a>
+                </div>
+            </div>
+        </li>
+
+        <!-- Nav Item - Diagnosticos -->
+        <li class="nav-item">
+            <a class="nav-link" href="SMAE.html">
+                <i class="fas fa-fw fa-balance-scale"></i>
+                <span>SMAE</span></a>
+        </li>
+
+        <!-- Nav Item - Diagnosticos -->
+        <li class="nav-item">
+            <a class="nav-link" href="diagnostico.html">
+                <i class="fas fa-fw fa-diagnoses"></i>
+                <span>Diagnósticos</span></a>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider d-none d-md-block">
+
+        <div class="sidebar-heading">
+            Información Adicional
+        </div>
+
+        <!-- Nav Item - Acerca de -->
+        <li class="nav-item">
+            <a class="nav-link" href="about.html">
+                <i class="fas fa-fw fa-universal-access"></i>
+                <span>Acerca de Nutridesk</span></a>
+        </li>
+
+        <hr class="sidebar-divider">
+
+        <!-- Sidebar Toggler (Sidebar) -->
+        <div class="text-center d-none d-md-inline">
+            <button class="rounded-circle border-0" id="sidebarToggle"></button>
+        </div>
+
+    </ul>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Topbar -->
+            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                <!-- Sidebar Toggle (Topbar) -->
+                <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                    <i class="fa fa-bars"></i>
+                </button>
+
+
+                <!-- Topbar Navbar -->
+                <ul class="navbar-nav ml-auto">
+
+                    <!-- Nav Item - Alerts -->
+                    <li class="nav-item dropdown no-arrow mx-1">
+                        <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-bell fa-fw"></i>
+                            <!-- Counter - Alerts -->
+                            <span class="badge badge-danger badge-counter">3+</span>
+                        </a>
+                        <!-- Dropdown - Alerts -->
+                        <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
+                            <h6 class="dropdown-header">
+                                Notificaciones
+                            </h6>
+                            <a class="dropdown-item d-flex align-items-center" href="#">
+                                <div class="mr-3">
+                                    <div class="icon-circle bg-primary">
+                                        <i class="fas fa-file-alt text-white"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="small text-gray-500">Marzo 16, 2020</div>
+                                    <span class="font-weight-bold">¡No olvides generar tu reporte mensual!</span>
+                                </div>
+                            </a>
+                            <a class="dropdown-item d-flex align-items-center" href="#">
+                                <div class="mr-3">
+                                    <div class="icon-circle bg-success">
+                                        <i class="fas fa-utensils text-white"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="small text-gray-500">Marzo 17, 2020</div>
+                                    ¡Recuerda seguir los planes alimenticios!
+                                </div>
+                            </a>
+                            <a class="dropdown-item d-flex align-items-center" href="#">
+                                <div class="mr-3">
+                                    <div class="icon-circle bg-warning">
+                                        <i class="fas fa-exclamation-triangle text-white"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="small text-gray-500">December 2, 2019</div>
+                                    Tu plan alimenticio y/o tus datos han sido actualizados.
+                                </div>
+                            </a>
+                            <a class="dropdown-item text-center small text-gray-500" href="#">Mostrar todas las notificaciones</a>
+                        </div>
+                    </li>
+
+
+                    <div class="topbar-divider d-none d-sm-block"></div>
+
+                    <!-- Nav Item - User Information -->
+                    <li class="nav-item dropdown no-arrow">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">(Nombre Usuario)</span>
+                            <img class="img-profile rounded-circle" src="./img/user1.jpg">
+                        </a>
+                        <!-- Dropdown - User Information -->
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                            <a class="dropdown-item" href="#">
+                                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Perfil
+                            </a>
+                            <a class="dropdown-item" href="#">
+                                <i class="fas fa-cog fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Configuración
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Cerrar Sesión
+                            </a>
+                        </div>
+                    </li>
+
+                </ul>
+
+            </nav>
+            <!-- End of Topbar -->
+
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <h1 class="h3 mb-2 text-gray-800">Generación de Plan de Alimentación</h1>
+                <p class="mb-4 text-justify">De acuerdo a tus características físicas actuales, se te recomendará un plan de alimentación acorde a tus necesidades. En la siguiente
+                    tabla, se describen los alimentos y su aporte calórico, según sea el enfoque que desees.
+                    Es importante que sigas estrictamente estas indicaciones para lograr realizar un avance en el proceso y auxiliarte con un profesional de la salud.</p>
+
+                <form class="user">
+                    <div class="form-group row">
+                        <div class="col-sm-4 align-self-center">
+                            <label for="nombrePlan" class="text-primary">Nombre del Plan</label>
+                            <input type="text" class="form-control form-control-user" id="nombrePlan" placeholder="Ingrese un nombre">
+                        </div>
+                        <div class="col-sm-4 align-self-center">
+                            <label for="objetivo" class="text-primary">Objetivo</label>
+                            <select class="form-control" id="objetivo">
+                                <option>Mantener Peso</option>
+                                <option>Subir Peso</option>
+                                <option>Bajar Peso</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-4 align-self-center">
+                            <label for="aporteCalorico" class="text-primary">Aporte Calórico</label>
+                            <input type="text" class="form-control form-control-user" id="aporteCalorico" placeholder="Kcal">
+                        </div>
+                    </div>
+
+                <!-- DataTales Example -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Nuevo Plan</h6>
+                    </div>
+                    <div class="card-body">
+                            <div class="table-responsive form-group">
+                                <table class="table table-bordered" id="tablaPlan" width="100%" cellspacing="0">
+                                    <thead class="text-primary text-center">
+                                    <tr>
+                                        <th>Desayuno</th>
+                                        <th>Colación</th>
+                                        <th>Comida</th>
+                                        <th>Colación</th>
+                                        <th>Cena</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr id="txtColaciones"><td><select class= "form-control" name="Desayuno"><option value="380" selected="selected">Amaranto tostado</option><option value="381">Avena en hojuelas</option><option value="382">Avena Cocida</option><option value="383">Arroz blanco o integral cocido</option><option value="384">Baguette</option><option value="385">Barrita de granola o avena</option><option value="386">Bolillo sin migajón</option><option value="387">Bollo de hamburguesa</option><option value="388">Camote</option><option value="389">Canelones</option><option value="390">Cáscara de papa sin freir</option><option value="391">Cereal de caja con azúcar</option><option value="392">Cereal de caja sin azúcar</option><option value="393">Crepas</option><option value="394">Elote cocido</option><option value="395">Elote blanco desgranado</option><option value="396">Galleta de animalitos</option><option value="397">Galletas habaneras</option><option value="398">Galleta María</option><option value="399">Galleta para sopa</option><option value="400">Galleta salada</option><option value="401">Granola con fruta seca, baja en grasa</option><option value="402">Harina de arroz</option><option value="403">Harina de maíz para atole</option><option value="404">Hot cake ( 1 pieza chica)</option><option value="405">Maicena de sabor</option><option value="406">Maíz (blanco, cacahuazintle, palomero)</option><option value="407">Masa de maíz</option><option value="408">Palitos de pan</option><option value="409">Palomitas naturales</option><option value="410">Pan para hot dog (media noche)</option><option value="411">Pan árabe</option><option value="412">Pan birote</option><option value="413">Pan de caja (blanco, integral, multigrano)</option><option value="414">Pan molido</option><option value="415">Pan tostado</option><option value="416">Papa (hervida o al horno)</option><option value="417">Papa cambray</option><option value="418">Pasta hervida (fideo, espagueti, lasaña, etc.)</option><option value="419">Peneques (sin freír)</option><option value="420">Tlacoyo (sin freír)</option><option value="421">Tortilla de maíz</option><option value="422">Tortilla de maíz azul</option><option value="423">Tortilla de harina</option><option value="424">Tortilla de harina light</option><option value="425">Tostada horneada</option><option value="426">Salvado de maíz</option><option value="427">Salvado de trigo</option><option value="428">Yuca</option><option value="429">Barra de granola</option><option value="430">Chicharrón de harina enchilado</option><option value="431">Frituras de maíz</option><option value="432">Galleta con chispas de chocolate</option><option value="433">Galleta de avena con pasas</option><option value="434">Galleta integral con miel</option><option value="435">Galleta tipo sándwich</option><option value="436">Palomitas con mantequilla</option><option value="437">Pan dulce (bisquet, cuernito, o concha)</option><option value="438">Panqué</option><option value="439">Papas fritas</option><option value="440">Papas fritas reducidas en grasa</option><option value="441">Puré de papa preparado</option><option value="442">Roles de canela ó pasas</option><option value="443">Tamal</option><option value="444">Tostada</option><option value="445">Totopos y nachos</option><option value="446">Waffle</option></select><br><select class= "form-control" name="Desayuno"><option value="380" selected="selected">Amaranto tostado</option><option value="381">Avena en hojuelas</option><option value="382">Avena Cocida</option><option value="383">Arroz blanco o integral cocido</option><option value="384">Baguette</option><option value="385">Barrita de granola o avena</option><option value="386">Bolillo sin migajón</option><option value="387">Bollo de hamburguesa</option><option value="388">Camote</option><option value="389">Canelones</option><option value="390">Cáscara de papa sin freir</option><option value="391">Cereal de caja con azúcar</option><option value="392">Cereal de caja sin azúcar</option><option value="393">Crepas</option><option value="394">Elote cocido</option><option value="395">Elote blanco desgranado</option><option value="396">Galleta de animalitos</option><option value="397">Galletas habaneras</option><option value="398">Galleta María</option><option value="399">Galleta para sopa</option><option value="400">Galleta salada</option><option value="401">Granola con fruta seca, baja en grasa</option><option value="402">Harina de arroz</option><option value="403">Harina de maíz para atole</option><option value="404">Hot cake ( 1 pieza chica)</option><option value="405">Maicena de sabor</option><option value="406">Maíz (blanco, cacahuazintle, palomero)</option><option value="407">Masa de maíz</option><option value="408">Palitos de pan</option><option value="409">Palomitas naturales</option><option value="410">Pan para hot dog (media noche)</option><option value="411">Pan árabe</option><option value="412">Pan birote</option><option value="413">Pan de caja (blanco, integral, multigrano)</option><option value="414">Pan molido</option><option value="415">Pan tostado</option><option value="416">Papa (hervida o al horno)</option><option value="417">Papa cambray</option><option value="418">Pasta hervida (fideo, espagueti, lasaña, etc.)</option><option value="419">Peneques (sin freír)</option><option value="420">Tlacoyo (sin freír)</option><option value="421">Tortilla de maíz</option><option value="422">Tortilla de maíz azul</option><option value="423">Tortilla de harina</option><option value="424">Tortilla de harina light</option><option value="425">Tostada horneada</option><option value="426">Salvado de maíz</option><option value="427">Salvado de trigo</option><option value="428">Yuca</option><option value="429">Barra de granola</option><option value="430">Chicharrón de harina enchilado</option><option value="431">Frituras de maíz</option><option value="432">Galleta con chispas de chocolate</option><option value="433">Galleta de avena con pasas</option><option value="434">Galleta integral con miel</option><option value="435">Galleta tipo sándwich</option><option value="436">Palomitas con mantequilla</option><option value="437">Pan dulce (bisquet, cuernito, o concha)</option><option value="438">Panqué</option><option value="439">Papas fritas</option><option value="440">Papas fritas reducidas en grasa</option><option value="441">Puré de papa preparado</option><option value="442">Roles de canela ó pasas</option><option value="443">Tamal</option><option value="444">Tostada</option><option value="445">Totopos y nachos</option><option value="446">Waffle</option></select><br><select class= "form-control" name="Desayuno"><option value="380" selected="selected">Amaranto tostado</option><option value="381">Avena en hojuelas</option><option value="382">Avena Cocida</option><option value="383">Arroz blanco o integral cocido</option><option value="384">Baguette</option><option value="385">Barrita de granola o avena</option><option value="386">Bolillo sin migajón</option><option value="387">Bollo de hamburguesa</option><option value="388">Camote</option><option value="389">Canelones</option><option value="390">Cáscara de papa sin freir</option><option value="391">Cereal de caja con azúcar</option><option value="392">Cereal de caja sin azúcar</option><option value="393">Crepas</option><option value="394">Elote cocido</option><option value="395">Elote blanco desgranado</option><option value="396">Galleta de animalitos</option><option value="397">Galletas habaneras</option><option value="398">Galleta María</option><option value="399">Galleta para sopa</option><option value="400">Galleta salada</option><option value="401">Granola con fruta seca, baja en grasa</option><option value="402">Harina de arroz</option><option value="403">Harina de maíz para atole</option><option value="404">Hot cake ( 1 pieza chica)</option><option value="405">Maicena de sabor</option><option value="406">Maíz (blanco, cacahuazintle, palomero)</option><option value="407">Masa de maíz</option><option value="408">Palitos de pan</option><option value="409">Palomitas naturales</option><option value="410">Pan para hot dog (media noche)</option><option value="411">Pan árabe</option><option value="412">Pan birote</option><option value="413">Pan de caja (blanco, integral, multigrano)</option><option value="414">Pan molido</option><option value="415">Pan tostado</option><option value="416">Papa (hervida o al horno)</option><option value="417">Papa cambray</option><option value="418">Pasta hervida (fideo, espagueti, lasaña, etc.)</option><option value="419">Peneques (sin freír)</option><option value="420">Tlacoyo (sin freír)</option><option value="421">Tortilla de maíz</option><option value="422">Tortilla de maíz azul</option><option value="423">Tortilla de harina</option><option value="424">Tortilla de harina light</option><option value="425">Tostada horneada</option><option value="426">Salvado de maíz</option><option value="427">Salvado de trigo</option><option value="428">Yuca</option><option value="429">Barra de granola</option><option value="430">Chicharrón de harina enchilado</option><option value="431">Frituras de maíz</option><option value="432">Galleta con chispas de chocolate</option><option value="433">Galleta de avena con pasas</option><option value="434">Galleta integral con miel</option><option value="435">Galleta tipo sándwich</option><option value="436">Palomitas con mantequilla</option><option value="437">Pan dulce (bisquet, cuernito, o concha)</option><option value="438">Panqué</option><option value="439">Papas fritas</option><option value="440">Papas fritas reducidas en grasa</option><option value="441">Puré de papa preparado</option><option value="442">Roles de canela ó pasas</option><option value="443">Tamal</option><option value="444">Tostada</option><option value="445">Totopos y nachos</option><option value="446">Waffle</option></select><br><select class= "form-control" name="Desayuno"><option value="4" selected="selected">Acelga cocida</option><option value="5">Acelga cruda</option><option value="6">Alcachofa</option><option value="7">Apio cocido</option><option value="8">Apio crudo</option><option value="9">Champiñón cocido rebanado</option><option value="10">Champiñón crudo entero</option><option value="11">Chilacas</option><option value="12">Chilacayote</option><option value="13">Cilantro</option><option value="14">Col cruda</option><option value="15">Colecita de bruselas</option><option value="16">Coliflor cocida</option><option value="17">Ejotes cocidos picados</option><option value="18">Espárragos crudos</option><option value="19">Espinaca cocida</option><option value="20">Espinaca cruda</option><option value="21">Flor de calabaza cocida</option><option value="22">Flor de Maguey</option><option value="23">Huitlacoche cocido</option><option value="24">Lechuga</option><option value="25">Nabo</option><option value="26">Nopal Cocido</option><option value="27">Nopal Crudo</option><option value="28">Nopal de Cambray</option><option value="29">Papaloquelite</option><option value="30">Pepino rebanado</option><option value="31">Pimiento morrón (rojo, amarillo, verde)</option><option value="32">Rábano</option><option value="33">Salsa mexicana, pico de gallo, taquera, roja o verde</option><option value="34">Setas cocidas</option><option value="35">Tomate Verde</option><option value="36">Berenjena</option><option value="37">Berro cocido</option><option value="38">Berro crudo</option><option value="39">Betabel rallado</option><option value="40">Brócoli cocido</option><option value="41">Brocoli crudo</option><option value="42">Calabacita alargada ó redonda cruda</option><option value="43">Calabacita cocida</option><option value="44">Calabaza de castilla cocida</option><option value="45">Cebolla blanca rebanada cruda</option><option value="46">Cebolla cocida</option><option value="47">Cebolla de cambray</option><option value="48">Chayote cocido</option><option value="49">Chepil</option><option value="50">Chícharo</option><option value="51">Chicoria</option><option value="52">Chile de árbol</option><option value="53">Chile Habanero</option><option value="54">Chile Jalapeño</option><option value="55">Chile Poblano</option><option value="56">Germen de Alfafa</option><option value="57">Germen de lenteja</option><option value="58">Huazontle</option><option value="59">Jicama picada</option><option value="60">Jitomate bola</option><option value="61">Jitomate cereza</option><option value="62">Jugo de tomate natural</option><option value="63">Jugo de verduras</option><option value="64">Jugo de zanahoria</option><option value="65">Pepinillos</option><option value="66">Poro crudo</option><option value="67">Puré de tomate</option><option value="68">Quelite</option><option value="69">Romeritos cocidos</option><option value="70">Romeritos crudos</option><option value="71">Verdolagas</option><option value="72">Xoconostle</option><option value="73">Zanahoria miniatura</option><option value="74">Zanahoria Picada o rallada</option></select><br><select class= "form-control" name="Desayuno"><option value="75" selected="selected">Agua de coco</option><option value="76">Arándano</option><option value="77">Capulín</option><option value="78">Carambolo</option><option value="79">Chabacano</option><option value="80">Chicozapote</option><option value="81">Chirimoya</option><option value="82">Ciruela</option><option value="83">Ciruela pasa deshuesada</option><option value="84">Dátil</option><option value="85">Durazno (chico)</option><option value="86">Frambuesa</option><option value="87">Fresa rebanada</option><option value="88">Fruta picada</option><option value="89">Gajos de mandarina, toronja y naranja</option><option value="90">Granada china</option><option value="91">Granada roja</option><option value="92">Guanábana</option><option value="93">Guayaba</option><option value="94">Guayaba rosa</option><option value="95">Higo</option><option value="96">Jugo de naranja, toronja o mandarina natural</option><option value="97">Kiwi</option><option value="98">Lichis</option><option value="99">Lima</option><option value="100">Limón real</option><option value="101">Mamey</option><option value="102">Mandarina (chica)</option><option value="103">Mandarina reina</option><option value="104">Mango ataulfo</option><option value="105">Mango petacón</option><option value="106">Manzana (chica)</option><option value="107">Melón picado</option><option value="108">Nanche</option><option value="109">Naranja</option><option value="110">Nectarina</option><option value="111">Níspero</option><option value="112">Papaya hawaiana</option><option value="113">Papaya picada</option><option value="114">Pasas</option><option value="115">Pera</option><option value="116">Perón</option><option value="117">Piña picada</option><option value="118">Plátano dominico</option><option value="119">Plátano macho</option><option value="120">Plátano tabasco</option><option value="121">Sandía picada</option><option value="122">Tangerina</option><option value="123">Tejocote</option><option value="124">Toronja</option><option value="125">Tuna</option><option value="126">Uva roja o verde</option><option value="127">Zapote negro</option><option value="128">Zarzamora</option></select><br><select class= "form-control" name="Desayuno"><option value="75" selected="selected">Agua de coco</option><option value="76">Arándano</option><option value="77">Capulín</option><option value="78">Carambolo</option><option value="79">Chabacano</option><option value="80">Chicozapote</option><option value="81">Chirimoya</option><option value="82">Ciruela</option><option value="83">Ciruela pasa deshuesada</option><option value="84">Dátil</option><option value="85">Durazno (chico)</option><option value="86">Frambuesa</option><option value="87">Fresa rebanada</option><option value="88">Fruta picada</option><option value="89">Gajos de mandarina, toronja y naranja</option><option value="90">Granada china</option><option value="91">Granada roja</option><option value="92">Guanábana</option><option value="93">Guayaba</option><option value="94">Guayaba rosa</option><option value="95">Higo</option><option value="96">Jugo de naranja, toronja o mandarina natural</option><option value="97">Kiwi</option><option value="98">Lichis</option><option value="99">Lima</option><option value="100">Limón real</option><option value="101">Mamey</option><option value="102">Mandarina (chica)</option><option value="103">Mandarina reina</option><option value="104">Mango ataulfo</option><option value="105">Mango petacón</option><option value="106">Manzana (chica)</option><option value="107">Melón picado</option><option value="108">Nanche</option><option value="109">Naranja</option><option value="110">Nectarina</option><option value="111">Níspero</option><option value="112">Papaya hawaiana</option><option value="113">Papaya picada</option><option value="114">Pasas</option><option value="115">Pera</option><option value="116">Perón</option><option value="117">Piña picada</option><option value="118">Plátano dominico</option><option value="119">Plátano macho</option><option value="120">Plátano tabasco</option><option value="121">Sandía picada</option><option value="122">Tangerina</option><option value="123">Tejocote</option><option value="124">Toronja</option><option value="125">Tuna</option><option value="126">Uva roja o verde</option><option value="127">Zapote negro</option><option value="128">Zarzamora</option></select><br><select class= "form-control" name="Desayuno"><option value="129" selected="selected">Abulón fresco</option><option value="130">Acociles</option><option value="131">Aguayón</option><option value="132">Almeja fresca</option><option value="133">Atún en agua</option><option value="134">Bacalao seco</option><option value="135">Bagre</option><option value="136">Bistec de res</option><option value="137">Blanco de nilo</option><option value="138">Cabeza de pescado</option><option value="139">Cabrito</option><option value="140">Calamar</option><option value="141">Camarón cocido</option><option value="142">Camarón gigante</option><option value="143">Camarón pacotilla</option><option value="144">Camarón seco</option><option value="145">Cangrejo</option><option value="146">Carne de avestruz</option><option value="147">Carne de jaiba</option><option value="148">Carne de res seca</option><option value="149">Carne molida de pollo y pavo</option><option value="150">Cazón</option><option value="151">Chambarete</option><option value="152">Charales frescos</option><option value="153">Charales secos</option><option value="154">Clara de huevo</option><option value="155">Cuete de res</option><option value="156">Escalopa de res</option><option value="157">Escamoles</option><option value="158">Fajitas de pollo sin piel</option><option value="159">Falda de res</option><option value="160">Filete de guachinango</option><option value="161">Filete de pescado, mero, mojarra, merluza</option><option value="162">Filete de res y tampiqueña</option><option value="163">Guachinango</option><option value="164">Jaiba cocida entera</option><option value="165">Jugo de almeja</option><option value="166">Liebre</option><option value="167">Machaca</option><option value="168">Maciza de res</option><option value="169">Medallón de filete de res</option><option value="170">Mejillones</option><option value="171">Milanesa de pollo y res</option><option value="172">Molida de pollo</option><option value="173">Molleja de pollo</option><option value="174">Muslo de pollo sin piel</option><option value="175">Pancita de res</option><option value="176">Pargo</option><option value="177">Pata de res</option><option value="178">Pechuga a la plancha, asada, cocida</option><option value="179">Pechuga de pavo</option><option value="180">Pechuga de pollo deshuesada</option><option value="181">Pescado en trozo</option><option value="182">Pierna de pollo sin piel</option><option value="183">Puntas de res</option><option value="184">Queso cottage</option><option value="185">Requesón</option><option value="186">Riñones de res</option><option value="187">Róbalo</option><option value="188">Surimi</option><option value="189">Tampiqueña</option><option value="190">Venado cocido</option><option value="191">Agujas de res</option><option value="192">Anchoa con aceite</option><option value="193">Arrachera</option><option value="194">Atún en aceite</option><option value="195">Barbacoa Maciza</option><option value="196">Bistec de ternera</option><option value="197">Bonito</option><option value="198">Carne de cerdo</option><option value="199">Carpa cocida</option><option value="200">Cecina</option><option value="201">Conejo</option><option value="202">Falda de cerdo</option><option value="203">Filete de cerdo</option><option value="204">Filete de salmón</option><option value="205">Guajolote de Pavo</option><option value="206">Hígado de pollo</option><option value="207">Hígado de res</option><option value="208">Jamón de pavo y/o pierna</option><option value="209">Lomo de cerdo</option><option value="210">Maciza de res</option><option value="211">Molida de cerdo</option><option value="212">Molida de res (sirloin)</option><option value="213">Ostión</option><option value="214">Ostión en lata</option><option value="215">Pescuezo de pollo s/piel</option><option value="216">Pierna de cerdo</option><option value="217">Queso de cabra</option><option value="218">Queso fresco</option><option value="219">Queso panela</option><option value="220">Salmón</option><option value="221">Trucha cocida</option><option value="222">Bistec de bola</option><option value="223">Carne de suadero</option><option value="224">Chicharrón</option><option value="225">Costillas de cerdo</option><option value="226">Gusanos de maguey</option><option value="227">Huevo</option><option value="228">Longaniza</option><option value="229">Pecho de res</option><option value="230">Queso mozarella</option><option value="231">Queso parmesano</option><option value="232">Salami de pavo</option><option value="233">Salchicha de cerdo</option><option value="234">Salchicha de pavo</option><option value="235">Sardina en aceite</option><option value="236">Sardinas en Tomate</option><option value="237">Sierra</option><option value="238">Suadero</option><option value="239">Alón de pollo con piel cocido</option><option value="240">Cerdo en canal</option><option value="241">Costilla de res</option><option value="242">Espaldilla</option><option value="243">Lengua de cerdo</option><option value="244">Maciza de cerdo</option><option value="245">Moronga</option><option value="246">Mortadela</option><option value="247">Nuggets de pollo</option><option value="248">Ostión ahumado</option><option value="249">Palitos de pescado congelados</option><option value="250">Paloma</option><option value="251">Pastel de pavo y puerco</option><option value="252">Pepperoni</option><option value="253">Pollo rostizado</option><option value="254">Queso amarillo</option><option value="255">Queso americano</option><option value="256">Queso asadero</option><option value="257">Queso blanco</option><option value="258">Queso canasto</option><option value="259">Queso chihuahua</option><option value="260">Queso fundido</option><option value="261">Queso gouda</option><option value="262">Queso manchego</option><option value="263">Queso Oaxaca</option><option value="264">Retazo de pollo</option><option value="265">Salchicha</option><option value="266">Sesos de cerdo</option><option value="267">Sesos de res</option><option value="268">Tripas de res</option><option value="269">Yema de huevo</option></select><br><select class= "form-control" name="Desayuno"><option value="129" selected="selected">Abulón fresco</option><option value="130">Acociles</option><option value="131">Aguayón</option><option value="132">Almeja fresca</option><option value="133">Atún en agua</option><option value="134">Bacalao seco</option><option value="135">Bagre</option><option value="136">Bistec de res</option><option value="137">Blanco de nilo</option><option value="138">Cabeza de pescado</option><option value="139">Cabrito</option><option value="140">Calamar</option><option value="141">Camarón cocido</option><option value="142">Camarón gigante</option><option value="143">Camarón pacotilla</option><option value="144">Camarón seco</option><option value="145">Cangrejo</option><option value="146">Carne de avestruz</option><option value="147">Carne de jaiba</option><option value="148">Carne de res seca</option><option value="149">Carne molida de pollo y pavo</option><option value="150">Cazón</option><option value="151">Chambarete</option><option value="152">Charales frescos</option><option value="153">Charales secos</option><option value="154">Clara de huevo</option><option value="155">Cuete de res</option><option value="156">Escalopa de res</option><option value="157">Escamoles</option><option value="158">Fajitas de pollo sin piel</option><option value="159">Falda de res</option><option value="160">Filete de guachinango</option><option value="161">Filete de pescado, mero, mojarra, merluza</option><option value="162">Filete de res y tampiqueña</option><option value="163">Guachinango</option><option value="164">Jaiba cocida entera</option><option value="165">Jugo de almeja</option><option value="166">Liebre</option><option value="167">Machaca</option><option value="168">Maciza de res</option><option value="169">Medallón de filete de res</option><option value="170">Mejillones</option><option value="171">Milanesa de pollo y res</option><option value="172">Molida de pollo</option><option value="173">Molleja de pollo</option><option value="174">Muslo de pollo sin piel</option><option value="175">Pancita de res</option><option value="176">Pargo</option><option value="177">Pata de res</option><option value="178">Pechuga a la plancha, asada, cocida</option><option value="179">Pechuga de pavo</option><option value="180">Pechuga de pollo deshuesada</option><option value="181">Pescado en trozo</option><option value="182">Pierna de pollo sin piel</option><option value="183">Puntas de res</option><option value="184">Queso cottage</option><option value="185">Requesón</option><option value="186">Riñones de res</option><option value="187">Róbalo</option><option value="188">Surimi</option><option value="189">Tampiqueña</option><option value="190">Venado cocido</option><option value="191">Agujas de res</option><option value="192">Anchoa con aceite</option><option value="193">Arrachera</option><option value="194">Atún en aceite</option><option value="195">Barbacoa Maciza</option><option value="196">Bistec de ternera</option><option value="197">Bonito</option><option value="198">Carne de cerdo</option><option value="199">Carpa cocida</option><option value="200">Cecina</option><option value="201">Conejo</option><option value="202">Falda de cerdo</option><option value="203">Filete de cerdo</option><option value="204">Filete de salmón</option><option value="205">Guajolote de Pavo</option><option value="206">Hígado de pollo</option><option value="207">Hígado de res</option><option value="208">Jamón de pavo y/o pierna</option><option value="209">Lomo de cerdo</option><option value="210">Maciza de res</option><option value="211">Molida de cerdo</option><option value="212">Molida de res (sirloin)</option><option value="213">Ostión</option><option value="214">Ostión en lata</option><option value="215">Pescuezo de pollo s/piel</option><option value="216">Pierna de cerdo</option><option value="217">Queso de cabra</option><option value="218">Queso fresco</option><option value="219">Queso panela</option><option value="220">Salmón</option><option value="221">Trucha cocida</option><option value="222">Bistec de bola</option><option value="223">Carne de suadero</option><option value="224">Chicharrón</option><option value="225">Costillas de cerdo</option><option value="226">Gusanos de maguey</option><option value="227">Huevo</option><option value="228">Longaniza</option><option value="229">Pecho de res</option><option value="230">Queso mozarella</option><option value="231">Queso parmesano</option><option value="232">Salami de pavo</option><option value="233">Salchicha de cerdo</option><option value="234">Salchicha de pavo</option><option value="235">Sardina en aceite</option><option value="236">Sardinas en Tomate</option><option value="237">Sierra</option><option value="238">Suadero</option><option value="239">Alón de pollo con piel cocido</option><option value="240">Cerdo en canal</option><option value="241">Costilla de res</option><option value="242">Espaldilla</option><option value="243">Lengua de cerdo</option><option value="244">Maciza de cerdo</option><option value="245">Moronga</option><option value="246">Mortadela</option><option value="247">Nuggets de pollo</option><option value="248">Ostión ahumado</option><option value="249">Palitos de pescado congelados</option><option value="250">Paloma</option><option value="251">Pastel de pavo y puerco</option><option value="252">Pepperoni</option><option value="253">Pollo rostizado</option><option value="254">Queso amarillo</option><option value="255">Queso americano</option><option value="256">Queso asadero</option><option value="257">Queso blanco</option><option value="258">Queso canasto</option><option value="259">Queso chihuahua</option><option value="260">Queso fundido</option><option value="261">Queso gouda</option><option value="262">Queso manchego</option><option value="263">Queso Oaxaca</option><option value="264">Retazo de pollo</option><option value="265">Salchicha</option><option value="266">Sesos de cerdo</option><option value="267">Sesos de res</option><option value="268">Tripas de res</option><option value="269">Yema de huevo</option></select><br><select class= "form-control" name="Desayuno"><option value="270" selected="selected">Leche de soya baja en grasa</option><option value="271">Leche descremada</option><option value="272">Leche en polvo descremada</option><option value="273">Leche evaporada descremada</option><option value="274">Yogurt light</option><option value="275">Yogurt para beber bajo en grasa y azúcar</option><option value="276">Leche en polvo</option><option value="277">Leche entera</option><option value="278">Leche evaporada</option><option value="279">Leche liconsa en polvo</option><option value="280">Leche liconsa liquida</option><option value="281">Yogurt natural</option><option value="282">Yogurt para beber con fruta</option></select><br><select class= "form-control" name="Desayuno"><option value="447" selected="selected">Aceituna negra</option><option value="448">Aceituna verde</option><option value="449">Aguacate</option><option value="450">Ajonjolí</option><option value="451">Almendras</option><option value="452">Avellana</option><option value="453">Cacahuates</option><option value="454">Cacahuates con cáscara</option><option value="455">Guacamole</option><option value="456">Mayonesa</option><option value="457">Nuez</option><option value="458">Nuez de la india</option><option value="459">Pistaches</option><option value="460">Aceite de canola, soya, oliva</option><option value="461">Aceite de girasol, maíz, cártamo</option><option value="462">Aceite en spray</option><option value="463">Pepitas sin cáscara</option><option value="464">Piñón</option><option value="465">Chilorio de pavo</option><option value="466">Chistorra</option><option value="467">Chorizo</option><option value="468">Chorizo de pavo</option><option value="469">Coco</option><option value="470">Coco rallado</option><option value="471">Crema</option><option value="472">Crema ácida</option><option value="473">Crema chantilly</option><option value="474">Crema para café</option><option value="475">Manteca de cerdo vegetal</option><option value="476">Mantequilla</option><option value="477">Mantequilla de cacahuate</option><option value="478">Margarina baja en grasa</option><option value="479">Media crema</option><option value="480">Mole poblano en pasta</option><option value="481">Paté de cerdo</option><option value="482">Paté de ganso</option><option value="483">Paté de pollo</option><option value="484">Pepperoni</option><option value="485">Queso crema</option><option value="486">Queso de puerco</option><option value="487">Tocino en tira</option></select><br></td><td><select class= "form-control" name="Colacion1"><option value="380" selected="selected">Amaranto tostado</option><option value="381">Avena en hojuelas</option><option value="382">Avena Cocida</option><option value="383">Arroz blanco o integral cocido</option><option value="384">Baguette</option><option value="385">Barrita de granola o avena</option><option value="386">Bolillo sin migajón</option><option value="387">Bollo de hamburguesa</option><option value="388">Camote</option><option value="389">Canelones</option><option value="390">Cáscara de papa sin freir</option><option value="391">Cereal de caja con azúcar</option><option value="392">Cereal de caja sin azúcar</option><option value="393">Crepas</option><option value="394">Elote cocido</option><option value="395">Elote blanco desgranado</option><option value="396">Galleta de animalitos</option><option value="397">Galletas habaneras</option><option value="398">Galleta María</option><option value="399">Galleta para sopa</option><option value="400">Galleta salada</option><option value="401">Granola con fruta seca, baja en grasa</option><option value="402">Harina de arroz</option><option value="403">Harina de maíz para atole</option><option value="404">Hot cake ( 1 pieza chica)</option><option value="405">Maicena de sabor</option><option value="406">Maíz (blanco, cacahuazintle, palomero)</option><option value="407">Masa de maíz</option><option value="408">Palitos de pan</option><option value="409">Palomitas naturales</option><option value="410">Pan para hot dog (media noche)</option><option value="411">Pan árabe</option><option value="412">Pan birote</option><option value="413">Pan de caja (blanco, integral, multigrano)</option><option value="414">Pan molido</option><option value="415">Pan tostado</option><option value="416">Papa (hervida o al horno)</option><option value="417">Papa cambray</option><option value="418">Pasta hervida (fideo, espagueti, lasaña, etc.)</option><option value="419">Peneques (sin freír)</option><option value="420">Tlacoyo (sin freír)</option><option value="421">Tortilla de maíz</option><option value="422">Tortilla de maíz azul</option><option value="423">Tortilla de harina</option><option value="424">Tortilla de harina light</option><option value="425">Tostada horneada</option><option value="426">Salvado de maíz</option><option value="427">Salvado de trigo</option><option value="428">Yuca</option><option value="429">Barra de granola</option><option value="430">Chicharrón de harina enchilado</option><option value="431">Frituras de maíz</option><option value="432">Galleta con chispas de chocolate</option><option value="433">Galleta de avena con pasas</option><option value="434">Galleta integral con miel</option><option value="435">Galleta tipo sándwich</option><option value="436">Palomitas con mantequilla</option><option value="437">Pan dulce (bisquet, cuernito, o concha)</option><option value="438">Panqué</option><option value="439">Papas fritas</option><option value="440">Papas fritas reducidas en grasa</option><option value="441">Puré de papa preparado</option><option value="442">Roles de canela ó pasas</option><option value="443">Tamal</option><option value="444">Tostada</option><option value="445">Totopos y nachos</option><option value="446">Waffle</option></select><br><select class= "form-control" name="Colacion1"><option value="4" selected="selected">Acelga cocida</option><option value="5">Acelga cruda</option><option value="6">Alcachofa</option><option value="7">Apio cocido</option><option value="8">Apio crudo</option><option value="9">Champiñón cocido rebanado</option><option value="10">Champiñón crudo entero</option><option value="11">Chilacas</option><option value="12">Chilacayote</option><option value="13">Cilantro</option><option value="14">Col cruda</option><option value="15">Colecita de bruselas</option><option value="16">Coliflor cocida</option><option value="17">Ejotes cocidos picados</option><option value="18">Espárragos crudos</option><option value="19">Espinaca cocida</option><option value="20">Espinaca cruda</option><option value="21">Flor de calabaza cocida</option><option value="22">Flor de Maguey</option><option value="23">Huitlacoche cocido</option><option value="24">Lechuga</option><option value="25">Nabo</option><option value="26">Nopal Cocido</option><option value="27">Nopal Crudo</option><option value="28">Nopal de Cambray</option><option value="29">Papaloquelite</option><option value="30">Pepino rebanado</option><option value="31">Pimiento morrón (rojo, amarillo, verde)</option><option value="32">Rábano</option><option value="33">Salsa mexicana, pico de gallo, taquera, roja o verde</option><option value="34">Setas cocidas</option><option value="35">Tomate Verde</option><option value="36">Berenjena</option><option value="37">Berro cocido</option><option value="38">Berro crudo</option><option value="39">Betabel rallado</option><option value="40">Brócoli cocido</option><option value="41">Brocoli crudo</option><option value="42">Calabacita alargada ó redonda cruda</option><option value="43">Calabacita cocida</option><option value="44">Calabaza de castilla cocida</option><option value="45">Cebolla blanca rebanada cruda</option><option value="46">Cebolla cocida</option><option value="47">Cebolla de cambray</option><option value="48">Chayote cocido</option><option value="49">Chepil</option><option value="50">Chícharo</option><option value="51">Chicoria</option><option value="52">Chile de árbol</option><option value="53">Chile Habanero</option><option value="54">Chile Jalapeño</option><option value="55">Chile Poblano</option><option value="56">Germen de Alfafa</option><option value="57">Germen de lenteja</option><option value="58">Huazontle</option><option value="59">Jicama picada</option><option value="60">Jitomate bola</option><option value="61">Jitomate cereza</option><option value="62">Jugo de tomate natural</option><option value="63">Jugo de verduras</option><option value="64">Jugo de zanahoria</option><option value="65">Pepinillos</option><option value="66">Poro crudo</option><option value="67">Puré de tomate</option><option value="68">Quelite</option><option value="69">Romeritos cocidos</option><option value="70">Romeritos crudos</option><option value="71">Verdolagas</option><option value="72">Xoconostle</option><option value="73">Zanahoria miniatura</option><option value="74">Zanahoria Picada o rallada</option></select><br></td><td><select class= "form-control" name="Comida"><option value="380" selected="selected">Amaranto tostado</option><option value="381">Avena en hojuelas</option><option value="382">Avena Cocida</option><option value="383">Arroz blanco o integral cocido</option><option value="384">Baguette</option><option value="385">Barrita de granola o avena</option><option value="386">Bolillo sin migajón</option><option value="387">Bollo de hamburguesa</option><option value="388">Camote</option><option value="389">Canelones</option><option value="390">Cáscara de papa sin freir</option><option value="391">Cereal de caja con azúcar</option><option value="392">Cereal de caja sin azúcar</option><option value="393">Crepas</option><option value="394">Elote cocido</option><option value="395">Elote blanco desgranado</option><option value="396">Galleta de animalitos</option><option value="397">Galletas habaneras</option><option value="398">Galleta María</option><option value="399">Galleta para sopa</option><option value="400">Galleta salada</option><option value="401">Granola con fruta seca, baja en grasa</option><option value="402">Harina de arroz</option><option value="403">Harina de maíz para atole</option><option value="404">Hot cake ( 1 pieza chica)</option><option value="405">Maicena de sabor</option><option value="406">Maíz (blanco, cacahuazintle, palomero)</option><option value="407">Masa de maíz</option><option value="408">Palitos de pan</option><option value="409">Palomitas naturales</option><option value="410">Pan para hot dog (media noche)</option><option value="411">Pan árabe</option><option value="412">Pan birote</option><option value="413">Pan de caja (blanco, integral, multigrano)</option><option value="414">Pan molido</option><option value="415">Pan tostado</option><option value="416">Papa (hervida o al horno)</option><option value="417">Papa cambray</option><option value="418">Pasta hervida (fideo, espagueti, lasaña, etc.)</option><option value="419">Peneques (sin freír)</option><option value="420">Tlacoyo (sin freír)</option><option value="421">Tortilla de maíz</option><option value="422">Tortilla de maíz azul</option><option value="423">Tortilla de harina</option><option value="424">Tortilla de harina light</option><option value="425">Tostada horneada</option><option value="426">Salvado de maíz</option><option value="427">Salvado de trigo</option><option value="428">Yuca</option><option value="429">Barra de granola</option><option value="430">Chicharrón de harina enchilado</option><option value="431">Frituras de maíz</option><option value="432">Galleta con chispas de chocolate</option><option value="433">Galleta de avena con pasas</option><option value="434">Galleta integral con miel</option><option value="435">Galleta tipo sándwich</option><option value="436">Palomitas con mantequilla</option><option value="437">Pan dulce (bisquet, cuernito, o concha)</option><option value="438">Panqué</option><option value="439">Papas fritas</option><option value="440">Papas fritas reducidas en grasa</option><option value="441">Puré de papa preparado</option><option value="442">Roles de canela ó pasas</option><option value="443">Tamal</option><option value="444">Tostada</option><option value="445">Totopos y nachos</option><option value="446">Waffle</option></select><br><select class= "form-control" name="Comida"><option value="380" selected="selected">Amaranto tostado</option><option value="381">Avena en hojuelas</option><option value="382">Avena Cocida</option><option value="383">Arroz blanco o integral cocido</option><option value="384">Baguette</option><option value="385">Barrita de granola o avena</option><option value="386">Bolillo sin migajón</option><option value="387">Bollo de hamburguesa</option><option value="388">Camote</option><option value="389">Canelones</option><option value="390">Cáscara de papa sin freir</option><option value="391">Cereal de caja con azúcar</option><option value="392">Cereal de caja sin azúcar</option><option value="393">Crepas</option><option value="394">Elote cocido</option><option value="395">Elote blanco desgranado</option><option value="396">Galleta de animalitos</option><option value="397">Galletas habaneras</option><option value="398">Galleta María</option><option value="399">Galleta para sopa</option><option value="400">Galleta salada</option><option value="401">Granola con fruta seca, baja en grasa</option><option value="402">Harina de arroz</option><option value="403">Harina de maíz para atole</option><option value="404">Hot cake ( 1 pieza chica)</option><option value="405">Maicena de sabor</option><option value="406">Maíz (blanco, cacahuazintle, palomero)</option><option value="407">Masa de maíz</option><option value="408">Palitos de pan</option><option value="409">Palomitas naturales</option><option value="410">Pan para hot dog (media noche)</option><option value="411">Pan árabe</option><option value="412">Pan birote</option><option value="413">Pan de caja (blanco, integral, multigrano)</option><option value="414">Pan molido</option><option value="415">Pan tostado</option><option value="416">Papa (hervida o al horno)</option><option value="417">Papa cambray</option><option value="418">Pasta hervida (fideo, espagueti, lasaña, etc.)</option><option value="419">Peneques (sin freír)</option><option value="420">Tlacoyo (sin freír)</option><option value="421">Tortilla de maíz</option><option value="422">Tortilla de maíz azul</option><option value="423">Tortilla de harina</option><option value="424">Tortilla de harina light</option><option value="425">Tostada horneada</option><option value="426">Salvado de maíz</option><option value="427">Salvado de trigo</option><option value="428">Yuca</option><option value="429">Barra de granola</option><option value="430">Chicharrón de harina enchilado</option><option value="431">Frituras de maíz</option><option value="432">Galleta con chispas de chocolate</option><option value="433">Galleta de avena con pasas</option><option value="434">Galleta integral con miel</option><option value="435">Galleta tipo sándwich</option><option value="436">Palomitas con mantequilla</option><option value="437">Pan dulce (bisquet, cuernito, o concha)</option><option value="438">Panqué</option><option value="439">Papas fritas</option><option value="440">Papas fritas reducidas en grasa</option><option value="441">Puré de papa preparado</option><option value="442">Roles de canela ó pasas</option><option value="443">Tamal</option><option value="444">Tostada</option><option value="445">Totopos y nachos</option><option value="446">Waffle</option></select><br><select class= "form-control" name="Comida"><option value="4" selected="selected">Acelga cocida</option><option value="5">Acelga cruda</option><option value="6">Alcachofa</option><option value="7">Apio cocido</option><option value="8">Apio crudo</option><option value="9">Champiñón cocido rebanado</option><option value="10">Champiñón crudo entero</option><option value="11">Chilacas</option><option value="12">Chilacayote</option><option value="13">Cilantro</option><option value="14">Col cruda</option><option value="15">Colecita de bruselas</option><option value="16">Coliflor cocida</option><option value="17">Ejotes cocidos picados</option><option value="18">Espárragos crudos</option><option value="19">Espinaca cocida</option><option value="20">Espinaca cruda</option><option value="21">Flor de calabaza cocida</option><option value="22">Flor de Maguey</option><option value="23">Huitlacoche cocido</option><option value="24">Lechuga</option><option value="25">Nabo</option><option value="26">Nopal Cocido</option><option value="27">Nopal Crudo</option><option value="28">Nopal de Cambray</option><option value="29">Papaloquelite</option><option value="30">Pepino rebanado</option><option value="31">Pimiento morrón (rojo, amarillo, verde)</option><option value="32">Rábano</option><option value="33">Salsa mexicana, pico de gallo, taquera, roja o verde</option><option value="34">Setas cocidas</option><option value="35">Tomate Verde</option><option value="36">Berenjena</option><option value="37">Berro cocido</option><option value="38">Berro crudo</option><option value="39">Betabel rallado</option><option value="40">Brócoli cocido</option><option value="41">Brocoli crudo</option><option value="42">Calabacita alargada ó redonda cruda</option><option value="43">Calabacita cocida</option><option value="44">Calabaza de castilla cocida</option><option value="45">Cebolla blanca rebanada cruda</option><option value="46">Cebolla cocida</option><option value="47">Cebolla de cambray</option><option value="48">Chayote cocido</option><option value="49">Chepil</option><option value="50">Chícharo</option><option value="51">Chicoria</option><option value="52">Chile de árbol</option><option value="53">Chile Habanero</option><option value="54">Chile Jalapeño</option><option value="55">Chile Poblano</option><option value="56">Germen de Alfafa</option><option value="57">Germen de lenteja</option><option value="58">Huazontle</option><option value="59">Jicama picada</option><option value="60">Jitomate bola</option><option value="61">Jitomate cereza</option><option value="62">Jugo de tomate natural</option><option value="63">Jugo de verduras</option><option value="64">Jugo de zanahoria</option><option value="65">Pepinillos</option><option value="66">Poro crudo</option><option value="67">Puré de tomate</option><option value="68">Quelite</option><option value="69">Romeritos cocidos</option><option value="70">Romeritos crudos</option><option value="71">Verdolagas</option><option value="72">Xoconostle</option><option value="73">Zanahoria miniatura</option><option value="74">Zanahoria Picada o rallada</option></select><br><select class= "form-control" name="Comida"><option value="4" selected="selected">Acelga cocida</option><option value="5">Acelga cruda</option><option value="6">Alcachofa</option><option value="7">Apio cocido</option><option value="8">Apio crudo</option><option value="9">Champiñón cocido rebanado</option><option value="10">Champiñón crudo entero</option><option value="11">Chilacas</option><option value="12">Chilacayote</option><option value="13">Cilantro</option><option value="14">Col cruda</option><option value="15">Colecita de bruselas</option><option value="16">Coliflor cocida</option><option value="17">Ejotes cocidos picados</option><option value="18">Espárragos crudos</option><option value="19">Espinaca cocida</option><option value="20">Espinaca cruda</option><option value="21">Flor de calabaza cocida</option><option value="22">Flor de Maguey</option><option value="23">Huitlacoche cocido</option><option value="24">Lechuga</option><option value="25">Nabo</option><option value="26">Nopal Cocido</option><option value="27">Nopal Crudo</option><option value="28">Nopal de Cambray</option><option value="29">Papaloquelite</option><option value="30">Pepino rebanado</option><option value="31">Pimiento morrón (rojo, amarillo, verde)</option><option value="32">Rábano</option><option value="33">Salsa mexicana, pico de gallo, taquera, roja o verde</option><option value="34">Setas cocidas</option><option value="35">Tomate Verde</option><option value="36">Berenjena</option><option value="37">Berro cocido</option><option value="38">Berro crudo</option><option value="39">Betabel rallado</option><option value="40">Brócoli cocido</option><option value="41">Brocoli crudo</option><option value="42">Calabacita alargada ó redonda cruda</option><option value="43">Calabacita cocida</option><option value="44">Calabaza de castilla cocida</option><option value="45">Cebolla blanca rebanada cruda</option><option value="46">Cebolla cocida</option><option value="47">Cebolla de cambray</option><option value="48">Chayote cocido</option><option value="49">Chepil</option><option value="50">Chícharo</option><option value="51">Chicoria</option><option value="52">Chile de árbol</option><option value="53">Chile Habanero</option><option value="54">Chile Jalapeño</option><option value="55">Chile Poblano</option><option value="56">Germen de Alfafa</option><option value="57">Germen de lenteja</option><option value="58">Huazontle</option><option value="59">Jicama picada</option><option value="60">Jitomate bola</option><option value="61">Jitomate cereza</option><option value="62">Jugo de tomate natural</option><option value="63">Jugo de verduras</option><option value="64">Jugo de zanahoria</option><option value="65">Pepinillos</option><option value="66">Poro crudo</option><option value="67">Puré de tomate</option><option value="68">Quelite</option><option value="69">Romeritos cocidos</option><option value="70">Romeritos crudos</option><option value="71">Verdolagas</option><option value="72">Xoconostle</option><option value="73">Zanahoria miniatura</option><option value="74">Zanahoria Picada o rallada</option></select><br><select class= "form-control" name="Comida"><option value="75" selected="selected">Agua de coco</option><option value="76">Arándano</option><option value="77">Capulín</option><option value="78">Carambolo</option><option value="79">Chabacano</option><option value="80">Chicozapote</option><option value="81">Chirimoya</option><option value="82">Ciruela</option><option value="83">Ciruela pasa deshuesada</option><option value="84">Dátil</option><option value="85">Durazno (chico)</option><option value="86">Frambuesa</option><option value="87">Fresa rebanada</option><option value="88">Fruta picada</option><option value="89">Gajos de mandarina, toronja y naranja</option><option value="90">Granada china</option><option value="91">Granada roja</option><option value="92">Guanábana</option><option value="93">Guayaba</option><option value="94">Guayaba rosa</option><option value="95">Higo</option><option value="96">Jugo de naranja, toronja o mandarina natural</option><option value="97">Kiwi</option><option value="98">Lichis</option><option value="99">Lima</option><option value="100">Limón real</option><option value="101">Mamey</option><option value="102">Mandarina (chica)</option><option value="103">Mandarina reina</option><option value="104">Mango ataulfo</option><option value="105">Mango petacón</option><option value="106">Manzana (chica)</option><option value="107">Melón picado</option><option value="108">Nanche</option><option value="109">Naranja</option><option value="110">Nectarina</option><option value="111">Níspero</option><option value="112">Papaya hawaiana</option><option value="113">Papaya picada</option><option value="114">Pasas</option><option value="115">Pera</option><option value="116">Perón</option><option value="117">Piña picada</option><option value="118">Plátano dominico</option><option value="119">Plátano macho</option><option value="120">Plátano tabasco</option><option value="121">Sandía picada</option><option value="122">Tangerina</option><option value="123">Tejocote</option><option value="124">Toronja</option><option value="125">Tuna</option><option value="126">Uva roja o verde</option><option value="127">Zapote negro</option><option value="128">Zarzamora</option></select><br><select class= "form-control" name="Comida"><option value="129" selected="selected">Abulón fresco</option><option value="130">Acociles</option><option value="131">Aguayón</option><option value="132">Almeja fresca</option><option value="133">Atún en agua</option><option value="134">Bacalao seco</option><option value="135">Bagre</option><option value="136">Bistec de res</option><option value="137">Blanco de nilo</option><option value="138">Cabeza de pescado</option><option value="139">Cabrito</option><option value="140">Calamar</option><option value="141">Camarón cocido</option><option value="142">Camarón gigante</option><option value="143">Camarón pacotilla</option><option value="144">Camarón seco</option><option value="145">Cangrejo</option><option value="146">Carne de avestruz</option><option value="147">Carne de jaiba</option><option value="148">Carne de res seca</option><option value="149">Carne molida de pollo y pavo</option><option value="150">Cazón</option><option value="151">Chambarete</option><option value="152">Charales frescos</option><option value="153">Charales secos</option><option value="154">Clara de huevo</option><option value="155">Cuete de res</option><option value="156">Escalopa de res</option><option value="157">Escamoles</option><option value="158">Fajitas de pollo sin piel</option><option value="159">Falda de res</option><option value="160">Filete de guachinango</option><option value="161">Filete de pescado, mero, mojarra, merluza</option><option value="162">Filete de res y tampiqueña</option><option value="163">Guachinango</option><option value="164">Jaiba cocida entera</option><option value="165">Jugo de almeja</option><option value="166">Liebre</option><option value="167">Machaca</option><option value="168">Maciza de res</option><option value="169">Medallón de filete de res</option><option value="170">Mejillones</option><option value="171">Milanesa de pollo y res</option><option value="172">Molida de pollo</option><option value="173">Molleja de pollo</option><option value="174">Muslo de pollo sin piel</option><option value="175">Pancita de res</option><option value="176">Pargo</option><option value="177">Pata de res</option><option value="178">Pechuga a la plancha, asada, cocida</option><option value="179">Pechuga de pavo</option><option value="180">Pechuga de pollo deshuesada</option><option value="181">Pescado en trozo</option><option value="182">Pierna de pollo sin piel</option><option value="183">Puntas de res</option><option value="184">Queso cottage</option><option value="185">Requesón</option><option value="186">Riñones de res</option><option value="187">Róbalo</option><option value="188">Surimi</option><option value="189">Tampiqueña</option><option value="190">Venado cocido</option><option value="191">Agujas de res</option><option value="192">Anchoa con aceite</option><option value="193">Arrachera</option><option value="194">Atún en aceite</option><option value="195">Barbacoa Maciza</option><option value="196">Bistec de ternera</option><option value="197">Bonito</option><option value="198">Carne de cerdo</option><option value="199">Carpa cocida</option><option value="200">Cecina</option><option value="201">Conejo</option><option value="202">Falda de cerdo</option><option value="203">Filete de cerdo</option><option value="204">Filete de salmón</option><option value="205">Guajolote de Pavo</option><option value="206">Hígado de pollo</option><option value="207">Hígado de res</option><option value="208">Jamón de pavo y/o pierna</option><option value="209">Lomo de cerdo</option><option value="210">Maciza de res</option><option value="211">Molida de cerdo</option><option value="212">Molida de res (sirloin)</option><option value="213">Ostión</option><option value="214">Ostión en lata</option><option value="215">Pescuezo de pollo s/piel</option><option value="216">Pierna de cerdo</option><option value="217">Queso de cabra</option><option value="218">Queso fresco</option><option value="219">Queso panela</option><option value="220">Salmón</option><option value="221">Trucha cocida</option><option value="222">Bistec de bola</option><option value="223">Carne de suadero</option><option value="224">Chicharrón</option><option value="225">Costillas de cerdo</option><option value="226">Gusanos de maguey</option><option value="227">Huevo</option><option value="228">Longaniza</option><option value="229">Pecho de res</option><option value="230">Queso mozarella</option><option value="231">Queso parmesano</option><option value="232">Salami de pavo</option><option value="233">Salchicha de cerdo</option><option value="234">Salchicha de pavo</option><option value="235">Sardina en aceite</option><option value="236">Sardinas en Tomate</option><option value="237">Sierra</option><option value="238">Suadero</option><option value="239">Alón de pollo con piel cocido</option><option value="240">Cerdo en canal</option><option value="241">Costilla de res</option><option value="242">Espaldilla</option><option value="243">Lengua de cerdo</option><option value="244">Maciza de cerdo</option><option value="245">Moronga</option><option value="246">Mortadela</option><option value="247">Nuggets de pollo</option><option value="248">Ostión ahumado</option><option value="249">Palitos de pescado congelados</option><option value="250">Paloma</option><option value="251">Pastel de pavo y puerco</option><option value="252">Pepperoni</option><option value="253">Pollo rostizado</option><option value="254">Queso amarillo</option><option value="255">Queso americano</option><option value="256">Queso asadero</option><option value="257">Queso blanco</option><option value="258">Queso canasto</option><option value="259">Queso chihuahua</option><option value="260">Queso fundido</option><option value="261">Queso gouda</option><option value="262">Queso manchego</option><option value="263">Queso Oaxaca</option><option value="264">Retazo de pollo</option><option value="265">Salchicha</option><option value="266">Sesos de cerdo</option><option value="267">Sesos de res</option><option value="268">Tripas de res</option><option value="269">Yema de huevo</option></select><br><select class= "form-control" name="Comida"><option value="129" selected="selected">Abulón fresco</option><option value="130">Acociles</option><option value="131">Aguayón</option><option value="132">Almeja fresca</option><option value="133">Atún en agua</option><option value="134">Bacalao seco</option><option value="135">Bagre</option><option value="136">Bistec de res</option><option value="137">Blanco de nilo</option><option value="138">Cabeza de pescado</option><option value="139">Cabrito</option><option value="140">Calamar</option><option value="141">Camarón cocido</option><option value="142">Camarón gigante</option><option value="143">Camarón pacotilla</option><option value="144">Camarón seco</option><option value="145">Cangrejo</option><option value="146">Carne de avestruz</option><option value="147">Carne de jaiba</option><option value="148">Carne de res seca</option><option value="149">Carne molida de pollo y pavo</option><option value="150">Cazón</option><option value="151">Chambarete</option><option value="152">Charales frescos</option><option value="153">Charales secos</option><option value="154">Clara de huevo</option><option value="155">Cuete de res</option><option value="156">Escalopa de res</option><option value="157">Escamoles</option><option value="158">Fajitas de pollo sin piel</option><option value="159">Falda de res</option><option value="160">Filete de guachinango</option><option value="161">Filete de pescado, mero, mojarra, merluza</option><option value="162">Filete de res y tampiqueña</option><option value="163">Guachinango</option><option value="164">Jaiba cocida entera</option><option value="165">Jugo de almeja</option><option value="166">Liebre</option><option value="167">Machaca</option><option value="168">Maciza de res</option><option value="169">Medallón de filete de res</option><option value="170">Mejillones</option><option value="171">Milanesa de pollo y res</option><option value="172">Molida de pollo</option><option value="173">Molleja de pollo</option><option value="174">Muslo de pollo sin piel</option><option value="175">Pancita de res</option><option value="176">Pargo</option><option value="177">Pata de res</option><option value="178">Pechuga a la plancha, asada, cocida</option><option value="179">Pechuga de pavo</option><option value="180">Pechuga de pollo deshuesada</option><option value="181">Pescado en trozo</option><option value="182">Pierna de pollo sin piel</option><option value="183">Puntas de res</option><option value="184">Queso cottage</option><option value="185">Requesón</option><option value="186">Riñones de res</option><option value="187">Róbalo</option><option value="188">Surimi</option><option value="189">Tampiqueña</option><option value="190">Venado cocido</option><option value="191">Agujas de res</option><option value="192">Anchoa con aceite</option><option value="193">Arrachera</option><option value="194">Atún en aceite</option><option value="195">Barbacoa Maciza</option><option value="196">Bistec de ternera</option><option value="197">Bonito</option><option value="198">Carne de cerdo</option><option value="199">Carpa cocida</option><option value="200">Cecina</option><option value="201">Conejo</option><option value="202">Falda de cerdo</option><option value="203">Filete de cerdo</option><option value="204">Filete de salmón</option><option value="205">Guajolote de Pavo</option><option value="206">Hígado de pollo</option><option value="207">Hígado de res</option><option value="208">Jamón de pavo y/o pierna</option><option value="209">Lomo de cerdo</option><option value="210">Maciza de res</option><option value="211">Molida de cerdo</option><option value="212">Molida de res (sirloin)</option><option value="213">Ostión</option><option value="214">Ostión en lata</option><option value="215">Pescuezo de pollo s/piel</option><option value="216">Pierna de cerdo</option><option value="217">Queso de cabra</option><option value="218">Queso fresco</option><option value="219">Queso panela</option><option value="220">Salmón</option><option value="221">Trucha cocida</option><option value="222">Bistec de bola</option><option value="223">Carne de suadero</option><option value="224">Chicharrón</option><option value="225">Costillas de cerdo</option><option value="226">Gusanos de maguey</option><option value="227">Huevo</option><option value="228">Longaniza</option><option value="229">Pecho de res</option><option value="230">Queso mozarella</option><option value="231">Queso parmesano</option><option value="232">Salami de pavo</option><option value="233">Salchicha de cerdo</option><option value="234">Salchicha de pavo</option><option value="235">Sardina en aceite</option><option value="236">Sardinas en Tomate</option><option value="237">Sierra</option><option value="238">Suadero</option><option value="239">Alón de pollo con piel cocido</option><option value="240">Cerdo en canal</option><option value="241">Costilla de res</option><option value="242">Espaldilla</option><option value="243">Lengua de cerdo</option><option value="244">Maciza de cerdo</option><option value="245">Moronga</option><option value="246">Mortadela</option><option value="247">Nuggets de pollo</option><option value="248">Ostión ahumado</option><option value="249">Palitos de pescado congelados</option><option value="250">Paloma</option><option value="251">Pastel de pavo y puerco</option><option value="252">Pepperoni</option><option value="253">Pollo rostizado</option><option value="254">Queso amarillo</option><option value="255">Queso americano</option><option value="256">Queso asadero</option><option value="257">Queso blanco</option><option value="258">Queso canasto</option><option value="259">Queso chihuahua</option><option value="260">Queso fundido</option><option value="261">Queso gouda</option><option value="262">Queso manchego</option><option value="263">Queso Oaxaca</option><option value="264">Retazo de pollo</option><option value="265">Salchicha</option><option value="266">Sesos de cerdo</option><option value="267">Sesos de res</option><option value="268">Tripas de res</option><option value="269">Yema de huevo</option></select><br><select class= "form-control" name="Comida"><option value="270" selected="selected">Leche de soya baja en grasa</option><option value="271">Leche descremada</option><option value="272">Leche en polvo descremada</option><option value="273">Leche evaporada descremada</option><option value="274">Yogurt light</option><option value="275">Yogurt para beber bajo en grasa y azúcar</option><option value="276">Leche en polvo</option><option value="277">Leche entera</option><option value="278">Leche evaporada</option><option value="279">Leche liconsa en polvo</option><option value="280">Leche liconsa liquida</option><option value="281">Yogurt natural</option><option value="282">Yogurt para beber con fruta</option></select><br><select class= "form-control" name="Comida"><option value="447" selected="selected">Aceituna negra</option><option value="448">Aceituna verde</option><option value="449">Aguacate</option><option value="450">Ajonjolí</option><option value="451">Almendras</option><option value="452">Avellana</option><option value="453">Cacahuates</option><option value="454">Cacahuates con cáscara</option><option value="455">Guacamole</option><option value="456">Mayonesa</option><option value="457">Nuez</option><option value="458">Nuez de la india</option><option value="459">Pistaches</option><option value="460">Aceite de canola, soya, oliva</option><option value="461">Aceite de girasol, maíz, cártamo</option><option value="462">Aceite en spray</option><option value="463">Pepitas sin cáscara</option><option value="464">Piñón</option><option value="465">Chilorio de pavo</option><option value="466">Chistorra</option><option value="467">Chorizo</option><option value="468">Chorizo de pavo</option><option value="469">Coco</option><option value="470">Coco rallado</option><option value="471">Crema</option><option value="472">Crema ácida</option><option value="473">Crema chantilly</option><option value="474">Crema para café</option><option value="475">Manteca de cerdo vegetal</option><option value="476">Mantequilla</option><option value="477">Mantequilla de cacahuate</option><option value="478">Margarina baja en grasa</option><option value="479">Media crema</option><option value="480">Mole poblano en pasta</option><option value="481">Paté de cerdo</option><option value="482">Paté de ganso</option><option value="483">Paté de pollo</option><option value="484">Pepperoni</option><option value="485">Queso crema</option><option value="486">Queso de puerco</option><option value="487">Tocino en tira</option></select><br><select class= "form-control" name="Comida"><option value="343" selected="selected">Achiote</option><option value="344">Agua mineral</option><option value="345">Ajo en polvo</option><option value="346">Alcaparras **alto contenido de sodio</option><option value="347">Café americano descafeinado</option><option value="348">Caldo de pollo / res, desgrasado**</option><option value="349">Canela en polvo</option><option value="350">Chicles sin azúcar</option><option value="351">Chile en polvo</option><option value="352">Cocoa en polvo, con sustituto de azúcar</option><option value="353">Consomé de pollo /res /camarón en polvo **alto contenido de sodio</option><option value="354">Eneldo</option><option value="355">Flor de jamaica</option><option value="356">Gelatina baja en calorías</option><option value="357">Hierbabuena</option><option value="358">Hierbas de olor</option><option value="359">Hojas de laurel</option><option value="360">Limón</option><option value="361">Manzanilla</option><option value="362">Mejorana</option><option value="363">Mostaza</option><option value="364">Orégano</option><option value="365">Pimienta</option><option value="366">Refrescos de dieta</option><option value="367">Romero</option><option value="368">Sal de ajo **alto contenido de sodio</option><option value="369">Sal **alto contenido de sodio</option><option value="370">Salsa de barbecue</option><option value="371">Salsa de soya **alto contenido de sodio</option><option value="372">Salsa inglesa</option><option value="373">Salsa Tabasco</option><option value="374">Salsa teriyaki **alto contenido de sodio</option><option value="375">Sustituto de azúcar</option><option value="376">Té sin azúcar (manzanilla, canela, hierbabuena, jamaica)</option><option value="377">Tomillo</option><option value="378">Vainilla</option><option value="379">Vinagre</option></select><br></td><td><select class= "form-control" name="Colacion2"><option value="380" selected="selected">Amaranto tostado</option><option value="381">Avena en hojuelas</option><option value="382">Avena Cocida</option><option value="383">Arroz blanco o integral cocido</option><option value="384">Baguette</option><option value="385">Barrita de granola o avena</option><option value="386">Bolillo sin migajón</option><option value="387">Bollo de hamburguesa</option><option value="388">Camote</option><option value="389">Canelones</option><option value="390">Cáscara de papa sin freir</option><option value="391">Cereal de caja con azúcar</option><option value="392">Cereal de caja sin azúcar</option><option value="393">Crepas</option><option value="394">Elote cocido</option><option value="395">Elote blanco desgranado</option><option value="396">Galleta de animalitos</option><option value="397">Galletas habaneras</option><option value="398">Galleta María</option><option value="399">Galleta para sopa</option><option value="400">Galleta salada</option><option value="401">Granola con fruta seca, baja en grasa</option><option value="402">Harina de arroz</option><option value="403">Harina de maíz para atole</option><option value="404">Hot cake ( 1 pieza chica)</option><option value="405">Maicena de sabor</option><option value="406">Maíz (blanco, cacahuazintle, palomero)</option><option value="407">Masa de maíz</option><option value="408">Palitos de pan</option><option value="409">Palomitas naturales</option><option value="410">Pan para hot dog (media noche)</option><option value="411">Pan árabe</option><option value="412">Pan birote</option><option value="413">Pan de caja (blanco, integral, multigrano)</option><option value="414">Pan molido</option><option value="415">Pan tostado</option><option value="416">Papa (hervida o al horno)</option><option value="417">Papa cambray</option><option value="418">Pasta hervida (fideo, espagueti, lasaña, etc.)</option><option value="419">Peneques (sin freír)</option><option value="420">Tlacoyo (sin freír)</option><option value="421">Tortilla de maíz</option><option value="422">Tortilla de maíz azul</option><option value="423">Tortilla de harina</option><option value="424">Tortilla de harina light</option><option value="425">Tostada horneada</option><option value="426">Salvado de maíz</option><option value="427">Salvado de trigo</option><option value="428">Yuca</option><option value="429">Barra de granola</option><option value="430">Chicharrón de harina enchilado</option><option value="431">Frituras de maíz</option><option value="432">Galleta con chispas de chocolate</option><option value="433">Galleta de avena con pasas</option><option value="434">Galleta integral con miel</option><option value="435">Galleta tipo sándwich</option><option value="436">Palomitas con mantequilla</option><option value="437">Pan dulce (bisquet, cuernito, o concha)</option><option value="438">Panqué</option><option value="439">Papas fritas</option><option value="440">Papas fritas reducidas en grasa</option><option value="441">Puré de papa preparado</option><option value="442">Roles de canela ó pasas</option><option value="443">Tamal</option><option value="444">Tostada</option><option value="445">Totopos y nachos</option><option value="446">Waffle</option></select><br><select class= "form-control" name="Colacion2"><option value="75" selected="selected">Agua de coco</option><option value="76">Arándano</option><option value="77">Capulín</option><option value="78">Carambolo</option><option value="79">Chabacano</option><option value="80">Chicozapote</option><option value="81">Chirimoya</option><option value="82">Ciruela</option><option value="83">Ciruela pasa deshuesada</option><option value="84">Dátil</option><option value="85">Durazno (chico)</option><option value="86">Frambuesa</option><option value="87">Fresa rebanada</option><option value="88">Fruta picada</option><option value="89">Gajos de mandarina, toronja y naranja</option><option value="90">Granada china</option><option value="91">Granada roja</option><option value="92">Guanábana</option><option value="93">Guayaba</option><option value="94">Guayaba rosa</option><option value="95">Higo</option><option value="96">Jugo de naranja, toronja o mandarina natural</option><option value="97">Kiwi</option><option value="98">Lichis</option><option value="99">Lima</option><option value="100">Limón real</option><option value="101">Mamey</option><option value="102">Mandarina (chica)</option><option value="103">Mandarina reina</option><option value="104">Mango ataulfo</option><option value="105">Mango petacón</option><option value="106">Manzana (chica)</option><option value="107">Melón picado</option><option value="108">Nanche</option><option value="109">Naranja</option><option value="110">Nectarina</option><option value="111">Níspero</option><option value="112">Papaya hawaiana</option><option value="113">Papaya picada</option><option value="114">Pasas</option><option value="115">Pera</option><option value="116">Perón</option><option value="117">Piña picada</option><option value="118">Plátano dominico</option><option value="119">Plátano macho</option><option value="120">Plátano tabasco</option><option value="121">Sandía picada</option><option value="122">Tangerina</option><option value="123">Tejocote</option><option value="124">Toronja</option><option value="125">Tuna</option><option value="126">Uva roja o verde</option><option value="127">Zapote negro</option><option value="128">Zarzamora</option></select><br></td><td><select class= "form-control" name="Cena"><option value="380" selected="selected">Amaranto tostado</option><option value="381">Avena en hojuelas</option><option value="382">Avena Cocida</option><option value="383">Arroz blanco o integral cocido</option><option value="384">Baguette</option><option value="385">Barrita de granola o avena</option><option value="386">Bolillo sin migajón</option><option value="387">Bollo de hamburguesa</option><option value="388">Camote</option><option value="389">Canelones</option><option value="390">Cáscara de papa sin freir</option><option value="391">Cereal de caja con azúcar</option><option value="392">Cereal de caja sin azúcar</option><option value="393">Crepas</option><option value="394">Elote cocido</option><option value="395">Elote blanco desgranado</option><option value="396">Galleta de animalitos</option><option value="397">Galletas habaneras</option><option value="398">Galleta María</option><option value="399">Galleta para sopa</option><option value="400">Galleta salada</option><option value="401">Granola con fruta seca, baja en grasa</option><option value="402">Harina de arroz</option><option value="403">Harina de maíz para atole</option><option value="404">Hot cake ( 1 pieza chica)</option><option value="405">Maicena de sabor</option><option value="406">Maíz (blanco, cacahuazintle, palomero)</option><option value="407">Masa de maíz</option><option value="408">Palitos de pan</option><option value="409">Palomitas naturales</option><option value="410">Pan para hot dog (media noche)</option><option value="411">Pan árabe</option><option value="412">Pan birote</option><option value="413">Pan de caja (blanco, integral, multigrano)</option><option value="414">Pan molido</option><option value="415">Pan tostado</option><option value="416">Papa (hervida o al horno)</option><option value="417">Papa cambray</option><option value="418">Pasta hervida (fideo, espagueti, lasaña, etc.)</option><option value="419">Peneques (sin freír)</option><option value="420">Tlacoyo (sin freír)</option><option value="421">Tortilla de maíz</option><option value="422">Tortilla de maíz azul</option><option value="423">Tortilla de harina</option><option value="424">Tortilla de harina light</option><option value="425">Tostada horneada</option><option value="426">Salvado de maíz</option><option value="427">Salvado de trigo</option><option value="428">Yuca</option><option value="429">Barra de granola</option><option value="430">Chicharrón de harina enchilado</option><option value="431">Frituras de maíz</option><option value="432">Galleta con chispas de chocolate</option><option value="433">Galleta de avena con pasas</option><option value="434">Galleta integral con miel</option><option value="435">Galleta tipo sándwich</option><option value="436">Palomitas con mantequilla</option><option value="437">Pan dulce (bisquet, cuernito, o concha)</option><option value="438">Panqué</option><option value="439">Papas fritas</option><option value="440">Papas fritas reducidas en grasa</option><option value="441">Puré de papa preparado</option><option value="442">Roles de canela ó pasas</option><option value="443">Tamal</option><option value="444">Tostada</option><option value="445">Totopos y nachos</option><option value="446">Waffle</option></select><br><select class= "form-control" name="Cena"><option value="4" selected="selected">Acelga cocida</option><option value="5">Acelga cruda</option><option value="6">Alcachofa</option><option value="7">Apio cocido</option><option value="8">Apio crudo</option><option value="9">Champiñón cocido rebanado</option><option value="10">Champiñón crudo entero</option><option value="11">Chilacas</option><option value="12">Chilacayote</option><option value="13">Cilantro</option><option value="14">Col cruda</option><option value="15">Colecita de bruselas</option><option value="16">Coliflor cocida</option><option value="17">Ejotes cocidos picados</option><option value="18">Espárragos crudos</option><option value="19">Espinaca cocida</option><option value="20">Espinaca cruda</option><option value="21">Flor de calabaza cocida</option><option value="22">Flor de Maguey</option><option value="23">Huitlacoche cocido</option><option value="24">Lechuga</option><option value="25">Nabo</option><option value="26">Nopal Cocido</option><option value="27">Nopal Crudo</option><option value="28">Nopal de Cambray</option><option value="29">Papaloquelite</option><option value="30">Pepino rebanado</option><option value="31">Pimiento morrón (rojo, amarillo, verde)</option><option value="32">Rábano</option><option value="33">Salsa mexicana, pico de gallo, taquera, roja o verde</option><option value="34">Setas cocidas</option><option value="35">Tomate Verde</option><option value="36">Berenjena</option><option value="37">Berro cocido</option><option value="38">Berro crudo</option><option value="39">Betabel rallado</option><option value="40">Brócoli cocido</option><option value="41">Brocoli crudo</option><option value="42">Calabacita alargada ó redonda cruda</option><option value="43">Calabacita cocida</option><option value="44">Calabaza de castilla cocida</option><option value="45">Cebolla blanca rebanada cruda</option><option value="46">Cebolla cocida</option><option value="47">Cebolla de cambray</option><option value="48">Chayote cocido</option><option value="49">Chepil</option><option value="50">Chícharo</option><option value="51">Chicoria</option><option value="52">Chile de árbol</option><option value="53">Chile Habanero</option><option value="54">Chile Jalapeño</option><option value="55">Chile Poblano</option><option value="56">Germen de Alfafa</option><option value="57">Germen de lenteja</option><option value="58">Huazontle</option><option value="59">Jicama picada</option><option value="60">Jitomate bola</option><option value="61">Jitomate cereza</option><option value="62">Jugo de tomate natural</option><option value="63">Jugo de verduras</option><option value="64">Jugo de zanahoria</option><option value="65">Pepinillos</option><option value="66">Poro crudo</option><option value="67">Puré de tomate</option><option value="68">Quelite</option><option value="69">Romeritos cocidos</option><option value="70">Romeritos crudos</option><option value="71">Verdolagas</option><option value="72">Xoconostle</option><option value="73">Zanahoria miniatura</option><option value="74">Zanahoria Picada o rallada</option></select><br><select class= "form-control" name="Cena"><option value="4" selected="selected">Acelga cocida</option><option value="5">Acelga cruda</option><option value="6">Alcachofa</option><option value="7">Apio cocido</option><option value="8">Apio crudo</option><option value="9">Champiñón cocido rebanado</option><option value="10">Champiñón crudo entero</option><option value="11">Chilacas</option><option value="12">Chilacayote</option><option value="13">Cilantro</option><option value="14">Col cruda</option><option value="15">Colecita de bruselas</option><option value="16">Coliflor cocida</option><option value="17">Ejotes cocidos picados</option><option value="18">Espárragos crudos</option><option value="19">Espinaca cocida</option><option value="20">Espinaca cruda</option><option value="21">Flor de calabaza cocida</option><option value="22">Flor de Maguey</option><option value="23">Huitlacoche cocido</option><option value="24">Lechuga</option><option value="25">Nabo</option><option value="26">Nopal Cocido</option><option value="27">Nopal Crudo</option><option value="28">Nopal de Cambray</option><option value="29">Papaloquelite</option><option value="30">Pepino rebanado</option><option value="31">Pimiento morrón (rojo, amarillo, verde)</option><option value="32">Rábano</option><option value="33">Salsa mexicana, pico de gallo, taquera, roja o verde</option><option value="34">Setas cocidas</option><option value="35">Tomate Verde</option><option value="36">Berenjena</option><option value="37">Berro cocido</option><option value="38">Berro crudo</option><option value="39">Betabel rallado</option><option value="40">Brócoli cocido</option><option value="41">Brocoli crudo</option><option value="42">Calabacita alargada ó redonda cruda</option><option value="43">Calabacita cocida</option><option value="44">Calabaza de castilla cocida</option><option value="45">Cebolla blanca rebanada cruda</option><option value="46">Cebolla cocida</option><option value="47">Cebolla de cambray</option><option value="48">Chayote cocido</option><option value="49">Chepil</option><option value="50">Chícharo</option><option value="51">Chicoria</option><option value="52">Chile de árbol</option><option value="53">Chile Habanero</option><option value="54">Chile Jalapeño</option><option value="55">Chile Poblano</option><option value="56">Germen de Alfafa</option><option value="57">Germen de lenteja</option><option value="58">Huazontle</option><option value="59">Jicama picada</option><option value="60">Jitomate bola</option><option value="61">Jitomate cereza</option><option value="62">Jugo de tomate natural</option><option value="63">Jugo de verduras</option><option value="64">Jugo de zanahoria</option><option value="65">Pepinillos</option><option value="66">Poro crudo</option><option value="67">Puré de tomate</option><option value="68">Quelite</option><option value="69">Romeritos cocidos</option><option value="70">Romeritos crudos</option><option value="71">Verdolagas</option><option value="72">Xoconostle</option><option value="73">Zanahoria miniatura</option><option value="74">Zanahoria Picada o rallada</option></select><br><select class= "form-control" name="Cena"><option value="75" selected="selected">Agua de coco</option><option value="76">Arándano</option><option value="77">Capulín</option><option value="78">Carambolo</option><option value="79">Chabacano</option><option value="80">Chicozapote</option><option value="81">Chirimoya</option><option value="82">Ciruela</option><option value="83">Ciruela pasa deshuesada</option><option value="84">Dátil</option><option value="85">Durazno (chico)</option><option value="86">Frambuesa</option><option value="87">Fresa rebanada</option><option value="88">Fruta picada</option><option value="89">Gajos de mandarina, toronja y naranja</option><option value="90">Granada china</option><option value="91">Granada roja</option><option value="92">Guanábana</option><option value="93">Guayaba</option><option value="94">Guayaba rosa</option><option value="95">Higo</option><option value="96">Jugo de naranja, toronja o mandarina natural</option><option value="97">Kiwi</option><option value="98">Lichis</option><option value="99">Lima</option><option value="100">Limón real</option><option value="101">Mamey</option><option value="102">Mandarina (chica)</option><option value="103">Mandarina reina</option><option value="104">Mango ataulfo</option><option value="105">Mango petacón</option><option value="106">Manzana (chica)</option><option value="107">Melón picado</option><option value="108">Nanche</option><option value="109">Naranja</option><option value="110">Nectarina</option><option value="111">Níspero</option><option value="112">Papaya hawaiana</option><option value="113">Papaya picada</option><option value="114">Pasas</option><option value="115">Pera</option><option value="116">Perón</option><option value="117">Piña picada</option><option value="118">Plátano dominico</option><option value="119">Plátano macho</option><option value="120">Plátano tabasco</option><option value="121">Sandía picada</option><option value="122">Tangerina</option><option value="123">Tejocote</option><option value="124">Toronja</option><option value="125">Tuna</option><option value="126">Uva roja o verde</option><option value="127">Zapote negro</option><option value="128">Zarzamora</option></select><br><select class= "form-control" name="Cena"><option value="129" selected="selected">Abulón fresco</option><option value="130">Acociles</option><option value="131">Aguayón</option><option value="132">Almeja fresca</option><option value="133">Atún en agua</option><option value="134">Bacalao seco</option><option value="135">Bagre</option><option value="136">Bistec de res</option><option value="137">Blanco de nilo</option><option value="138">Cabeza de pescado</option><option value="139">Cabrito</option><option value="140">Calamar</option><option value="141">Camarón cocido</option><option value="142">Camarón gigante</option><option value="143">Camarón pacotilla</option><option value="144">Camarón seco</option><option value="145">Cangrejo</option><option value="146">Carne de avestruz</option><option value="147">Carne de jaiba</option><option value="148">Carne de res seca</option><option value="149">Carne molida de pollo y pavo</option><option value="150">Cazón</option><option value="151">Chambarete</option><option value="152">Charales frescos</option><option value="153">Charales secos</option><option value="154">Clara de huevo</option><option value="155">Cuete de res</option><option value="156">Escalopa de res</option><option value="157">Escamoles</option><option value="158">Fajitas de pollo sin piel</option><option value="159">Falda de res</option><option value="160">Filete de guachinango</option><option value="161">Filete de pescado, mero, mojarra, merluza</option><option value="162">Filete de res y tampiqueña</option><option value="163">Guachinango</option><option value="164">Jaiba cocida entera</option><option value="165">Jugo de almeja</option><option value="166">Liebre</option><option value="167">Machaca</option><option value="168">Maciza de res</option><option value="169">Medallón de filete de res</option><option value="170">Mejillones</option><option value="171">Milanesa de pollo y res</option><option value="172">Molida de pollo</option><option value="173">Molleja de pollo</option><option value="174">Muslo de pollo sin piel</option><option value="175">Pancita de res</option><option value="176">Pargo</option><option value="177">Pata de res</option><option value="178">Pechuga a la plancha, asada, cocida</option><option value="179">Pechuga de pavo</option><option value="180">Pechuga de pollo deshuesada</option><option value="181">Pescado en trozo</option><option value="182">Pierna de pollo sin piel</option><option value="183">Puntas de res</option><option value="184">Queso cottage</option><option value="185">Requesón</option><option value="186">Riñones de res</option><option value="187">Róbalo</option><option value="188">Surimi</option><option value="189">Tampiqueña</option><option value="190">Venado cocido</option><option value="191">Agujas de res</option><option value="192">Anchoa con aceite</option><option value="193">Arrachera</option><option value="194">Atún en aceite</option><option value="195">Barbacoa Maciza</option><option value="196">Bistec de ternera</option><option value="197">Bonito</option><option value="198">Carne de cerdo</option><option value="199">Carpa cocida</option><option value="200">Cecina</option><option value="201">Conejo</option><option value="202">Falda de cerdo</option><option value="203">Filete de cerdo</option><option value="204">Filete de salmón</option><option value="205">Guajolote de Pavo</option><option value="206">Hígado de pollo</option><option value="207">Hígado de res</option><option value="208">Jamón de pavo y/o pierna</option><option value="209">Lomo de cerdo</option><option value="210">Maciza de res</option><option value="211">Molida de cerdo</option><option value="212">Molida de res (sirloin)</option><option value="213">Ostión</option><option value="214">Ostión en lata</option><option value="215">Pescuezo de pollo s/piel</option><option value="216">Pierna de cerdo</option><option value="217">Queso de cabra</option><option value="218">Queso fresco</option><option value="219">Queso panela</option><option value="220">Salmón</option><option value="221">Trucha cocida</option><option value="222">Bistec de bola</option><option value="223">Carne de suadero</option><option value="224">Chicharrón</option><option value="225">Costillas de cerdo</option><option value="226">Gusanos de maguey</option><option value="227">Huevo</option><option value="228">Longaniza</option><option value="229">Pecho de res</option><option value="230">Queso mozarella</option><option value="231">Queso parmesano</option><option value="232">Salami de pavo</option><option value="233">Salchicha de cerdo</option><option value="234">Salchicha de pavo</option><option value="235">Sardina en aceite</option><option value="236">Sardinas en Tomate</option><option value="237">Sierra</option><option value="238">Suadero</option><option value="239">Alón de pollo con piel cocido</option><option value="240">Cerdo en canal</option><option value="241">Costilla de res</option><option value="242">Espaldilla</option><option value="243">Lengua de cerdo</option><option value="244">Maciza de cerdo</option><option value="245">Moronga</option><option value="246">Mortadela</option><option value="247">Nuggets de pollo</option><option value="248">Ostión ahumado</option><option value="249">Palitos de pescado congelados</option><option value="250">Paloma</option><option value="251">Pastel de pavo y puerco</option><option value="252">Pepperoni</option><option value="253">Pollo rostizado</option><option value="254">Queso amarillo</option><option value="255">Queso americano</option><option value="256">Queso asadero</option><option value="257">Queso blanco</option><option value="258">Queso canasto</option><option value="259">Queso chihuahua</option><option value="260">Queso fundido</option><option value="261">Queso gouda</option><option value="262">Queso manchego</option><option value="263">Queso Oaxaca</option><option value="264">Retazo de pollo</option><option value="265">Salchicha</option><option value="266">Sesos de cerdo</option><option value="267">Sesos de res</option><option value="268">Tripas de res</option><option value="269">Yema de huevo</option></select><br><select class= "form-control" name="Cena"><option value="270" selected="selected">Leche de soya baja en grasa</option><option value="271">Leche descremada</option><option value="272">Leche en polvo descremada</option><option value="273">Leche evaporada descremada</option><option value="274">Yogurt light</option><option value="275">Yogurt para beber bajo en grasa y azúcar</option><option value="276">Leche en polvo</option><option value="277">Leche entera</option><option value="278">Leche evaporada</option><option value="279">Leche liconsa en polvo</option><option value="280">Leche liconsa liquida</option><option value="281">Yogurt natural</option><option value="282">Yogurt para beber con fruta</option></select><br></td></tr>
+                                    </tbody>
+                                </table>
+
+                                <button type="submit" class="align-middle btn btn-primary">Guardar Nuevo Plan</button>
+                                <br><br>
+                                <a href="http://127.0.0.1:8000/planes/">&lt;- Regresar a la lista de planes</a>
+                            </div>
+                    </div>
+                </div>
+                </form>
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <footer class="sticky-footer bg-white">
+            <div class="container my-auto">
+                <div class="copyright text-center my-auto">
+                    <span>Copyright &copy; Nutridesk 2020</span>
+                </div>
+            </div>
+        </footer>
+        <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+<!-- Logout Modal-->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">¿Estás seguro?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">Selecciona la opción "Cerrar Sesión" si estás listo para salir.</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                <a class="btn btn-primary" href="http://127.0.0.1:8000/cerrar/">Cerrar Sesión</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript-->
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="js/sb-admin-2.min.js"></script>
+
+<!-- Page level plugins -->
+<script src="vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+<!-- Page level custom scripts -->
+<script src="js/demo/datatables-demo.js"></script>
+
+</body>
+
+</html>
