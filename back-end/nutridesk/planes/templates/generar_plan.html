@@ -75,7 +75,7 @@
             <div class="col-sm-4 align-self-center">
                 <label for="txtAporteCalorico" class="text-primary">Aporte Calórico</label>
                 <input type="text" class="form-control form-control-user" 
-                name="txtAporteCalorico" id="txtAporteCalorico" placeholder="Kcal" required>
+                name="txtAporteCalorico" id="txtAporteCalorico" placeholder="Kcal" required readonly>
             </div>
         </div>
 
@@ -211,6 +211,7 @@
         tabla_plan.innerHTML += construir_colacion(2, plan[2], dict_alimentos); //comida
         tabla_plan.innerHTML += construir_colacion(3, plan[3], dict_alimentos); //colacon2
         tabla_plan.innerHTML += construir_colacion(4, plan[4], dict_alimentos); //cena
+        agregar_listeners();
     }
 
     function get_alimentos_dict() {
@@ -260,9 +261,44 @@
         html_code += "</td>";
         return html_code;
     }
+
+    function alimento_dict_id(){
+        var alimentos = {};
+        {%for alimento in listaAlimentos %}
+        alimentos[{{alimento.idAlimento}}]=[{{alimento.idGrupo.energia}},{{alimento.idGrupo.proteina}}];
+        {% endfor %}
+        return alimentos;
+    }
     
-    function agregar_listeners(){
-        
+    function agregar_listeners() {
+        var llave_comida = ["Desayuno", "Colacion1", "Comida", "Colacion2", "Cena"];
+        var selects = {};
+        for(var i = 0; i < llave_comida.length; i++) {
+            selects[llave_comida[i]] = document.getElementsByName(llave_comida[i]);
+            for(var j = 0; j < selects[llave_comida[i]].length; j++) {
+                var casilla = selects[llave_comida[i]][j]
+                casilla.addEventListener("change",
+                    function () {
+                        recalcular(selects);
+                    }, false
+                );
+            }
+        }
+    }
+
+    function recalcular(selects){
+        var dic_al = alimento_dict_id();
+        var suma = 0;
+        var llave_comida = ["Desayuno", "Colacion1", "Comida", "Colacion2", "Cena"];
+        for(var i = 0; i < llave_comida.length; i++) {
+            for(var j = 0; j < selects[llave_comida[i]].length; j++) {
+                var casilla = selects[llave_comida[i]][j]
+                suma += dic_al[casilla.value][0];
+                console.log(casilla.value)
+            }
+        }
+        var txt_aporte_calorico = document.getElementById("txtAporteCalorico");
+        txt_aporte_calorico.value = suma;
     }
 </script>
 {% endblock %}
