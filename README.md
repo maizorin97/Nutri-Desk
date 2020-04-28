@@ -8,15 +8,7 @@ En el último año 2019 esta tendencia siguió aumentando hasta casi un 75.2% .
 
 _Nuestro proyecto pretende ser una herramienta informativa y de concientización para todas aquellas personas que se encuentran en situación vulnerable, ofreciéndoles planes de alimentación a la medida y detectando posibles padecimientos que puedan afectar en un futuro._
 
-### Pre-requisitos 📋
-
-* Anaconda o Miniconda.
-* Python 3.8.1.
-* Django 3.0.
-* Django-CK Editor.
-* Pillow.
-
-### Instrucciones de instalación 💾 (Si no cumples los requisitos)
+### Instrucciones de instalación 💾
 
 * Instalar Anaconda o Miniconda en su equipo, puede descargarlo [aquí](https://www.anaconda.com/distribution/).
 * Crear un nuevo entorno virtual, para ello use el comando
@@ -31,13 +23,16 @@ conda activate nombre_de_entorno
 ```
 python -m pip install Django==3.0
 ```
-* Instale Pillow 7.0.0 en su entorno virtual
+* Para un correcto funcionamiento instale las siguientes dependencias con los siguientes comandos
 ```
-pip install Pillow==7.0.0
-```
-* Instale Ck Editor para Django en su entorno virtual
-```
-pip install django-ckeditor==5.9.0
+conda install Pillow
+pip install django-ckeditor
+conda install -c conda-forge jupyterlab
+conda install numpy
+conda install pandas
+conda install matplotlib
+conda install seaborn
+conda install scikit-learn
 ```
 * Corra el archivo manage.py con el siguiente comando en su terminal (debe tener su entorno virtual activado)
 ```
@@ -49,6 +44,7 @@ python manage.py runserver
 * [Django](https://www.djangoproject.com/)
 * [Bootstrap](https://getbootstrap.com/)
 * [Anaconda](https://www.anaconda.com/)
+* [SK-Learn](https://scikit-learn.org/)
 
 ## Versionado 📌
 
