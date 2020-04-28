@@ -2,96 +2,124 @@
 {% block title %}Planes{% endblock %}
 {% load static %}
 {% block main_content %}
-<h1>Vista de generacion de plan de alimentacion</h1>
-<div class="container">
-    <div class="row">
-        <table border="1px">
-            <tr>
-                <td>Peso:</td>
-                <td>{{infoUser.peso}}</td>
-            </tr>
-            <tr>
-                <td>Altura:</td>
-                <td>{{infoUser.altura}}</td>
-            </tr>
-            <tr>
-                <td>Edad:</td>
-                <td>{{edad}}</td>
-            </tr>
-            <tr>
-                <td>Sexo:</td>
-                <td>{{infoUser.sexo}}</td>
-            </tr>
-            <tr>
-                <td>Objetivo:</td>
-                <td>
-                    <select id="txtObjetivo">
-                        <option>Mantener peso</option>
-                        <option>Bajar de peso</option>
-                        <option>Subir de peso</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td>Actividad Fisica:</td>
-                <td>
-                    <select id="txtActividadFisica">
-                        <option>No hace nada de ejercicio</option>
-                        <option>Ejercicio ligero dos días por semana</option>
-                        <option>Ejercicio moderado, unos cuatro días por semana</option>
-                        <option>Deporte regular seis días a la semana</option>
-                        <option>Deportista de élite o entrena muy intenso cada día</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2"><button onclick="calcular_requisitos()">Calcular requerimientos</button></td>
-            </tr>
-            <tr>
-                <td>IMC: <a href="#">?</a></td>
-                <td>
-                    <label id='txtIMC'></label>
-                    <br/>
-                    <label id="txtMsjIMC"/></label>
-                </td>
-            </tr>
-            <tr>
-                <td>TMB: <a href="#">?</a></td>
-                <td>
-                    <label id='txtTMB'></label> Kcal
-                </td>
-            </tr>
-        </table>
-        <br/>
-        <br/>
-        <form method="POST">{% csrf_token %}
-        nombre del plan: <input type="text" name="txtNombrePlan" required/> <br/>
-        aporte de calorias del plan actual: <input type="text" name="txtAporteCalorico" required/> <br/>
-            <table border="1px" name="tabla_plan">
-                <tr>
-                    <th>Desayuno</th>
-                    <th>Colación</th>
-                    <th>Comida</th>
-                    <th>Colación</th>
-                    <th>Cena</th>
-                </tr>
-                <tr id="txtColaciones"> 
-                </tr>
-            </table>
-            <button type="submit">Guardar plan</button>
-        </form>
-        <a href="{% url 'planes' %}"><- Regresar a la lista de planes</a>
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Generación de Plan de Alimentación</h1>
+    <p class="mb-4 text-justify">De acuerdo a tus características físicas actuales, se te recomendará un plan de
+        alimentación acorde a tus necesidades. En la siguiente
+        tabla, se describen los alimentos y su aporte calórico, según sea el enfoque que desees.
+        Es importante que sigas estrictamente estas indicaciones para lograr realizar un avance en el proceso y
+        auxiliarte con un profesional de la salud.</p>
+
+    <div class="form-group row">
+        <div class="col-sm-3 align-self-center">
+            <label class="text-primary">Peso: {{infoUser.peso}} KG</label>
+        </div>
+        <div class="col-sm-3 align-self-center">
+            <label class="text-primary">Altura: {{infoUser.altura}} CM</label>
+        </div>
+        <div class="col-sm-3 align-self-center">
+            <label class="text-primary">Edad: {{edad|stringformat:".1f"}} Años</label>
+        </div>
+        <div class="col-sm-3 align-self-center">
+            <label class="text-primary">Sexo: {% if infoUser.sexo == 'H'%} Hombre {% else %} Mujer {% endif %}</label>
+        </div>
     </div>
+    <div class="form-group row">
+        <div class="col-sm-4 align-self-center">
+            <label for="txtObjetivo" class="text-primary">¿Cuál es su Objetivo?</label>
+            <select class="form-control" id="txtObjetivo">
+                <option>Mantener Peso</option>
+                <option>Subir Peso</option>
+                <option>Bajar Peso</option>
+            </select>
+        </div>
+        <div class="col-sm-4 align-self-center">
+            <label for="txtActividadFisica" class="text-primary">¿Realiza actividad física?</label>
+            <select class="form-control" id="txtActividadFisica">
+                <option>No hace nada de ejercicio</option>
+                <option>Ejercicio ligero dos días por semana</option>
+                <option>Ejercicio moderado, unos cuatro días por semana</option>
+                <option>Deporte regular seis días a la semana</option>
+                <option>Deportista de élite o entrena muy intenso cada día</option>
+            </select>
+        </div>
+        <div class="col-sm-4 align-self-center">
+            <button class="align-middle btn btn-primary" onclick="calcular_requisitos()">Calcular
+                requerimientos</button>
+        </div>
+    </div>
+
+    <form method="POST">{% csrf_token %}
+        <div class="form-group row">
+            <div class="col-sm-4 align-self-center">
+                <label class="text-primary">IMC:</label>
+                <label id='txtIMC' class="text-primary">_</label>
+                <label id="txtMsjIMC"/>_</label>
+            </div>
+
+            <div class="col-sm-4 align-self-center">
+                <label class="text-primary">TMB:</label>
+                <label id='txtTMB' class="text-primary">_</label> Kcal
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-4 align-self-center">
+                <label for="txtNombrePlan" class="text-primary" >Nombre del Plan</label>
+                <input type="text" class="form-control form-control-user"
+                name="txtNombrePlan" id="txtNombrePlan" placeholder="Ingrese un nombre" required>
+            </div>
+
+            <div class="col-sm-4 align-self-center">
+                <label for="txtAporteCalorico" class="text-primary">Aporte Calórico</label>
+                <input type="text" class="form-control form-control-user" 
+                name="txtAporteCalorico" id="txtAporteCalorico" placeholder="Kcal" required>
+            </div>
+        </div>
+
+        <!-- DataTales Example -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Nuevo Plan</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive form-group">
+                    <table class="table table-bordered" id="tablaPlan" width="100%" cellspacing="0">
+                        <thead class="text-primary text-center">
+                            <tr>
+                                <th>Desayuno</th>
+                                <th>Colación</th>
+                                <th>Comida</th>
+                                <th>Colación</th>
+                                <th>Cena</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr id="txtColaciones">
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <button type="submit" class="align-middle btn btn-primary">Guardar Nuevo Plan</button>
+                    <br><br>
+                    <a href="{% url 'planes' %}">&lt;- Regresar a la lista de planes</a>
+                </div>
+            </div>
+        </div>
+    </form>
 </div>
+<!-- /.container-fluid -->
 {% endblock %}
 {% block script %}
 <script>
     function calcular_requisitos() {
-        var peso = {{infoUser.peso}};
-        var altura = {{infoUser.altura}};
+        var peso = {{ infoUser.peso }};
+        var altura = {{ infoUser.altura }};
         var sexo = '{{infoUser.sexo}}';
-        var edad = {{edad}};
-        var imc = (peso/Math.pow(altura/100,2));
+        var edad = {{ edad }};
+        var imc = (peso / Math.pow(altura / 100, 2));
         var objetivo = document.getElementById("txtObjetivo").selectedIndex;
         var actividad = document.getElementById("txtActividadFisica").selectedIndex;
 
@@ -109,9 +137,9 @@
     function indice_masa_corporal(imc) {
         //fuente
         //https://www.seedo.es/index.php/pacientes/calculo-imc
-        if (imc < 18.5){
+        if (imc < 18.5) {
             return "Peso insuficiente";
-        } else if (imc < 25){
+        } else if (imc < 25) {
             return "Peso normal";
         } else if (imc < 27) {
             return "Sobrepeso grado I";
@@ -128,12 +156,12 @@
         }
     }
 
-    function tasa_metabolica_basal(sexo, edad, peso, altura, meta, actividad_fisica){
+    function tasa_metabolica_basal(sexo, edad, peso, altura, meta, actividad_fisica) {
         //fuente
         //https://www.axahealthkeeper.com/blog/calculo-de-calorias-diarias-cuantas-calorias-debo-consumir-al-dia/
         //https://www.axahealthkeeper.com/blog/que-es-y-como-calcular-la-tasa-metabolica-basal/
         var tmb = 0;
-        switch(sexo) {
+        switch (sexo) {
             case 'H'://si es hombre
                 tmb = (10 * peso) + (6.5 * altura) - (5 * edad) - 161;
                 break;
@@ -144,7 +172,7 @@
                 tmb = -1;
         }
 
-        switch(actividad_fisica) {
+        switch (actividad_fisica) {
             case 0://nada de ejercicio
                 tmb *= 1.2;
                 break;
@@ -161,7 +189,7 @@
                 tmb *= 1.9;
         }
 
-        switch(meta) {
+        switch (meta) {
             case 0:
                 tmb *= 1;
                 break;
@@ -171,27 +199,27 @@
             default:
                 tmb *= 1.15;
         }
-        return tmb;
+        return tmb.toPrecision(4);
     }
 
     function mostrar_plan(tmb) {
         var dict_alimentos = get_alimentos_dict();
         var plan = get_plan(tmb);
         var tabla_plan = document.getElementById("txtColaciones");
-        tabla_plan.innerHTML = construir_colacion( 0, plan[0],dict_alimentos); //desayuno
-        tabla_plan.innerHTML += construir_colacion(1, plan[1],dict_alimentos); //colacion1
-        tabla_plan.innerHTML += construir_colacion(2, plan[2],dict_alimentos); //comida
-        tabla_plan.innerHTML += construir_colacion(3, plan[3],dict_alimentos); //colacon2
-        tabla_plan.innerHTML += construir_colacion(4, plan[4],dict_alimentos); //cena
+        tabla_plan.innerHTML = construir_colacion(0, plan[0], dict_alimentos); //desayuno
+        tabla_plan.innerHTML += construir_colacion(1, plan[1], dict_alimentos); //colacion1
+        tabla_plan.innerHTML += construir_colacion(2, plan[2], dict_alimentos); //comida
+        tabla_plan.innerHTML += construir_colacion(3, plan[3], dict_alimentos); //colacon2
+        tabla_plan.innerHTML += construir_colacion(4, plan[4], dict_alimentos); //cena
     }
 
     function get_alimentos_dict() {
         var alimentos = {};
-        {%for grupo in listaGrupos%}
-            alimentos["{{grupo.nombre}}"] = [];
+        {%for grupo in listaGrupos %}
+        alimentos["{{grupo.nombre}}"] = [];
         {% endfor %}
-        {%for alimento in listaAlimentos%}
-            alimentos["{{alimento.idGrupo.nombre}}"].push(["{{alimento.nombre}}","{{alimento.idAlimento}}"]);
+        {%for alimento in listaAlimentos %}
+        alimentos["{{alimento.idGrupo.nombre}}"].push(["{{alimento.nombre}}", "{{alimento.idAlimento}}"]);
         {% endfor %}
         return alimentos;
     }
@@ -200,30 +228,30 @@
         /* [[desayuno],[colacion1],[comida],[colacion2],[cena]]
         [CEREALES Y TUBÉRCULOS,VERDURAS,FRUTAS,ALIMENTOS DE ORIGEN ANIMAL,LECHE Y SUSTITUTOS,
         LEGUMINOSAS,GRASAS,AZÚCARES,ALIMENTOS LIBRES DE ENERGÍA]*/
-        if(kcal < 1000) {
-            return [[1,1,1,1,1,0,1,0,0],[0,0,0,0,0,0,0,0,0],[2,2,1,1,1,0,1,0,0],[0,0,0,0,1,0,0,0,0],[1,1,1,0,0,0,0,0,1]];
+        if (kcal < 1000) {
+            return [[1, 1, 1, 1, 1, 0, 1, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [2, 2, 1, 1, 1, 0, 1, 0, 0], [0, 0, 0, 0, 1, 0, 0, 0, 0], [1, 1, 1, 0, 0, 0, 0, 0, 1]];
         } else if (kcal < 1200) {
-            return [[2,1,1,0,0,0,1,0,1],[1,0,0,0,1,0,0,0,0],[2,2,1,2,1,0,1,0,0],[0,1,0,0,1,0,0,0,0],[1,1,0,0,1,0,0,0,0]];
+            return [[2, 1, 1, 0, 0, 0, 1, 0, 1], [1, 0, 0, 0, 1, 0, 0, 0, 0], [2, 2, 1, 2, 1, 0, 1, 0, 0], [0, 1, 0, 0, 1, 0, 0, 0, 0], [1, 1, 0, 0, 1, 0, 0, 0, 0]];
         } else if (kcal < 1400) {
-            return [[2,1,1,1,1,0,1,0,0],[0,0,1,0,1,0,0,0,0],[2,2,0,2,0,0,1,0,0],[1,0,0,0,1,0,0,0,0],[1,1,1,1,1,0,0,0,0]];
+            return [[2, 1, 1, 1, 1, 0, 1, 0, 0], [0, 0, 1, 0, 1, 0, 0, 0, 0], [2, 2, 0, 2, 0, 0, 1, 0, 0], [1, 0, 0, 0, 1, 0, 0, 0, 0], [1, 1, 1, 1, 1, 0, 0, 0, 0]];
         } else if (kcal < 1600) {
-            return [[2,2,1,0,1,0,1,0,0],[0,1,0,1,0,0,0,0,0],[2,2,1,2,1,0,1,0,0],[1,0,1,0,0,0,0,0,0],[1,2,1,1,0,0,0,0,1]];
+            return [[2, 2, 1, 0, 1, 0, 1, 0, 0], [0, 1, 0, 1, 0, 0, 0, 0, 0], [2, 2, 1, 2, 1, 0, 1, 0, 0], [1, 0, 1, 0, 0, 0, 0, 0, 0], [1, 2, 1, 1, 0, 0, 0, 0, 1]];
         } else if (kcal < 1800) {
-            return [[3,1,2,1,1,0,1,0,0],[1,1,0,0,0,0,0,0,0],[2,2,1,2,1,0,1,0,0],[1,0,0,0,1,0,0,0,0],[1,2,1,1,0,0,0,0,1]];
+            return [[3, 1, 2, 1, 1, 0, 1, 0, 0], [1, 1, 0, 0, 0, 0, 0, 0, 0], [2, 2, 1, 2, 1, 0, 1, 0, 0], [1, 0, 0, 0, 1, 0, 0, 0, 0], [1, 2, 1, 1, 0, 0, 0, 0, 1]];
         } else if (kcal < 2000) {
-            return [[3,1,2,2,1,0,1,0,0],[1,1,0,0,0,0,0,0,0],[2,2,1,2,1,0,1,0,1],[1,0,1,0,0,0,0,0,0],[1,2,1,1,1,0,0,0,0]];
+            return [[3, 1, 2, 2, 1, 0, 1, 0, 0], [1, 1, 0, 0, 0, 0, 0, 0, 0], [2, 2, 1, 2, 1, 0, 1, 0, 1], [1, 0, 1, 0, 0, 0, 0, 0, 0], [1, 2, 1, 1, 1, 0, 0, 0, 0]];
         }
     }
 
-    function construir_colacion(tc,plan,dic) {
-        var llave_comida = ["Desayuno","Colacion1","Comida","Colacion2","Cena"]
-        var llave_alimentos = ["Cereales y tubérculos", "Verduras","Frutas","Alimentos de origen animal",
-        "Leche", "Leguminosas", "Grasas", "Azúcares", "Alimentos libres en energía"];
+    function construir_colacion(tc, plan, dic) {
+        var llave_comida = ["Desayuno", "Colacion1", "Comida", "Colacion2", "Cena"]
+        var llave_alimentos = ["Cereales y tubérculos", "Verduras", "Frutas", "Alimentos de origen animal",
+            "Leche", "Leguminosas", "Grasas", "Azúcares", "Alimentos libres en energía"];
         var html_code = "<td>";
-        for(var i=0; i<plan.length;i++) {//[]
-            for(var j=0; j<plan[i];j++) {//n
-                html_code += "<select name='" + llave_comida[tc] + "'>"
-                for(var k=0; k<dic[llave_alimentos[i]].length;k++) {
+        for (var i = 0; i < plan.length; i++) {//[]
+            for (var j = 0; j < plan[i]; j++) {//n
+                html_code += "<select class='form-control' name='" + llave_comida[tc] + "'>"
+                for (var k = 0; k < dic[llave_alimentos[i]].length; k++) {
                     html_code += "<option value = '" + dic[llave_alimentos[i]][k][1] + "'>" + dic[llave_alimentos[i]][k][0] + "</option>"
                 }
                 html_code += "</select><br/>";
@@ -231,6 +259,10 @@
         }
         html_code += "</td>";
         return html_code;
+    }
+    
+    function agregar_listeners(){
+        
     }
 </script>
 {% endblock %}
