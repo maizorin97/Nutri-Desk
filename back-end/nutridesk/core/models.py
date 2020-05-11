@@ -19,3 +19,16 @@ class InfoUsuario(models.Model):
 
     def __str__(self):
         return '{0}'.format(self.usuario.username)
+
+class PesosUsuario(models.Model):
+    idPeso = models.AutoField(primary_key=True, verbose_name="Id Peso")
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Id Usuario")
+    peso = models.FloatField(verbose_name="Peso en KG")
+    fecha_creacion = models.DateField(auto_now_add=True)
+
+    class Meta:
+        ordering = ('-usuario',)
+
+    def __str__(self):
+        return '{0} - {1} - {2}'.format(self.usuario.username, self.fecha_creacion ,self.peso)
+

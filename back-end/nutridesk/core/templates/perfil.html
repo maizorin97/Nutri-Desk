@@ -16,7 +16,7 @@
     <div class="col-12">
       <div class="card shadow mb-4">
         <div class="card-header py-3">
-          <h6 class="m-0 font-weight-bold text-primary">{{user.first_name}} {{user.last_name}}</h6>
+          <h6 class="m-0 font-weight-bold text-primary"></h6>
         </div>
         <div class="card-body">
           <div class="row">
@@ -28,8 +28,7 @@
               <div class="table-responsive align-content-center">
                 <form method="POST">
                   {% csrf_token %}
-                  {{form.as_p}}
-                  <!--<table class="table table-condensed table-responsive table-user-information">
+                  <table class="table table-condensed table-responsive table-user-information">
                     <tbody>
                       <tr>
                         <td><strong><i class="fas fa-id-card text-primary"></i> Nombre</strong></td>
@@ -41,26 +40,28 @@
                       </tr>
                       <tr>
                         <td><strong><i class="fas fa-venus-mars text-primary"></i> Sexo</strong></td>
-                        <td class="text-secondary">Masculino</td>
+                        <td class="text-secondary">{{info_form.sexo}}</td>
                       </tr>
                       <tr>
                         <td><strong><i class="fas fa-envelope text-primary"></i> Email</strong></td>
-                        <td class="text-secondary">{{user.username}}</td>
+                        <td class="text-secondary">{{user.username}}
+                          {{info_form.usuario}}
+                        </td>
                       </tr>
                       <tr>
-                        <td><strong><i class="fas fa-weight text-primary"></i> Peso</strong></td>
-                        <td class="text-secondary">{{form.peso}} kg</td>
+                        <td><strong><i class="fas fa-weight text-primary"></i> Peso (Kg)</strong></td>
+                        <td class="text-secondary">{{info_form.peso}}</td>
                       </tr>
                       <tr>
-                        <td><strong><i class="fas fa-arrows-alt-v text-primary"></i> Altura</strong></td>
-                        <td class="text-secondary">{{form.altura}} cm</td>
+                        <td><strong><i class="fas fa-arrows-alt-v text-primary"></i> Altura (Cm)</strong></td>
+                        <td class="text-secondary">{{info_form.altura}}</td>
                       </tr>
                       <tr>
-                        <td><strong><i class="fas fa-birthday-cake text-primary"></i> Cumpleaños</strong></td>
-                        <td class="text-secondary">{{form.fecha_nacimiento}}</td>
+                        <td><strong><i class="fas fa-birthday-cake text-primary"></i> Fecha de Nacimiento</strong></td>
+                        <td class="text-secondary">{{info_form.fecha_nacimiento}}</td>
                       </tr>
                     </tbody>
-                  </table>-->
+                  </table>
                   <button type="submit" class="btn btn-primary">Actualizar datos</button>
                   <button class="btn btn-dark btn-user">Modificar foto de perfil</button>
                 </form>

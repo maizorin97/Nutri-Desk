@@ -42,7 +42,7 @@ class FormaRegistroUsuario(UserCreationForm):
         fields = ('username', 'password1', 'password2', 'first_name', 'last_name')
 
 class FormaDatosFisiologicos(forms.ModelForm):
-    fecha_nacimiento = forms.DateField(label="Fecha de nacimiento", required=True, widget=forms.DateInput(
+    fecha_nacimiento = forms.DateField(label="Fecha de nacimiento" ,required=True, widget=forms.TextInput(
         attrs={'class':'form-control', 'placeholder':'Fecha de nacimiento','type':'date'}))
     altura = forms.FloatField(label="Altura en centimetros", required=True, widget=forms.NumberInput(
         attrs={'class':'form-control', 'placeholder':'Altura en centimetros'}))
