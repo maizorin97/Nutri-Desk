@@ -19,20 +19,13 @@ conda create -n nombre_de_entorno python==3.8.1
 ```
 conda activate nombre_de_entorno
 ```
-* Instale Django 3.0 en su entorno virtual
+* Instale las librerias del proyecto contenidas en el archivo requirements.txt
 ```
-python -m pip install Django==3.0
+pip install -r requirements.txt
 ```
-* Para un correcto funcionamiento instale las siguientes dependencias con los siguientes comandos
+* Para la elaboración y visualización de los modelos predictivos, es necesario instalar JupyterLab
 ```
-conda install Pillow
-pip install django-ckeditor
 conda install -c conda-forge jupyterlab
-conda install numpy
-conda install pandas
-conda install matplotlib
-conda install seaborn
-conda install scikit-learn
 ```
 * Corra el archivo manage.py con el siguiente comando en su terminal (debe tener su entorno virtual activado)
 ```
