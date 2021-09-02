@@ -13,11 +13,11 @@ _Nuestro proyecto pretende ser una herramienta informativa y de concientización
 * Instalar Anaconda o Miniconda en su equipo, puede descargarlo [aquí](https://www.anaconda.com/distribution/).
 * Crear un nuevo entorno virtual, para ello use el comando
 ```
-conda create -n nombre_de_entorno python==3.8.1
+conda create -n nutridesk python==3.8.1
 ```
 * Active el entorno que acaba de crear usando el comando
 ```
-conda activate nombre_de_entorno
+conda activate nutridesk
 ```
 * Instale las librerias del proyecto contenidas en el archivo requirements.txt
 ```
@@ -45,11 +45,12 @@ Usamos [SemVer](http://semver.org/) para el versionado. Para todas las versiones
 
 ## Autores ✒️
 
-* **Uriel Cajiga** - *Desarrollador* - [UrielCajiga](https://github.com/UrielCajiga)
+* **Hadad Bautista** - *Desarrollador* - [HadadBG](https://github.com/HadadBG)
+* **Samuel Jurado** - *Desarrollador* - [SamAlJuMa](https://github.com/SamAlJuMa)
 * **Samuel Miranda** - *Desarrollador* - [SamEBM](https://github.com/SamEBM)
 * **Ismael Zavala** - *Desarrollador* - [MintBoy97](https://github.com/MintBoy97)
 
-También puedes mirar la lista de todos los [contribuyentes](https://github.com/MintBoy97/Nutri-Desk/contributors) quíenes han participado en este proyecto. 
+También puedes mirar la lista de todos los [contribuidores](https://github.com/MintBoy97/Nutri-Desk/contributors) quíenes han participado en este proyecto.
 
 ## Licencia 📄
 
