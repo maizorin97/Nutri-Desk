@@ -82,8 +82,12 @@ WSGI_APPLICATION = 'nutridesk.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'nutridesk',
+        'USER': 'superuser@nutridesk',
+        'PASSWORD': 'su+1per?ad',
+        'HOST': 'nutridesk.database.windows.net',
+        'PORT': '3306',
     }
 }
 
