@@ -84,9 +84,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'nutridesk',
-        'USER': 'superuser@nutridesk',
-        'PASSWORD': 'su+1per?ad',
-        'HOST': 'nutridesk.database.windows.net',
+        'USER': 'root',
+        'PASSWORD': 'gaia3200',
+        'HOST': '40.76.48.154',
         'PORT': '3306',
     }
 }
