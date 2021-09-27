@@ -1,118 +1,390 @@
-{% extends 'base_navbar.html' %}
-{% block title %}Planes{% endblock %}
-{% load static %}
-{% block main_content %}
-<!-- Begin Page Content -->
-<div class="container-fluid">
+{% extends 'base.html' %} {% block title %}Planes{% endblock %} {% load static%}
+{% block content %}
 
-    <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">Generación de Plan de Alimentación</h1>
-    <p class="mb-4 text-justify">De acuerdo a tus características físicas actuales, se te recomendará un plan de
-        alimentación acorde a tus necesidades. En la siguiente
-        tabla, se describen los alimentos y su aporte calórico, según sea el enfoque que desees.
-        Es importante que sigas estrictamente estas indicaciones para lograr realizar un avance en el proceso y
-        auxiliarte con un profesional de la salud.</p>
-
-    <div class="form-group row">
-        <div class="col-sm-3 align-self-center">
-            <label class="text-primary">Peso: {{infoUser.peso}} KG</label>
-        </div>
-        <div class="col-sm-3 align-self-center">
-            <label class="text-primary">Altura: {{infoUser.altura}} CM</label>
-        </div>
-        <div class="col-sm-3 align-self-center">
-            <label class="text-primary">Edad: {{edad|stringformat:".1f"}} Años</label>
-        </div>
-        <div class="col-sm-3 align-self-center">
-            <label class="text-primary">Sexo: {% if infoUser.sexo == 'H'%} Hombre {% else %} Mujer {% endif %}</label>
-        </div>
+<style type="text/css">
+  nav .brand-logo {
+    padding-left: 2rem !important;
+    color: black;
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+  nav {
+    background-color: #2a8c3e;
+  }
+  .container {
+    margin-top: 2vh;
+    width: 90%;
+    max-width: none;
+    padding: 1vh 3rem;
+    background-color: #dcfcdc;
+    height: 83vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  .tabla-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+    padding: 1rem 0 0 0;
+  }
+  .titulo {
+    font-size: 1.8rem;
+    color: #2a8c3e;
+  }
+  #mitabla {
+    overflow: hidden;
+    border-collapse: collapse;
+  }
+  .arrow {
+    font-size: 7vh;
+  }
+  .buttons {
+    display: flex;
+    justify-content: flex-end;
+    align-self: flex-end;
+    margin-top: auto;
+    position: relative;
+    left: 3rem;
+    height: 10vh;
+    flex-direction: row;
+    justify-content: center;
+  }
+  button {
+    background-color: Transparent;
+    background-repeat: no-repeat;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+    float: right;
+  }
+  button:active {
+    background-color: Transparent;
+  }
+  button:focus {
+    background-color: Transparent;
+  }
+  button i {
+    color: #2a8c3e;
+  }
+  .noPage {
+    position: relative;
+    left: 4px;
+    border-radius: 50%;
+    text-align: center;
+    width: 5vh;
+    height: 5vh;
+    background-color: #2a8c3e;
+    margin: auto;
+  }
+  .texto {
+    position: relative;
+    top: 2px;
+    right: 2px;
+    font-size: 3vh;
+    color: white;
+  }
+  .nav-content{
+      padding-left: 6rem;
+      height: 6vh;
+  }
+  .nav-wrapper{
+      padding-left: 2rem;
+      height: 7vh!important;
+      background-color: white;
+  }
+  .tabs{
+      height: 100%;
+  }
+  .tabs .tab{
+      height: 100%;
+  }
+  .tabs .tab a{
+      display: flex;
+      align-items: center;
+  }
+  .tabla-header{
+      height:9vh;
+  }
+  thead tr{
+      height: 7vh;
+      border-bottom:1px solid #2a8c3e;
+  }
+  tbody tr{
+      height: 11vh;
+  }
+  .row{
+      margin-bottom: 0;
+  }
+  .headNombre{
+      width: 50%;
+      color: black;
+  }
+  .headAporte{
+      width: 33.33%;
+      text-align: center;
+      color: black;
+  }
+  .headAccion{
+      text-align: center;
+      color: black;
+  }
+  .aporte{
+    text-align: center;
+  }
+  .accion{
+    text-align: center;
+  }
+</style>
+<body>
+  <nav class="nav-extended">
+    <div class="nav-wrapper">
+      <a href="#" class="brand-logo">Nutridesk</a>
     </div>
-    <div class="form-group row">
-        <div class="col-sm-4 align-self-center">
-            <label for="txtObjetivo" class="text-primary">¿Cuál es su Objetivo?</label>
-            <select class="form-control" id="txtObjetivo">
-                <option>Mantener Peso</option>
-                <option>Subir Peso</option>
-                <option>Bajar Peso</option>
-            </select>
-        </div>
-        <div class="col-sm-4 align-self-center">
-            <label for="txtActividadFisica" class="text-primary">¿Realiza actividad física?</label>
-            <select class="form-control" id="txtActividadFisica">
-                <option>No hace nada de ejercicio</option>
-                <option>Ejercicio ligero dos días por semana</option>
-                <option>Ejercicio moderado, unos cuatro días por semana</option>
-                <option>Deporte regular seis días a la semana</option>
-                <option>Deportista de élite o entrena muy intenso cada día</option>
-            </select>
-        </div>
-        <div class="col-sm-4 align-self-center">
-            <button class="align-middle btn btn-primary" onclick="calcular_requisitos()">Calcular
-                requerimientos</button>
-        </div>
+    <div class="nav-content">
+      <ul class="tabs tabs-transparent">
+        <li class="tab"><a href="#test1">Perfil</a></li>
+        <li class="tab">
+          <a class="active" href="#test2">Planes de Alimentación</a>
+        </li>
+        <li class="tab disabled"><a href="#test3">SMAE</a></li>
+        <li class="tab"><a href="#test4">Diagnostico</a></li>
+      </ul>
     </div>
+  </nav>
+  <div id="test1" class="col s12">Test 1</div>
+  <div id="test2" class="col s12">
+    <div class="container">
+      <div class="tabla-header">
+        <p class="titulo">Planes de Alimentación</p>
+      </div>
+      <div class="row">
+        <div class="col s12 center">
+          <table class="highlight" id="mitabla">
+            <thead>
+              <tr>
+                <th class="headNombre">Nombre</th>
+                <th class="headAporte">Aporte calórico</th>
+                <th class="headAccion">Acción</th>
+              </tr>
+            </thead>
+            <tbody id="cargadorU">
+            <tr>
+                <th>Plan A</th>
+                <th class="aporte">1040</th>
+                <th class="accion">
+                <i class="material-icons deletePostales">
+                    delete
+                  </i>
+                </th>
+            </tr>
+            <tr>
+                <th>Plan B</th>
+                <th class="aporte">1500</th>
+                <th class="accion">
+                <i class="material-icons deletePostales">
+                    delete
+                  </i>
+                </th>
+            </tr>
+            <tr>
+                <th>Plan C</th>
+                <th class="aporte">1600</th>
+                <th class="accion">
+                <i class="material-icons deletePostales">
+                    delete
+                  </i>
+                </th>
+            </tr>
+            <tr>
+                <th>Plan D</th>
+                <th class="aporte">1750</th>
+                <th class="accion">
+                <i class="material-icons deletePostales">
+                    delete
+                  </i>
+                </th>
+            </tr>
+            <tr>
+                <th>Plan E</th>
+                <th class="aporte">1820</th>
+                <th class="accion">
+                <i class="material-icons deletePostales">
+                    delete
+                  </i>
+                </th>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="buttons">
+        <button id="leftArrow">
+          <i class="material-icons arrow"> navigate_before </i>
+        </button>
+        <div class="noPage">
+          <i class="texto" id="noPage"> 1 </i>
+        </div>
+        <button id="rightArrow">
+          <i class="material-icons arrow"> navigate_next </i>
+        </button>
+      </div>
+    </div>
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+      <!-- Page Heading -->
+      <h1 class="h3 mb-2 text-gray-800">Generación de Plan de Alimentación</h1>
+      <p class="mb-4 text-justify">
+        De acuerdo a tus características físicas actuales, se te recomendará un
+        plan de alimentación acorde a tus necesidades. En la siguiente tabla, se
+        describen los alimentos y su aporte calórico, según sea el enfoque que
+        desees. Es importante que sigas estrictamente estas indicaciones para
+        lograr realizar un avance en el proceso y auxiliarte con un profesional
+        de la salud.
+      </p>
 
-    <form method="POST">{% csrf_token %}
+      <div class="form-group row">
+        <div class="col-sm-3 align-self-center">
+          <label class="text-primary">Peso: {{infoUser.peso}} KG</label>
+        </div>
+        <div class="col-sm-3 align-self-center">
+          <label class="text-primary">Altura: {{infoUser.altura}} CM</label>
+        </div>
+        <div class="col-sm-3 align-self-center">
+          <label class="text-primary"
+            >Edad: {{edad|stringformat:".1f"}} Años</label
+          >
+        </div>
+        <div class="col-sm-3 align-self-center">
+          <label class="text-primary">Sexo: {% if infoUser.sexo == 'H'%} Hombre {% else %} Mujer {%endif%}</label
+          >
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-sm-4 align-self-center">
+          <label for="txtObjetivo" class="text-primary"
+            >¿Cuál es su Objetivo?</label
+          >
+          <select class="form-control" id="txtObjetivo">
+            <option>Mantener Peso</option>
+            <option>Subir Peso</option>
+            <option>Bajar Peso</option>
+          </select>
+        </div>
+        <div class="col-sm-4 align-self-center">
+          <label for="txtActividadFisica" class="text-primary"
+            >¿Realiza actividad física?</label
+          >
+          <select class="form-control" id="txtActividadFisica">
+            <option>No hace nada de ejercicio</option>
+            <option>Ejercicio ligero dos días por semana</option>
+            <option>Ejercicio moderado, unos cuatro días por semana</option>
+            <option>Deporte regular seis días a la semana</option>
+            <option>Deportista de élite o entrena muy intenso cada día</option>
+          </select>
+        </div>
+        <div class="col-sm-4 align-self-center">
+          <button
+            class="align-middle btn btn-primary"
+            onclick="calcular_requisitos()"
+          >
+            Calcular requerimientos
+          </button>
+        </div>
+      </div>
+
+      <form method="POST">
+        {% csrf_token %}
         <div class="form-group row">
-            <div class="col-sm-4 align-self-center">
-                <label class="text-primary">IMC:</label>
-                <label id='txtIMC' class="text-primary">_</label>
-                <label id="txtMsjIMC"/>_</label>
-            </div>
+          <div class="col-sm-4 align-self-center">
+            <label class="text-primary">IMC:</label>
+            <label id="txtIMC" class="text-primary">_</label>
+            <label id="txtMsjIMC">_</label>
+          </div>
 
-            <div class="col-sm-4 align-self-center">
-                <label class="text-primary">TMB:</label>
-                <label id='txtTMB' class="text-primary">_</label> Kcal
-            </div>
+          <div class="col-sm-4 align-self-center">
+            <label class="text-primary">TMB:</label>
+            <label id="txtTMB" class="text-primary">_</label> Kcal
+          </div>
         </div>
         <div class="form-group row">
-            <div class="col-sm-4 align-self-center">
-                <label for="txtNombrePlan" class="text-primary" >Nombre del Plan</label>
-                <input type="text" class="form-control form-control-user"
-                name="txtNombrePlan" id="txtNombrePlan" placeholder="Ingrese un nombre" required>
-            </div>
+          <div class="col-sm-4 align-self-center">
+            <label for="txtNombrePlan" class="text-primary"
+              >Nombre del Plan</label
+            >
+            <input
+              type="text"
+              class="form-control form-control-user"
+              name="txtNombrePlan"
+              id="txtNombrePlan"
+              placeholder="Ingrese un nombre"
+              required
+            />
+          </div>
 
-            <div class="col-sm-4 align-self-center">
-                <label for="txtAporteCalorico" class="text-primary">Aporte Calórico</label>
-                <input type="text" class="form-control form-control-user" 
-                name="txtAporteCalorico" id="txtAporteCalorico" placeholder="Kcal" required readonly>
-            </div>
+          <div class="col-sm-4 align-self-center">
+            <label for="txtAporteCalorico" class="text-primary"
+              >Aporte Calórico</label
+            >
+            <input
+              type="text"
+              class="form-control form-control-user"
+              name="txtAporteCalorico"
+              id="txtAporteCalorico"
+              placeholder="Kcal"
+              required
+              readonly
+            />
+          </div>
         </div>
 
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Nuevo Plan</h6>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive form-group">
-                    <table class="table table-bordered" id="tablaPlan" width="100%" cellspacing="0">
-                        <thead class="text-primary text-center">
-                            <tr>
-                                <th>Desayuno</th>
-                                <th>Colación</th>
-                                <th>Comida</th>
-                                <th>Colación</th>
-                                <th>Cena</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr id="txtColaciones">
-                            </tr>
-                        </tbody>
-                    </table>
+          <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Nuevo Plan</h6>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive form-group">
+              <table
+                class="table table-bordered"
+                id="tablaPlan"
+                width="100%"
+                cellspacing="0"
+              >
+                <thead class="text-primary text-center">
+                  <tr>
+                    <th>Desayuno</th>
+                    <th>Colación</th>
+                    <th>Comida</th>
+                    <th>Colación</th>
+                    <th>Cena</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr id="txtColaciones"></tr>
+                </tbody>
+              </table>
 
-                    <button type="submit" class="align-middle btn btn-primary">Guardar Nuevo Plan</button>
-                    <br><br>
-                    <a href="{% url 'planes' %}">&lt;- Regresar a la lista de planes</a>
-                </div>
+              <button type="submit" class="align-middle btn btn-primary">
+                Guardar Nuevo Plan
+              </button>
+              <br /><br />
+              <a href="{% url 'planes' %}"
+                >&lt;- Regresar a la lista de planes</a
+              >
             </div>
+          </div>
         </div>
-    </form>
-</div>
+      </form>
+    </div>
+  </div>
+  <div id="test3" class="col s12">Test 3</div>
+  <div id="test4" class="col s12">Test 4</div>
+</body>
 <!-- /.container-fluid -->
-{% endblock %}
-{% block script %}
+{% endblock %} {% block script_end %}
 <script>
     function calcular_requisitos() {
         var peso = {{ infoUser.peso }};
@@ -269,7 +541,7 @@
         {% endfor %}
         return alimentos;
     }
-    
+
     function agregar_listeners() {
         var llave_comida = ["Desayuno", "Colacion1", "Comida", "Colacion2", "Cena"];
         var selects = {};
@@ -300,5 +572,11 @@
         var txt_aporte_calorico = document.getElementById("txtAporteCalorico");
         txt_aporte_calorico.value = suma;
     }
+    document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.sidenav');
+    var instances = M.Sidenav.init(elems, {});
+    var el = document.querySelectorAll(".tabs");
+    var instance = M.Tabs.init(el, {});
+  });
 </script>
 {% endblock %}
