@@ -148,7 +148,7 @@
     color: #146fd7;
     cursor: pointer;
   }
-  tr th{
+  tr td{
     color: #2a8c3e;
   }
   .buttonNuevo{
@@ -167,8 +167,7 @@
     color: black;
   }
   .arrow:hover{
-    color: #6fe086;
-    
+    color: #6fe086;  
   }
  
 </style>
@@ -353,66 +352,22 @@
               </tr>
             </thead>
             <tbody id="cargadorU">
-            <tr>
-                <th>Plan A</th>
-                <th class="aporte">1040</th>
-                <th class="accion">
-                <i class="material-icons deleteButton">
+              {% for plan in lista_planes %}
+              {% if plan.idUsuario.username == user.username%}
+              <tr name="plan">
+                <td>{{ plan.descripcion }}</td>
+                <td class="aporte">{{ plan.calorias }}</td>
+                <td class="accion">
+                  <i class="material-icons deleteButton">
                     delete
                   </i>
                   <i class="material-icons seeButton">
                     visibility
                   </i>
-                </th>
-            </tr>
-            <tr>
-                <th>Plan B</th>
-                <th class="aporte">1500</th>
-                <th class="accion">
-                <i class="material-icons deleteButton">
-                    delete
-                  </i>
-                  <i class="material-icons seeButton">
-                    visibility
-                  </i>
-                </th>
-            </tr>
-            <tr>
-                <th>Plan C</th>
-                <th class="aporte">1600</th>
-                <th class="accion">
-                <i class="material-icons deleteButton">
-                    delete
-                  </i>
-                  <i class="material-icons seeButton">
-                    visibility
-                  </i>
-                </th>
-            </tr>
-            <tr>
-                <th>Plan D</th>
-                <th class="aporte">1750</th>
-                <th class="accion">
-                <i class="material-icons deleteButton">
-                    delete
-                  </i>
-                  <i class="material-icons seeButton">
-                    visibility
-                  </i>
-                </th>
-            </tr>
-            <tr>
-                <th>Plan E</th>
-                <th class="aporte">1820</th>
-                <th class="accion">
-                <i class="material-icons deleteButton">
-                    delete
-                  </i>
-                  <i class="material-icons seeButton">
-                    visibility
-                  </i>
-                </th>
-            </tr>
+                </td>          
+              </tr>
+              {% endif %}
+            {% endfor %}
           </table>
         </div>
       </div>
@@ -423,7 +378,7 @@
         <div class="noPage">
           <i class="texto" id="noPage"> 1 </i>
         </div>
-        <button id="rightArrow waves-effect">
+        <button id="rightArrow">
           <i class="material-icons arrow waves-effect"> navigate_next </i>
         </button>
       </div>
@@ -623,23 +578,60 @@
         txt_aporte_calorico.value = suma;
     }
     document.addEventListener('DOMContentLoaded', function() {
+    //Inicializacion de elementos de materialize 
     var elems = document.querySelectorAll('.sidenav');
     var instances = M.Sidenav.init(elems, {});
     var el = document.querySelectorAll(".tabs");
     var instance = M.Tabs.init(el, {});
     elems = document.querySelectorAll(".modal");
     instances = M.Modal.init(elems, {})
+    //Event listener de botones de eliminar
     Array.from(document.getElementsByClassName("deleteButton")).forEach(
           button => {
             button.addEventListener("click", () => {
               alert("Boton eliminar presionado");
             });
           });
+    //Event listener de botones para ver
     Array.from(document.getElementsByClassName("seeButton")).forEach(
           button => {
             button.addEventListener("click", () => {
               alert("Boton ver presionado");
             });
+    });
+    //Ocultar planes no necesarios
+    var planes=Array.from(document.getElementsByName("plan"));
+    for(var i=5;i<planes.length;i++){
+      planes[i].style.display="none";
+    }
+    //Event listener de flechas de navegacion
+    var page=0;
+    document.getElementById("leftArrow").addEventListener("click", () => {
+    if (page != 0) {
+      for(var i=5*page;i<planes.length && i<(5*(page+1));i++){
+          planes[i].style.display="none";
+        }
+      page -= 1;
+      for(var i=5*page;i<planes.length && i<(5*(page+1));i++){
+          planes[i].style.display="table-row";
+        }
+      document.getElementById("noPage").innerText = page + 1;
+    }
+    });
+    document.getElementById("rightArrow").addEventListener("click", () => {
+      if(planes.length>5*(page+1)){
+        for(var i=5*page;i<planes.length && i<(5*(page+1));i++){
+          planes[i].style.display="none";
+        }
+        page += 1;
+        for(var i=5*page;i<planes.length && i<(5*(page+1));i++){
+          planes[i].style.display="table-row";
+        }
+        document.getElementById("noPage").innerText = page + 1;
+      }
+      else{
+        alert("Parece que son todos los planes");
+      }
     });
   });
 </script>
