@@ -11,10 +11,27 @@ from datetime import datetime as dt
 
 
 class lista_planes(ListView):
-    template_name = "lista_planes.html"
+    template_name = "generar_plan.html"
     model = Plan
     context_object_name = "lista_planes"
-
+    def get_context_data(self, **kwargs):
+        context = super(lista_planes, self).get_context_data(**kwargs)
+        infoUser = InfoUsuario.objects.get(usuario=self.request.user)
+        listaGrupos = Grupo.objects.all()
+        listaAlimentos = Alimento.objects.all()
+        edad = (
+            dt.now().year
+            - infoUser.fecha_nacimiento.year
+            + (dt.now().month - infoUser.fecha_nacimiento.month) * (1 / 12)
+        )
+        context.update({
+            "infoUser": infoUser,
+            "edad": edad,
+            "listaAlimentos": listaAlimentos,
+            "listaGrupos": listaGrupos,
+        })
+        
+        return context
 
 def generar_planes(request):
     if request.method == "POST":
@@ -49,7 +66,6 @@ def eliminar_plan(request, plan_id):
 def preparar_plan(current_user, request):
     # filter(usuario=current_user)#.all()
     infoUser = InfoUsuario.objects.get(usuario=current_user)
-    print(infoUser)
     listaGrupos = Grupo.objects.all()
     listaAlimentos = Alimento.objects.all()
     edad = (
@@ -71,8 +87,9 @@ def preparar_plan(current_user, request):
 
 
 def guardar_plan(req_post, current_user):
-
+    print("hola")
     nombre_plan = req_post.get("txtNombrePlan")
+    print(req_post.get("txtAporteCalorico"))
     aporte_kcal = int(req_post.get("txtAporteCalorico"))
     print("nombre=" + nombre_plan + " kcal=" + str(aporte_kcal))
 

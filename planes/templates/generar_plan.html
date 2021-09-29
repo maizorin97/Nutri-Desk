@@ -138,101 +138,44 @@
   .accion{
     text-align: center;
   }
+  .deleteButton{
+    font-size: 4vh;
+    color: #ec5f67;
+    cursor: pointer;
+  }
+  .seeButton{
+    font-size: 4vh;
+    color: #146fd7;
+    cursor: pointer;
+  }
+  tr th{
+    color: #2a8c3e;
+  }
+  .buttonNuevo{
+    border: black 1px solid;
+    padding: 0 4rem;
+    line-height: 0;
+    height: 6vh;
+    background-color: #2a8c3e;
+    text-transform: none;
+  }
+  .buttonNuevo:focus{
+    background-color: #2a8c3e;
+  }
+  .buttonNuevo:hover{
+    background-color: #6fe086;
+    color: black;
+  }
+  .arrow:hover{
+    color: #6fe086;
+    
+  }
+ 
 </style>
 <body>
-  <nav class="nav-extended">
-    <div class="nav-wrapper">
-      <a href="#" class="brand-logo">Nutridesk</a>
-    </div>
-    <div class="nav-content">
-      <ul class="tabs tabs-transparent">
-        <li class="tab"><a href="#test1">Perfil</a></li>
-        <li class="tab">
-          <a class="active" href="#test2">Planes de Alimentación</a>
-        </li>
-        <li class="tab disabled"><a href="#test3">SMAE</a></li>
-        <li class="tab"><a href="#test4">Diagnostico</a></li>
-      </ul>
-    </div>
-  </nav>
-  <div id="test1" class="col s12">Test 1</div>
-  <div id="test2" class="col s12">
-    <div class="container">
-      <div class="tabla-header">
-        <p class="titulo">Planes de Alimentación</p>
-      </div>
-      <div class="row">
-        <div class="col s12 center">
-          <table class="highlight" id="mitabla">
-            <thead>
-              <tr>
-                <th class="headNombre">Nombre</th>
-                <th class="headAporte">Aporte calórico</th>
-                <th class="headAccion">Acción</th>
-              </tr>
-            </thead>
-            <tbody id="cargadorU">
-            <tr>
-                <th>Plan A</th>
-                <th class="aporte">1040</th>
-                <th class="accion">
-                <i class="material-icons deletePostales">
-                    delete
-                  </i>
-                </th>
-            </tr>
-            <tr>
-                <th>Plan B</th>
-                <th class="aporte">1500</th>
-                <th class="accion">
-                <i class="material-icons deletePostales">
-                    delete
-                  </i>
-                </th>
-            </tr>
-            <tr>
-                <th>Plan C</th>
-                <th class="aporte">1600</th>
-                <th class="accion">
-                <i class="material-icons deletePostales">
-                    delete
-                  </i>
-                </th>
-            </tr>
-            <tr>
-                <th>Plan D</th>
-                <th class="aporte">1750</th>
-                <th class="accion">
-                <i class="material-icons deletePostales">
-                    delete
-                  </i>
-                </th>
-            </tr>
-            <tr>
-                <th>Plan E</th>
-                <th class="aporte">1820</th>
-                <th class="accion">
-                <i class="material-icons deletePostales">
-                    delete
-                  </i>
-                </th>
-            </tr>
-          </table>
-        </div>
-      </div>
-      <div class="buttons">
-        <button id="leftArrow">
-          <i class="material-icons arrow"> navigate_before </i>
-        </button>
-        <div class="noPage">
-          <i class="texto" id="noPage"> 1 </i>
-        </div>
-        <button id="rightArrow">
-          <i class="material-icons arrow"> navigate_next </i>
-        </button>
-      </div>
-    </div>
-    <!-- Begin Page Content -->
+  <div id="modal1" class="modal">
+    <div class="modal-content">
+        <!-- Begin Page Content -->
     <div class="container-fluid">
       <!-- Page Heading -->
       <h1 class="h3 mb-2 text-gray-800">Generación de Plan de Alimentación</h1>
@@ -370,14 +313,120 @@
               <button type="submit" class="align-middle btn btn-primary">
                 Guardar Nuevo Plan
               </button>
-              <br /><br />
-              <a href="{% url 'planes' %}"
-                >&lt;- Regresar a la lista de planes</a
-              >
             </div>
           </div>
         </div>
       </form>
+    </div>
+    </div>
+  </div>
+  <nav class="nav-extended">
+    <div class="nav-wrapper">
+      <a href="#" class="brand-logo">Nutridesk</a>
+    </div>
+    <div class="nav-content">
+      <ul class="tabs tabs-transparent">
+        <li class="tab"><a href="#test1">Perfil</a></li>
+        <li class="tab">
+          <a class="active" href="#test2">Planes de Alimentación</a>
+        </li>
+        <li class="tab disabled"><a href="#test3">SMAE</a></li>
+        <li class="tab"><a href="#test4">Diagnostico</a></li>
+      </ul>
+    </div>
+  </nav>
+  <div id="test1" class="col s12">Test 1</div>
+  <div id="test2" class="col s12">
+    <div class="container">
+      <div class="tabla-header">
+        <p class="titulo">Planes de Alimentación</p>
+        <button class="waves-effect waves-light btn-large btn modal-trigger buttonNuevo" data-target="modal1">Nuevo plan</button>
+      </div>
+      <div class="row">
+        <div class="col s12 center">
+          <table class="highlight" id="mitabla">
+            <thead>
+              <tr>
+                <th class="headNombre">Nombre</th>
+                <th class="headAporte">Aporte calórico</th>
+                <th class="headAccion">Acción</th>
+              </tr>
+            </thead>
+            <tbody id="cargadorU">
+            <tr>
+                <th>Plan A</th>
+                <th class="aporte">1040</th>
+                <th class="accion">
+                <i class="material-icons deleteButton">
+                    delete
+                  </i>
+                  <i class="material-icons seeButton">
+                    visibility
+                  </i>
+                </th>
+            </tr>
+            <tr>
+                <th>Plan B</th>
+                <th class="aporte">1500</th>
+                <th class="accion">
+                <i class="material-icons deleteButton">
+                    delete
+                  </i>
+                  <i class="material-icons seeButton">
+                    visibility
+                  </i>
+                </th>
+            </tr>
+            <tr>
+                <th>Plan C</th>
+                <th class="aporte">1600</th>
+                <th class="accion">
+                <i class="material-icons deleteButton">
+                    delete
+                  </i>
+                  <i class="material-icons seeButton">
+                    visibility
+                  </i>
+                </th>
+            </tr>
+            <tr>
+                <th>Plan D</th>
+                <th class="aporte">1750</th>
+                <th class="accion">
+                <i class="material-icons deleteButton">
+                    delete
+                  </i>
+                  <i class="material-icons seeButton">
+                    visibility
+                  </i>
+                </th>
+            </tr>
+            <tr>
+                <th>Plan E</th>
+                <th class="aporte">1820</th>
+                <th class="accion">
+                <i class="material-icons deleteButton">
+                    delete
+                  </i>
+                  <i class="material-icons seeButton">
+                    visibility
+                  </i>
+                </th>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="buttons">
+        <button id="leftArrow">
+          <i class="material-icons arrow waves-effect"> navigate_before </i>
+        </button>
+        <div class="noPage">
+          <i class="texto" id="noPage"> 1 </i>
+        </div>
+        <button id="rightArrow waves-effect">
+          <i class="material-icons arrow waves-effect"> navigate_next </i>
+        </button>
+      </div>
     </div>
   </div>
   <div id="test3" class="col s12">Test 3</div>
@@ -386,7 +435,7 @@
 <!-- /.container-fluid -->
 {% endblock %} {% block script_end %}
 <script>
-    function calcular_requisitos() {
+    function calcular_requisitos() {    
         var peso = {{ infoUser.peso }};
         var altura = {{ infoUser.altura }};
         var sexo = '{{infoUser.sexo}}';
@@ -556,6 +605,7 @@
                 );
             }
         }
+        recalcular(selects);
     }
 
     function recalcular(selects){
@@ -577,6 +627,20 @@
     var instances = M.Sidenav.init(elems, {});
     var el = document.querySelectorAll(".tabs");
     var instance = M.Tabs.init(el, {});
+    elems = document.querySelectorAll(".modal");
+    instances = M.Modal.init(elems, {})
+    Array.from(document.getElementsByClassName("deleteButton")).forEach(
+          button => {
+            button.addEventListener("click", () => {
+              alert("Boton eliminar presionado");
+            });
+          });
+    Array.from(document.getElementsByClassName("seeButton")).forEach(
+          button => {
+            button.addEventListener("click", () => {
+              alert("Boton ver presionado");
+            });
+    });
   });
 </script>
 {% endblock %}
