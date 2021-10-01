@@ -25,7 +25,7 @@ SECRET_KEY = 'j@s7&!)+b8%m_qpo5dn4y0$m7yz1!)p_ifn_-f$q+4a8pkywj0'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*'] #python manage.py runserver 0.0.0.0:8000
+ALLOWED_HOSTS = ['*']  # python manage.py runserver 0.0.0.0:8000
 
 
 # Application definition
@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'smae',
     'planes',
     'diagnosticos',
+    'nutriblog',
 ]
 
 MIDDLEWARE = [
@@ -135,13 +136,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 CKEDITOR_CONFIGS = {
     # More configs in https://github.com/django-ckeditor/django-ckeditor
     'default': {
-        'toolbar': 'Custom',
-        'toolbar_Custom': [
-            ['Bold', 'Italic', 'Underline'],
-            ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
-            ['Link', 'Unlink']
-        ]
-    }
+        'toolbar': 'full',
+    },
 }
 
 LOGIN_REDIRECT_URL = '/'
@@ -153,3 +149,6 @@ LOGOUT_REDIRECT_URL = '/'
 # python manage.py createsuperuser
 # user: root
 # password: ntr56.#$%
+
+# sam
+# qVDZ7s-6
