@@ -37,10 +37,13 @@
 
     <div class="container-lg">
         <h1 style="font-family: 'Rubik', sans-serif;" class="fw-bold">{{articulo.titulo}}</h1>
-        <small> Por: {{articulo.autor}} </small> <br>
+        <small> Por: {{articulo.autor}}</small>
+        <br>
+        <small> {{articulo.fecha}}</small>
+        <br>
         <hr>
         {% if articulo.portada %}
-        <img src="{{articulo.portada.url}}" alt="Portada" class="img-fluid">
+        <img src="{{articulo.portada.url}}" alt="Portada" class="img-fluid rounded mx-auto d-block">
         {% endif %}
         <p style="font-family: 'Rubik', sans-serif;">{{articulo.cuerpo | safe}}</p>
     </div>
