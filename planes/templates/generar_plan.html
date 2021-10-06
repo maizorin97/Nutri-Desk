@@ -172,6 +172,32 @@
   .id{
     display: none;
   }
+  .tablaComida{
+    border:1px solid black ;
+    width: 100%;
+    background-color: #dcfcdc;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+  .row{
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .modalVer{
+    width: 80%;
+  }
+  #modalVer .row{
+    width: 90%;
+    margin: auto;
+  }
+  .col{
+    flex-basis: auto;
+  }
+  .alimento{
+    height: 4vh;
+  }
+
+ 
  
 </style>
 <body>
@@ -322,6 +348,89 @@
     </div>
     </div>
   </div>
+  <div id="modalVer" class="modal modalVer">
+      <div class="row">
+        <div class="col l6 m12 s12">
+          <div class="tablaComida">
+            <div class="titulo center-align">Desayuno</div>
+            <table class="highlight" id="mitabla">
+              <thead>
+                <tr>
+                  <th class="headNombre">Alimento</th>
+                  <th class="headAporte">Racion</th>
+                </tr>
+              </thead>
+              <tbody id="tableDesayuno">
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="col l6 m12 s12">
+          <div class="tablaComida">
+            <div class="titulo center-align">Colacion 1</div>
+            <table class="highlight" id="mitabla">
+              <thead>
+                <tr>
+                  <th class="headNombre">Alimento</th>
+                  <th class="headAporte">Racion</th>
+                </tr>
+              </thead>
+              <tbody id="tableColacion1">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col l6 m12 s12">
+          <div class="tablaComida">
+            <div class="titulo center-align">Comida</div>
+            <table class="highlight" id="mitabla">
+              <thead>
+                <tr>
+                  <th class="headNombre">Alimento</th>
+                  <th class="headAporte">Racion</th>
+                </tr>
+              </thead>
+              <tbody id="tableComida">
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="col l6 m12 s12">
+          <div class="tablaComida">
+            <div class="titulo center-align">Colacion 2</div>
+            <table class="highlight" id="mitabla">
+              <thead>
+                <tr>
+                  <th class="headNombre">Alimento</th>
+                  <th class="headAporte">Racion</th>
+                </tr>
+              </thead>
+              <tbody id="tableColacion2">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col l12 m12 s12">
+          <div class="tablaComida">
+            <div class="titulo center-align">Cena</div>
+            <table class="highlight" id="mitabla">
+              <thead>
+                <tr>
+                  <th class="headNombre">Alimento</th>
+                  <th class="headAporte">Racion</th>
+                </tr>
+              </thead>
+              <tbody id="tableCena">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+  </div>
   <nav class="nav-extended">
     <div class="nav-wrapper">
       <a href="#" class="brand-logo">Nutridesk</a>
@@ -365,7 +474,7 @@
                   <i class="material-icons deleteButton">
                     delete
                   </i>
-                  <i class="material-icons seeButton">
+                  <i class="material-icons seeButton" >
                     visibility
                   </i>
                 </td>          
@@ -620,6 +729,13 @@
                     location.reload();
                   }   
                   );
+                  },
+                  error: function(result) {
+                    Swal.fire(
+                    '¡Oops..Ocurrio un error!',
+                    'Intentelo mas tarde',
+                    'error'
+                  )
                   }
                 });
                 
@@ -631,7 +747,52 @@
     Array.from(document.getElementsByClassName("seeButton")).forEach(
           button => {
             button.addEventListener("click", () => {
-              alert("Boton ver presionado");
+              let idPlan=button.parentElement.parentElement.children[0].innerText;
+              let csrftoken = '{{ csrf_token }}';
+              //alert("Boton ver presionado");
+              $.ajax({
+                  url: '/planes',
+                  type: 'GET',
+                  data:{"plan_id":idPlan}, 
+                  headers:{'X-CSRFToken':csrftoken},
+                  dataType:"json",
+                  error: function(result) {
+                    Swal.fire(
+                    '¡Oops..Ocurrio un error!',
+                    'Intentelo mas tarde',
+                    'error'
+                  )
+                  },
+                  success: function(result) {
+                    let tablaDesayuno=document.getElementById("tableDesayuno");
+                    let tablaColacion1=document.getElementById("tableColacion1");
+                    let tablaComida=document.getElementById("tableComida");
+                    let tablaColacion2=document.getElementById("tableColacion2");
+                    let tablaCena=document.getElementById("tableCena");
+                    tablaDesayuno.innerHTML="";
+                    tablaColacion1.innerHTML="";
+                    tablaComida.innerHTML="";
+                    tablaColacion2.innerHTML="";
+                    tablaCena.innerHTML="";
+                    result.forEach(colacion =>{
+                      let tabla;
+                      if(colacion.tipoComida=="Desayuno")
+                        tabla=tablaDesayuno
+                      if(colacion.tipoComida=="Colación 1")
+                        tabla=tablaColacion1
+                      if(colacion.tipoComida=="Comida")
+                        tabla=tablaComida
+                      if(colacion.tipoComida=="Colación 2")
+                        tabla=tablaColacion2
+                      if(colacion.tipoComida=="Cena")
+                        tabla=tablaCena
+                      tabla.innerHTML+=getAlimentoRow(colacion);
+                    } );
+                    let modal =document.getElementById("modalVer");
+                    var instance = M.Modal.getInstance(modal);
+                    instance.open();
+                  }
+                });
             });
     });
     //Ocultar planes no necesarios
@@ -673,5 +834,15 @@
       }
     });
   });
+  function getAlimentoRow(json) {
+    innerHTML=`
+      <tr name="alimento" class="alimento">
+        <td>${json.nombre}</td>
+        <td class="aporte">${json.racion}</td>         
+      </tr>
+    `;
+    return innerHTML;
+  }
+
 </script>
 {% endblock %}

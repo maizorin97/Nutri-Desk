@@ -1,3 +1,4 @@
+from django.db.models.query import QuerySet
 from django.http.response import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
@@ -9,7 +10,7 @@ from smae.models import Alimento, Grupo
 from django.contrib.auth.models import User
 import json
 from datetime import datetime as dt
-
+from django.core import serializers
 
 class lista_planes(ListView):
     template_name = "generar_plan.html"
@@ -71,6 +72,22 @@ class lista_planes(ListView):
         obj_plan = get_object_or_404(Plan, idPlan=plan_id)
         obj_plan.delete()
         return HttpResponse(json.dumps({}))
+    def get(self, *args, **kwargs):
+        plan_id=self.request.GET.get("plan_id")
+        if (plan_id != None):
+            plan = Plan.objects.get(idPlan=plan_id)
+            colaciones = Colacion.objects.filter(idPlan=plan)
+            colaciones_arr=[]
+            for colacion in colaciones:
+                colaciones_arr.append({
+                    "tipoComida":colacion.idTipoComida.nombre,
+                    "nombre":colacion.idAlimento.nombre,
+                    "racion":colacion.idAlimento.racion
+                })
+            return HttpResponse(json.dumps(colaciones_arr))
+        else:
+            resp = super().get(*args, **kwargs)
+            return resp
     
 def generar_planes(request):
     if request.method == "POST":
@@ -80,24 +97,6 @@ def generar_planes(request):
     else:
         return preparar_plan(request.user, request)
 
-def ver_plan(request, plan_id):
-    if request.method == "POST":
-        pass
-    else:
-        plan = Plan.objects.get(idPlan=plan_id)
-        colaciones = Colacion.objects.filter(idPlan=plan)
-        tipos_comidas = TipoComida.objects.all()
-        return render(request, "ver_plan.html", {"plan": plan,"colaciones":colaciones,"tipos_comidas":tipos_comidas})
-
-def eliminar_plan(request, plan_id):
-    context = {}
-    obj_plan = get_object_or_404(Plan, idPlan=plan_id)
-
-    if request.method == "POST":
-        obj_plan.delete()
-        return redirect("planes")
-    else:
-        return render(request, "eliminar_plan.html", context)
 
 
 
