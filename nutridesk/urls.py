@@ -17,19 +17,24 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 
+from django.conf.urls.static import static
+
 urlpatterns = [
-    #rutas de diagnosticos
+    # rutas de diagnosticos
     path('diagnosticos/', include('diagnosticos.urls')),
-    #rutas de smae
+    # rutas de smae
     path('smae/', include('smae.urls')),
-    #rutas de planes
+    # rutas de planes
     path('planes/', include('planes.urls')),
-    #rutas de core
+    # rutas de core
     path('', include('core.urls')),
-    #rutas de admin
+    # rutas de admin
     path('admin/', admin.site.urls),
-]
+    # rutas de nutriblog
+    path('nutriblog/', include('nutriblog.urls'))
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
-    from  django.conf.urls.static import static
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    from django.conf.urls.static import static
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)
