@@ -25,8 +25,8 @@ class FormaRegistroUsuario(UserCreationForm):
         attrs={'class':'form-control', 'placeholder':'Nueva contraseña'}
     ), min_length=5, max_length=100)
 
-    password2 = forms.CharField(label="Confirmacón de contraseña", required=True, widget=forms.PasswordInput(
-        attrs={'class':'form-control', 'placeholder':'Confirmacón de contraseña'}
+    password2 = forms.CharField(label="Confirmación de contraseña", required=True, widget=forms.PasswordInput(
+        attrs={'class':'form-control', 'placeholder':'Confirmación de contraseña'}
     ), min_length=5, max_length=100)
 
     first_name = forms.CharField(label="Nombre(s)", required=True, widget=forms.TextInput(
