@@ -194,6 +194,9 @@
   .alimento{
     height: 4vh;
   }
+  .preloader-wrapper{
+    display: none;
+  }
   @media(min-width:768px){
     .nav-content{
       padding-left: 6rem;
@@ -494,6 +497,17 @@
                   <i class="material-icons seeButton" >
                     visibility
                   </i>
+                  <div class="preloader-wrapper small active">
+                    <div class="spinner-layer spinner-green-only">
+                      <div class="circle-clipper left">
+                        <div class="circle"></div>
+                      </div><div class="gap-patch">
+                        <div class="circle"></div>
+                      </div><div class="circle-clipper right">
+                        <div class="circle"></div>
+                      </div>
+                    </div>
+                  </div>
                 </td>          
               </tr>
               {% endif %}
@@ -749,6 +763,7 @@
     Array.from(document.getElementsByClassName("seeButton")).forEach(
           button => {
             button.addEventListener("click", () => {
+              button.parentElement.children[2].style.display="inline-block"
               let idPlan=button.parentElement.parentElement.children[0].innerText;
               let csrftoken = '{{ csrf_token }}';
               //alert("Boton ver presionado");
@@ -793,6 +808,7 @@
                     let modal =document.getElementById("modalVer");
                     var instance = M.Modal.getInstance(modal);
                     instance.open();
+                    button.parentElement.children[2].style.display="none"
                   }
                 });
             });
