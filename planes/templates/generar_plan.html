@@ -18,7 +18,7 @@
     max-width: none;
     padding: 1vh 3rem;
     background-color: #dcfcdc;
-    height: 83vh;
+    min-height: 83vh;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -27,7 +27,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    overflow: hidden;
+    flex-direction: column;
     padding: 1rem 0 0 0;
   }
   .titulo {
@@ -87,17 +87,17 @@
     font-size: 3vh;
     color: white;
   }
-  .nav-content{
-      padding-left: 6rem;
-      height: 6vh;
-  }
+ 
   .nav-wrapper{
       padding-left: 2rem;
       height: 7vh!important;
       background-color: white;
   }
   .tabs{
+      display: flex;
+      flex-direction: column;
       height: 100%;
+      align-items: center;
   }
   .tabs .tab{
       height: 100%;
@@ -106,9 +106,7 @@
       display: flex;
       align-items: center;
   }
-  .tabla-header{
-      height:9vh;
-  }
+
   thead tr{
       height: 7vh;
       border-bottom:1px solid #2a8c3e;
@@ -196,7 +194,19 @@
   .alimento{
     height: 4vh;
   }
-
+  @media(min-width:768px){
+    .nav-content{
+      padding-left: 6rem;
+      height: 6vh;
+    }
+    .tabs{
+      display: block;
+    }
+    .tabla-header{
+      height: 9vh;
+      flex-direction: row;
+    }
+  }
  
  
 </style>
@@ -833,7 +843,7 @@
           dataType:"json",
           success: function(result) {
             dic_al={};
-            dict_alimentos={};//alimentos
+            dict_alimentos={};
             result.listaAlimentos.forEach((alimento)=>{
               dic_al[alimento.idAlimento]=[alimento.energia,alimento.proteina];
             });
