@@ -256,13 +256,20 @@
             <option>Deportista de élite o entrena muy intenso cada día</option>
           </select>
         </div>
-        <div class="col-sm-4 align-self-center">
-          <button
-            class="align-middle btn btn-primary"
-            onclick="calcular_requisitos()"
-          >
-            Calcular requerimientos
-          </button>
+        <div class="col-sm-4 align-self-center center-align" id="cargadorBoton">
+          <div class="preloader-wrapper small active">
+            <div class="spinner-layer spinner-blue-only">
+              <div class="circle-clipper left">
+                <div class="circle"></div>
+              </div><div class="gap-patch">
+                <div class="circle"></div>
+              </div><div class="circle-clipper right">
+                <div class="circle"></div>
+              </div>
+            </div>
+          </div>
+          <p>Cargando alimentos...</p>
+          
         </div>
       </div>
 
@@ -503,12 +510,14 @@
 <!-- /.container-fluid -->
 {% endblock %} {% block script_end %}
 <script>
+    var dic_al;
+    var dict_alimentos;
     function calcular_requisitos() {    
         var peso = {{ infoUser.peso }};
         var altura = {{ infoUser.altura }};
         var sexo = '{{infoUser.sexo}}';
         var edad = {{ edad }};
-        var imc = (peso / Math.pow(altura / 100, 2));
+        var imc = (peso / Math.pow(altura , 2));
         var objetivo = document.getElementById("txtObjetivo").selectedIndex;
         var actividad = document.getElementById("txtActividadFisica").selectedIndex;
 
@@ -592,7 +601,6 @@
     }
 
     function mostrar_plan(tmb) {
-        var dict_alimentos = get_alimentos_dict();
         var plan = get_plan(tmb);
         var tabla_plan = document.getElementById("txtColaciones");
         tabla_plan.innerHTML = construir_colacion(0, plan[0], dict_alimentos); //desayuno
@@ -603,16 +611,7 @@
         agregar_listeners();
     }
 
-    function get_alimentos_dict() {
-        var alimentos = {};
-        {%for grupo in listaGrupos %}
-        alimentos["{{grupo.nombre}}"] = [];
-        {% endfor %}
-        {%for alimento in listaAlimentos %}
-        alimentos["{{alimento.idGrupo.nombre}}"].push(["{{alimento.nombre}}", "{{alimento.idAlimento}}"]);
-        {% endfor %}
-        return alimentos;
-    }
+   
 
     function get_plan(kcal) {
         /* [[desayuno],[colacion1],[comida],[colacion2],[cena]]
@@ -651,13 +650,7 @@
         return html_code;
     }
 
-    function alimento_dict_id(){
-        var alimentos = {};
-        {%for alimento in listaAlimentos %}
-        alimentos[{{alimento.idAlimento}}]=[{{alimento.idGrupo.energia}},{{alimento.idGrupo.proteina}}];
-        {% endfor %}
-        return alimentos;
-    }
+  
 
     function agregar_listeners() {
         var llave_comida = ["Desayuno", "Colacion1", "Comida", "Colacion2", "Cena"];
@@ -677,7 +670,6 @@
     }
 
     function recalcular(selects){
-        var dic_al = alimento_dict_id();
         var suma = 0;
         var llave_comida = ["Desayuno", "Colacion1", "Comida", "Colacion2", "Cena"];
         for(var i = 0; i < llave_comida.length; i++) {
@@ -833,6 +825,32 @@
             });
       }
     });
+    //Cargador de lista de alimentos
+    $.ajax({
+          url: 'getDatos',
+          type: 'GET',
+          headers:{'X-CSRFToken':'{{ csrf_token }}'},
+          dataType:"json",
+          success: function(result) {
+            dic_al={};
+            dict_alimentos={};//alimentos
+            result.listaAlimentos.forEach((alimento)=>{
+              dic_al[alimento.idAlimento]=[alimento.energia,alimento.proteina];
+            });
+            result.listaGrupos.forEach((grupo)=>{
+              dict_alimentos[grupo.nombre]=[]
+            });
+            result.listaAlimentos.forEach((alimento)=>{
+              dict_alimentos[alimento.idGrupo].push([alimento.nombre,alimento.idAlimento]);
+            });
+            document.getElementById("cargadorBoton").innerHTML=`
+              <button class="align-middle btn btn-primary"
+              onclick="calcular_requisitos()">
+                Calcular requerimientos
+              </button>
+            `
+          }
+          });
   });
   function getAlimentoRow(json) {
     innerHTML=`
@@ -843,6 +861,8 @@
     `;
     return innerHTML;
   }
+  /*
 
+    */
 </script>
 {% endblock %}

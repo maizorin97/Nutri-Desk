@@ -19,8 +19,6 @@ class lista_planes(ListView):
     def get_context_data(self, **kwargs):
         context = super(lista_planes, self).get_context_data(**kwargs)
         infoUser = InfoUsuario.objects.get(usuario=self.request.user)
-        listaGrupos = Grupo.objects.all()
-        listaAlimentos = Alimento.objects.all()
         edad = (
             dt.now().year
             - infoUser.fecha_nacimiento.year
@@ -29,8 +27,8 @@ class lista_planes(ListView):
         context.update({
             "infoUser": infoUser,
             "edad": edad,
-            "listaAlimentos": listaAlimentos,
-            "listaGrupos": listaGrupos,
+            #"listaAlimentos": listaAlimentos,
+            #"listaGrupos": listaGrupos,
         })
         return context
     def guardar_plan(self,req_post, current_user):
@@ -97,7 +95,24 @@ def generar_planes(request):
     else:
         return preparar_plan(request.user, request)
 
-
+def get_datos(request):
+    ##medir tiempos
+    listaGrupos = Grupo.objects.all()
+    listaAlimentos = Alimento.objects.all()
+    grupos=[]
+    alimentos=[]
+    for grupo in listaGrupos:
+        grupos.append({"nombre":grupo.nombre})
+    for alimento in listaAlimentos:
+        alimentos.append({
+            "idGrupo":alimento.idGrupo.nombre,
+            "nombre":alimento.nombre,
+            "idAlimento":alimento.idAlimento,
+            "energia":alimento.idGrupo.energia,
+            "proteina":alimento.idGrupo.proteina            
+        })
+     
+    return HttpResponse(json.dumps({"listaGrupos":grupos,"listaAlimentos":alimentos}))
 
 
 
