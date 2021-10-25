@@ -118,10 +118,19 @@
 
         <div class="row">
           <div class="col-12 text-center">
-            <span class="p-3 active text-primary">1</span>
-            <a href="#" class="p-3">2</a>
-            <a href="#" class="p-3">3</a>
-            <a href="#" class="p-3">4</a>
+            {% if page_obj.has_previous %}
+            <a href="?page=1" class="p-3">&laquo; primera</a>
+            <a href="?page={{ page_obj.previous_page_number }}" class="p-3">anterior</a>
+            {% endif %}
+
+            <span class="p-3 active text-primary">
+              Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" class="p-3">siguiente</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}" class="p-3">última &raquo;</a>
+            {% endif %}
           </div>
         </div>
       </div>
