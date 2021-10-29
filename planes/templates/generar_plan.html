@@ -18,7 +18,7 @@
     max-width: none;
     padding: 1vh 3rem;
     background-color: #dcfcdc;
-    height: 83vh;
+    min-height: 83vh;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -27,7 +27,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    overflow: hidden;
+    flex-direction: column;
     padding: 1rem 0 0 0;
   }
   .titulo {
@@ -87,17 +87,17 @@
     font-size: 3vh;
     color: white;
   }
-  .nav-content{
-      padding-left: 6rem;
-      height: 6vh;
-  }
+ 
   .nav-wrapper{
       padding-left: 2rem;
       height: 7vh!important;
       background-color: white;
   }
   .tabs{
+      display: flex;
+      flex-direction: column;
       height: 100%;
+      align-items: center;
   }
   .tabs .tab{
       height: 100%;
@@ -106,9 +106,7 @@
       display: flex;
       align-items: center;
   }
-  .tabla-header{
-      height:9vh;
-  }
+
   thead tr{
       height: 7vh;
       border-bottom:1px solid #2a8c3e;
@@ -196,7 +194,22 @@
   .alimento{
     height: 4vh;
   }
-
+  .preloader-wrapper{
+    display: none;
+  }
+  @media(min-width:768px){
+    .nav-content{
+      padding-left: 6rem;
+      height: 6vh;
+    }
+    .tabs{
+      display: block;
+    }
+    .tabla-header{
+      height: 9vh;
+      flex-direction: row;
+    }
+  }
  
  
 </style>
@@ -256,13 +269,20 @@
             <option>Deportista de élite o entrena muy intenso cada día</option>
           </select>
         </div>
-        <div class="col-sm-4 align-self-center">
-          <button
-            class="align-middle btn btn-primary"
-            onclick="calcular_requisitos()"
-          >
-            Calcular requerimientos
-          </button>
+        <div class="col-sm-4 align-self-center center-align" id="cargadorBoton">
+          <div class="preloader-wrapper small active">
+            <div class="spinner-layer spinner-blue-only">
+              <div class="circle-clipper left">
+                <div class="circle"></div>
+              </div><div class="gap-patch">
+                <div class="circle"></div>
+              </div><div class="circle-clipper right">
+                <div class="circle"></div>
+              </div>
+            </div>
+          </div>
+          <p>Cargando alimentos...</p>
+          
         </div>
       </div>
 
@@ -477,6 +497,17 @@
                   <i class="material-icons seeButton" >
                     visibility
                   </i>
+                  <div class="preloader-wrapper small active">
+                    <div class="spinner-layer spinner-green-only">
+                      <div class="circle-clipper left">
+                        <div class="circle"></div>
+                      </div><div class="gap-patch">
+                        <div class="circle"></div>
+                      </div><div class="circle-clipper right">
+                        <div class="circle"></div>
+                      </div>
+                    </div>
+                  </div>
                 </td>          
               </tr>
               {% endif %}
@@ -503,12 +534,14 @@
 <!-- /.container-fluid -->
 {% endblock %} {% block script_end %}
 <script>
+    var dic_al;
+    var dict_alimentos;
     function calcular_requisitos() {    
         var peso = {{ infoUser.peso }};
         var altura = {{ infoUser.altura }};
         var sexo = '{{infoUser.sexo}}';
         var edad = {{ edad }};
-        var imc = (peso / Math.pow(altura / 100, 2));
+        var imc = (peso / Math.pow(altura , 2));
         var objetivo = document.getElementById("txtObjetivo").selectedIndex;
         var actividad = document.getElementById("txtActividadFisica").selectedIndex;
 
@@ -592,7 +625,6 @@
     }
 
     function mostrar_plan(tmb) {
-        var dict_alimentos = get_alimentos_dict();
         var plan = get_plan(tmb);
         var tabla_plan = document.getElementById("txtColaciones");
         tabla_plan.innerHTML = construir_colacion(0, plan[0], dict_alimentos); //desayuno
@@ -603,16 +635,7 @@
         agregar_listeners();
     }
 
-    function get_alimentos_dict() {
-        var alimentos = {};
-        {%for grupo in listaGrupos %}
-        alimentos["{{grupo.nombre}}"] = [];
-        {% endfor %}
-        {%for alimento in listaAlimentos %}
-        alimentos["{{alimento.idGrupo.nombre}}"].push(["{{alimento.nombre}}", "{{alimento.idAlimento}}"]);
-        {% endfor %}
-        return alimentos;
-    }
+   
 
     function get_plan(kcal) {
         /* [[desayuno],[colacion1],[comida],[colacion2],[cena]]
@@ -651,13 +674,7 @@
         return html_code;
     }
 
-    function alimento_dict_id(){
-        var alimentos = {};
-        {%for alimento in listaAlimentos %}
-        alimentos[{{alimento.idAlimento}}]=[{{alimento.idGrupo.energia}},{{alimento.idGrupo.proteina}}];
-        {% endfor %}
-        return alimentos;
-    }
+  
 
     function agregar_listeners() {
         var llave_comida = ["Desayuno", "Colacion1", "Comida", "Colacion2", "Cena"];
@@ -677,7 +694,6 @@
     }
 
     function recalcular(selects){
-        var dic_al = alimento_dict_id();
         var suma = 0;
         var llave_comida = ["Desayuno", "Colacion1", "Comida", "Colacion2", "Cena"];
         for(var i = 0; i < llave_comida.length; i++) {
@@ -747,6 +763,7 @@
     Array.from(document.getElementsByClassName("seeButton")).forEach(
           button => {
             button.addEventListener("click", () => {
+              button.parentElement.children[2].style.display="inline-block"
               let idPlan=button.parentElement.parentElement.children[0].innerText;
               let csrftoken = '{{ csrf_token }}';
               //alert("Boton ver presionado");
@@ -791,6 +808,7 @@
                     let modal =document.getElementById("modalVer");
                     var instance = M.Modal.getInstance(modal);
                     instance.open();
+                    button.parentElement.children[2].style.display="none"
                   }
                 });
             });
@@ -833,6 +851,32 @@
             });
       }
     });
+    //Cargador de lista de alimentos
+    $.ajax({
+          url: 'getDatos',
+          type: 'GET',
+          headers:{'X-CSRFToken':'{{ csrf_token }}'},
+          dataType:"json",
+          success: function(result) {
+            dic_al={};
+            dict_alimentos={};
+            result.listaAlimentos.forEach((alimento)=>{
+              dic_al[alimento.idAlimento]=[alimento.energia,alimento.proteina];
+            });
+            result.listaGrupos.forEach((grupo)=>{
+              dict_alimentos[grupo.nombre]=[]
+            });
+            result.listaAlimentos.forEach((alimento)=>{
+              dict_alimentos[alimento.idGrupo].push([alimento.nombre,alimento.idAlimento]);
+            });
+            document.getElementById("cargadorBoton").innerHTML=`
+              <button class="align-middle btn btn-primary"
+              onclick="calcular_requisitos()">
+                Calcular requerimientos
+              </button>
+            `
+          }
+          });
   });
   function getAlimentoRow(json) {
     innerHTML=`
@@ -843,6 +887,8 @@
     `;
     return innerHTML;
   }
+  /*
 
+    */
 </script>
 {% endblock %}

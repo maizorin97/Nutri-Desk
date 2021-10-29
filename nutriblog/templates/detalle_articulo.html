@@ -2,51 +2,306 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap"
-        rel="stylesheet">
-    <title>{{articulo.titulo}}</title>
+  {% load static %}
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Blog - SoftLand Bootstrap Template</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="{% static 'ui_template/img/favicon.png' %}" rel="icon">
+  <link href="{% static 'ui_template/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'ui_template/vendor/aos/aos.css' %}" rel="stylesheet">
+  <link href="{% static 'ui_template/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'ui_template/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'ui_template/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+  <link href="{% static 'ui_template/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="{% static 'ui_template/css/style.css' %}" rel="stylesheet">
+
 </head>
 
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/nutriblog">NutriBlog</a>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/">Nutridesk</a>
-                    </li>
-                </ul>
-                <form class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
-            </div>
-        </div>
-    </nav>
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top d-flex align-items-center">
+    <div class="container d-flex justify-content-between align-items-center">
 
+      <div class="logo">
+        <h1><a href="/nutriblog/">Nutriblog</a></h1>
+      </div>
 
-    <div class="container-lg">
-        <h1 style="font-family: 'Rubik', sans-serif;" class="fw-bold">{{articulo.titulo}}</h1>
-        <small> Por: {{articulo.autor}}</small>
-        <br>
-        <small> {{articulo.fecha}}</small>
-        <br>
-        <hr>
-        {% if articulo.portada %}
-        <img src="{{articulo.portada.url}}" alt="Portada" class="img-fluid rounded mx-auto d-block">
-        {% endif %}
-        <p style="font-family: 'Rubik', sans-serif;">{{articulo.cuerpo | safe}}</p>
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a class="" href="/">Nutri-Desk</a></li>
+          <li><a class="active" href="#">Blog</a></li>
+          <li><a href="#">Contacto</a></li>
+          <form class="d-flex" method="POST" action="{% url 'busqueda' %}">
+            {% csrf_token %}
+            <input class="form-control me-2 ms-2 rounded-3" type="search" placeholder="Buscar" aria-label="Search"
+              name="busqueda">
+            <button class="btn btn-primary rounded-3" type="submit">Buscar</button>
+          </form>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+
     </div>
+  </header><!-- End Header -->
+
+  <main id="main">
+
+   
+    <!-- ======= Single Blog Section ======= -->
+    <section class="hero-section inner-page">
+        <div class="wave">
+  
+          <svg width="1920px" height="265px" viewBox="0 0 1920 265" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+              <g id="Apple-TV" transform="translate(0.000000, -402.000000)" fill="#FFFFFF">
+                <path d="M0,439.134243 C175.04074,464.89273 327.944386,477.771974 458.710937,477.771974 C654.860765,477.771974 870.645295,442.632362 1205.9828,410.192501 C1429.54114,388.565926 1667.54687,411.092417 1920,477.771974 L1920,667 L1017.15166,667 L0,667 L0,439.134243 Z" id="Path"></path>
+              </g>
+            </g>
+          </svg>
+  
+        </div>
+  
+        <div class="container">
+          <div class="row align-items-center">
+            <div class="col-12">
+              <div class="row justify-content-center">
+                <div class="col-md-10 text-center hero-text">
+                  <h1 data-aos="fade-up" data-aos-delay="">{{articulo.titulo}}</h1>
+                  <p class="mb-5" data-aos="fade-up" data-aos-delay="100">{{ articulo.fecha }} &bullet; By <a href="#" class="text-white">{{articulo.autor}}</a></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+      </section>
+  
+      <section class="site-section mb-4">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-8 blog-content">
+  
+                <hr>
+                {% if articulo.portada %}
+                <img src="{{articulo.portada.url}}" alt="Portada" class="img-fluid rounded mx-auto d-block">
+                {% endif %}
+                <p style="font-family: 'Rubik', sans-serif;">{{articulo.cuerpo | safe}}</p>
+                <div class="pt-5">
+                    <p>Categories: <a href="#">Design</a>, <a href="#">Events</a> Tags: <a href="#">#html</a>, <a href="#">#trends</a></p>
+                </div>
+  
+              <div class="pt-5">
+                <h3 class="mb-5">6 Comments</h3>
+                <ul class="comment-list">
+                  <li class="comment">
+                    <div class="comment-body">
+                      <h3>Jean Doe</h3>
+                      <div class="meta">January 9, 2018 at 2:21pm</div>
+                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur quidem laborum necessitatibus, ipsam impedit vitae autem, eum officia, fugiat saepe enim sapiente iste iure! Quam voluptas earum impedit necessitatibus, nihil?</p>
+                      <p><a href="#" class="reply">Reply</a></p>
+                    </div>
+                  </li>
+  
+                  <li class="comment">
+                    <div class="comment-body">
+                      <h3>Jean Doe</h3>
+                      <div class="meta">January 9, 2018 at 2:21pm</div>
+                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur quidem laborum necessitatibus, ipsam impedit vitae autem, eum officia, fugiat saepe enim sapiente iste iure! Quam voluptas earum impedit necessitatibus, nihil?</p>
+                      <p><a href="#" class="reply">Reply</a></p>
+                    </div>
+  
+                    <ul class="children">
+                      <li class="comment">
+                        <div class="comment-body">
+                          <h3>Jean Doe</h3>
+                          <div class="meta">January 9, 2018 at 2:21pm</div>
+                          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur quidem laborum necessitatibus, ipsam impedit vitae autem, eum officia, fugiat saepe enim sapiente iste iure! Quam voluptas earum impedit necessitatibus, nihil?</p>
+                          <p><a href="#" class="reply">Reply</a></p>
+                        </div>
+  
+                        <ul class="children">
+                          <li class="comment">
+                            <div class="comment-body">
+                              <h3>Jean Doe</h3>
+                              <div class="meta">January 9, 2018 at 2:21pm</div>
+                              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur quidem laborum necessitatibus, ipsam impedit vitae autem, eum officia, fugiat saepe enim sapiente iste iure! Quam voluptas earum impedit necessitatibus, nihil?</p>
+                              <p><a href="#" class="reply">Reply</a></p>
+                            </div>
+  
+                            <ul class="children">
+                              <li class="comment">
+                                <div class="comment-body">
+                                  <h3>Jean Doe</h3>
+                                  <div class="meta">January 9, 2018 at 2:21pm</div>
+                                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur quidem laborum necessitatibus, ipsam impedit vitae autem, eum officia, fugiat saepe enim sapiente iste iure! Quam voluptas earum impedit necessitatibus, nihil?</p>
+                                  <p><a href="#" class="reply">Reply</a></p>
+                                </div>
+                              </li>
+                            </ul>
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
+  
+                  <li class="comment">
+                    <div class="comment-body">
+                      <h3>Jean Doe</h3>
+                      <div class="meta">January 9, 2018 at 2:21pm</div>
+                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur quidem laborum necessitatibus, ipsam impedit vitae autem, eum officia, fugiat saepe enim sapiente iste iure! Quam voluptas earum impedit necessitatibus, nihil?</p>
+                      <p><a href="#" class="reply">Reply</a></p>
+                    </div>
+                  </li>
+                </ul>
+                <!-- END comment-list -->
+  
+                <div class="comment-form-wrap pt-5">
+                  <h3 class="mb-5">Leave a comment</h3>
+                  <form action="#" class="">
+                    <div class="form-group">
+                      <label for="name">Name *</label>
+                      <input type="text" class="form-control" id="name">
+                    </div>
+                    <div class="form-group mt-3">
+                      <label for="email">Email *</label>
+                      <input type="email" class="form-control" id="email">
+                    </div>
+                    <div class="form-group mt-3">
+                      <label for="website">Website</label>
+                      <input type="url" class="form-control" id="website">
+                    </div>
+  
+                    <div class="form-group mt-3">
+                      <label for="message">Message</label>
+                      <textarea name="" id="message" cols="30" rows="10" class="form-control"></textarea>
+                    </div>
+                    <div class="form-group mt-3">
+                      <input type="submit" value="Post Comment" class="btn btn-primary">
+                    </div>
+  
+                  </form>
+                </div>
+              </div>
+  
+            </div>
+            <div class="col-md-4 sidebar">
+              <div class="sidebar-box">
+                <form action="#" class="search-form">
+                  <div class="form-group">
+                    <span class="icon fa fa-search"></span>
+                    <input type="text" class="form-control" placeholder="Type a keyword and hit enter">
+                  </div>
+                </form>
+              </div>
+              <div class="sidebar-box">
+                <div class="categories">
+                  <h3>Categories</h3>
+                  <li><a href="#">Dog <span>(12)</span></a></li>
+                  <li><a href="#">Dog Food <span>(22)</span></a></li>
+                  <li><a href="#">Vetenirarian <span>(37)</span></a></li>
+                  <li><a href="#">Events<span>(42)</span></a></li>
+                </div>
+              </div>
+              <div class="sidebar-box">
+                <img src="assets/img/person_1.jpg" alt="Image placeholder" class="img-fluid mb-4">
+                <h3>About The Author</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus itaque, autem necessitatibus voluptate quod mollitia delectus aut, sunt placeat nam vero culpa sapiente consectetur similique, inventore eos fugit cupiditate numquam!</p>
+                <p><a href="#" class="btn btn-primary btn-sm">Read More</a></p>
+              </div>
+  
+              <div class="sidebar-box">
+                <h3>Paragraph</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus itaque, autem necessitatibus voluptate quod mollitia delectus aut, sunt placeat nam vero culpa sapiente consectetur similique, inventore eos fugit cupiditate numquam!</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 mb-4 mb-md-0">
+          <h3>Acerca de Nutri-Desk</h3>
+          <p>Nutri-Desk es un proyecto creado poor estudiantes de la ESCOM-IPN; cuyo objetivo es brindar herramientas de
+            apoyo y concientización nutricional accesibles y fáciles de manejar.</p>
+          <p class="social">
+            <a href="#"><span class="bi bi-twitter"></span></a>
+            <a href="#"><span class="bi bi-facebook"></span></a>
+            <a href="#"><span class="bi bi-instagram"></span></a>
+            <a href="#"><span class="bi bi-linkedin"></span></a>
+          </p>
+        </div>
+        <div class="col-md-7 ms-auto">
+          <div class="row site-section pt-0">
+            <div class="col-md-6 mb-6 mb-md-0">
+              <h3>Navegacion</h3>
+              <ul class="list-unstyled">
+                <li><a href="#">Nutri-Desk</a></li>
+                <li><a href="#">Blog</a></li>
+                <li><a href="#">Contacto</a></li>
+              </ul>
+            </div>
+            <div class="col-md-6 mb-6 mb-md-0">
+              <h3>Services</h3>
+              <ul class="list-unstyled">
+                <li><a href="#">Team</a></li>
+                <li><a href="#">Collaboration</a></li>
+                <li><a href="#">Todos</a></li>
+                <li><a href="#">Events</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row justify-content-center text-center">
+        <div class="col-md-7">
+          <p class="copyright">&copy; Copyright SoftLand. All Rights Reserved</p>
+          <div class="credits">
+            <!--
+            All the links in the footer should remain intact.
+            You can delete the links only if you purchased the pro version.
+            Licensing information: https://bootstrapmade.com/license/
+            Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/buy/?theme=SoftLand
+          -->
+            Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="{% static 'ui_template/vendor/aos/aos.js' %}"></script>
+  <script src="{% static 'ui_template/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'ui_template/vendor/php-email-form/validate.js' %}"></script>
+  <script src="{% static 'ui_template/vendor/swiper/swiper-bundle.min.js' %}"></script>
+
+  <!-- Template Main JS File -->
+  <script src="{% static 'ui_template/js/main.js' %}"></script>
 </body>
 
 </html>
