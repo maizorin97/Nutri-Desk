@@ -174,6 +174,13 @@ section {
   margin-bottom: 0px;
 }
 
+.step img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  overflow: hidden;
+}
+
 /* Review */
 .review h3 {
   font-size: 20px;
@@ -295,15 +302,7 @@ section {
     font-size: 2rem;
   }
 }
-.cta-section .btn {
-  background: #000000;
-  color: #fff;
-}
-.cta-section .btn i {
-  margin-right: 5px;
-  font-size: 24px;
-  line-height: 0;
-}
+
 
 /* Contact Form */
 .form-control {
@@ -737,7 +736,7 @@ section {
 # Hero Section
 --------------------------------------------------------------*/
 .hero-section {
-  background: linear-gradient(to right, rgba(39, 70, 133, 0.8) 0%, rgba(61, 179, 197, 0.8) 100%), url(../img/hero-bg.jpg);
+  background: linear-gradient(to right, rgba(39, 70, 133, 0.8) 0%, rgba(61, 179, 197, 0.8) 100%), url(../../img/header-bg.jpg);
   position: relative;
 }
 .hero-section .wave {
@@ -794,50 +793,7 @@ section {
   font-size: 18px;
   color: #fff;
 }
-.hero-section .iphone-wrap {
-  position: relative;
-}
-@media screen and (max-width: 992px) {
-  .hero-section .iphone-wrap {
-    text-align: center;
-  }
-}
-.hero-section .iphone-wrap .phone-2, .hero-section .iphone-wrap .phone-1 {
-  position: absolute;
-  top: -50%;
-  overflow: hidden;
-  left: 0;
-  box-shadow: 0 15px 50px 0 rgba(0, 0, 0, 0.3);
-  border-radius: 30px;
-}
-@media screen and (max-width: 992px) {
-  .hero-section .iphone-wrap .phone-2, .hero-section .iphone-wrap .phone-1 {
-    position: relative;
-    top: 0;
-    max-width: 100%;
-  }
-}
-.hero-section .iphone-wrap .phone-2, .hero-section .iphone-wrap .phone-1 {
-  width: 250px;
-}
-@media screen and (max-width: 992px) {
-  .hero-section .iphone-wrap .phone-1 {
-    margin-left: -150px;
-  }
-}
-.hero-section .iphone-wrap .phone-2 {
-  margin-top: 50px;
-  margin-left: 100px;
-  width: 250px;
-}
-@media screen and (max-width: 992px) {
-  .hero-section .iphone-wrap .phone-2 {
-    width: 250px;
-    position: absolute;
-    margin-top: 0px;
-    margin-left: 100px;
-  }
-}
+
 
 /*--------------------------------------------------------------
 # Footer
