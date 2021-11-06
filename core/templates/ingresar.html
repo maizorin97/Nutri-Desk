@@ -1,49 +1,74 @@
-{% extends 'base.html' %}
+{% extends 'new_base.html' %}
 {% block title %}Ingresar{% endblock %}
 {% load static %}
-{% block content %}
 
-<body class="bg-gradient-primary">
+{% block hero %}
+<section class="hero-section inner-page">
+  <div class="wave">
+
+    <svg width="1920px" height="265px" viewBox="0 0 1920 265" version="1.1" xmlns="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink">
+      <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Apple-TV" transform="translate(0.000000, -402.000000)" fill="#FFFFFF">
+          <path
+            d="M0,439.134243 C175.04074,464.89273 327.944386,477.771974 458.710937,477.771974 C654.860765,477.771974 870.645295,442.632362 1205.9828,410.192501 C1429.54114,388.565926 1667.54687,411.092417 1920,477.771974 L1920,667 L1017.15166,667 L0,667 L0,439.134243 Z"
+            id="Path"></path>
+        </g>
+      </g>
+    </svg>
+
+  </div>
 
   <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-xl-10 col-lg-12 col-md-9">
-        <div class="card o-hidden border-0 shadow-lg my-5">
-          <div class="card-body p-0">
-            <div class="row">
-              <div class="col-lg-6 d-none d-lg-block text-center">
-                <img src="{% static 'img/nombre.png' %}" class="img-fluid">
-                <img src="{% static 'img/cabezaComida.png' %}" class="img-fluid" style="width: 70%">
-              </div>
-              <div class="col-lg-6 align-self-center">
-                <div class="p-5">
-                  <div class="text-center">
-                    <h1 class="h4 text-gray-900 mb-4">¡Bienvenido de Nuevo!</h1>
-                  </div>
+    <div class="row align-items-center">
+      <div class="col-12">
+        <div class="row justify-content-center">
+          <div class="col-md-7 text-center hero-text">
+            <h1 data-aos="fade-up" data-aos-delay="">Ingresa a tu cuenta</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-                  <form class="user" method="POST">
-                    {% csrf_token %}
-                    {% for field in form %}
-                    <div class="form-group">
-                      <!--{{ field.label_tag }}-->
-                      {{ field }}
-                      {% for error in field.errors %}
-                      <p style="color: red">{{ error }}</p>
-                      {% endfor %}
-                    </div>
+</section>
+{% endblock %}
+
+{% block section1 %}
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-xl-10 col-lg-12 col-md-9">
+      <div class="card o-hidden border-0 shadow-lg my-5">
+        <div class="card-body p-0">
+          <div class="row justify-content-center">
+            <div class="col-lg-8 align-self-center">
+              <div class="p-5">
+                <div class="text-center">
+                  <h1 class="h4 text-gray-900 mb-4">¡Bienvenido de Nuevo!</h1>
+                </div>
+
+                <form class="user" method="POST">
+                  {% csrf_token %}
+                  {% for field in form %}
+                  <div class="form-group">
+                    <!--{{ field.label_tag }}-->
+                    {{ field }}
+                    {% for error in field.errors %}
+                    <p style="color: red">{{ error }}</p>
                     {% endfor %}
-                    <div class="form-group">
-                      <button type="submit" class="btn btn-primary btn-user btn-block">Iniciar Sesión</button>
-                    </div>
-                  </form>
+                  </div>
+                  {% endfor %}
+                  <div class="form-group mt-4">
+                    <button type="submit" class="btn btn-primary btn-user btn-block">Iniciar Sesión</button>
+                  </div>
+                </form>
 
-                  <hr>
-                  <div class="text-center">
-                    <a class="small" href="forgot-password.html">¿Olvidaste tu contraseña?</a>
-                  </div>
-                  <div class="text-center">
-                    <a class="small" href="/registro">Crear una cuenta</a>
-                  </div>
+                <hr>
+                <div class="text-center">
+                  <a class="small" href="forgot-password.html">¿Olvidaste tu contraseña?</a>
+                </div>
+                <div class="text-center">
+                  <a class="small" href="/registro">Crear una cuenta</a>
                 </div>
               </div>
             </div>
@@ -52,5 +77,5 @@
       </div>
     </div>
   </div>
-</body>
+</div>
 {% endblock %}

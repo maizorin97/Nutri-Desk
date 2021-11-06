@@ -36,8 +36,9 @@ def registro(request):
             info.usuario = user
             info.save()
             # Esto solo es para ir guardando un historial de pesos del usuario
-            info_user = get_object_or_404(InfoUsuario, usuario = user)
-            pesos_history = PesosUsuario(usuario=info_user.usuario,peso=info_user.peso)
+            info_user = get_object_or_404(InfoUsuario, usuario=user)
+            pesos_history = PesosUsuario(
+                usuario=info_user.usuario, peso=info_user.peso)
             pesos_history.save()
             ##################################################################
             # exito

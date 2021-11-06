@@ -2,31 +2,31 @@
 <html lang="en">
 
 <head>
-    {% load static %}
-    <title>{% block title%} Base {% endblock %}</title>
-    <meta content="" name="description">
-    <meta content="" name="keywords">
-  
-    <!-- Favicons -->
-    <link href="{% static 'ui_template/img/favicon.png' %}" rel="icon">
-    <link href="{% static 'ui_template/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
-  
-    <!-- Google Fonts -->
-    <link
-      href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
-      rel="stylesheet">
-  
-    <!-- Vendor CSS Files -->
-    <link href="{% static 'ui_template/vendor/aos/aos.css' %}" rel="stylesheet">
-    <link href="{% static 'ui_template/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-    <link href="{% static 'ui_template/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
-    <link href="{% static 'ui_template/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
-    <link href="{% static 'ui_template/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
-  
-    <!-- Template Main CSS File -->
-    <link href="{% static 'ui_template/css/style.css' %}" rel="stylesheet"> 
-    
-    {% block extra_links %}  {% endblock %}
+  {% load static %}
+  <title>{% block title%} Base {% endblock %}</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="{% static 'ui_template/img/favicon.png' %}" rel="icon">
+  <link href="{% static 'ui_template/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'ui_template/vendor/aos/aos.css' %}" rel="stylesheet">
+  <link href="{% static 'ui_template/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'ui_template/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'ui_template/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+  <link href="{% static 'ui_template/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="{% static 'ui_template/css/style.css' %}" rel="stylesheet">
+
+  {% block extra_links %} {% endblock %}
 </head>
 
 <body>
@@ -36,12 +36,12 @@
     <div class="container d-flex justify-content-between align-items-center">
 
       <div class="logo">
-        <h1><a href="#">{% block nav_title %} Nutri-Desk {% endblock %}</a></h1>
+        <h1><a href="{% url 'index' %}">{% block nav_title %} Nutri-Desk {% endblock %}</a></h1>
       </div>
 
       <nav id="navbar" class="navbar">
         <ul>
-          <li><a class="" href="/">Nutri-Desk</a></li>
+          <li><a class="" href="{% url 'index' %}">Nutri-Desk</a></li>
           <li><a class="" href="{% url 'nutriblog' %}">Blog</a></li>
           <li><a href="#">Contacto</a></li>
           <li>{% block searchbar %}{% endblock %}</li>
@@ -57,15 +57,15 @@
   {% endblock %}
 
   <main id="main">
-    
-    {% block section1 %}  {% endblock %}
-    {% block section2 %}  {% endblock %}
-    {% block section-testimonial %}  {% endblock %}
-    {% block section-presentation%}  {% endblock %}
-    {% block section-contact %}  {% endblock %}
+
+    {% block section1 %} {% endblock %}
+    {% block section2 %} {% endblock %}
+    {% block section-testimonial %} {% endblock %}
+    {% block section-presentation%} {% endblock %}
+    {% block section-contact %} {% endblock %}
 
     <!-- ======= Testimonials Section ======= -->
-    
+
 
 
   </main><!-- End #main -->
@@ -107,7 +107,10 @@
             <div class="col-md-4 mb-4 mb-md-0">
               <h3>Disclaimer</h3>
               <ul class="list-unstyled">
-                <li><p><b>Busca la ayuda de profesionales</b> cerca de ti. ¡Este sistema es única y exclusivamente para<b> uso auxiliar</b>! No pretende en ningún momento sustituir el labor de un médico.</p></li>
+                <li>
+                  <p><b>Busca la ayuda de profesionales</b> cerca de ti. ¡Este sistema es única y exclusivamente para<b>
+                      uso auxiliar</b>! No pretende en ningún momento sustituir el labor de un médico.</p>
+                </li>
               </ul>
             </div>
           </div>
@@ -132,16 +135,17 @@
     </div>
   </footer>
 
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
 
- <!-- Vendor JS Files -->
- <script src="{% static 'ui_template/vendor/aos/aos.js' %}"></script>
- <script src="{% static 'ui_template/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
- <script src="{% static 'ui_template/vendor/php-email-form/validate.js' %}"></script>
- <script src="{% static 'ui_template/vendor/swiper/swiper-bundle.min.js' %}"></script>
+  <!-- Vendor JS Files -->
+  <script src="{% static 'ui_template/vendor/aos/aos.js' %}"></script>
+  <script src="{% static 'ui_template/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'ui_template/vendor/php-email-form/validate.js' %}"></script>
+  <script src="{% static 'ui_template/vendor/swiper/swiper-bundle.min.js' %}"></script>
 
- <!-- Template Main JS File -->
- <script src="{% static 'ui_template/js/main.js' %}"></script>
+  <!-- Template Main JS File -->
+  <script src="{% static 'ui_template/js/main.js' %}"></script>
 
 </body>
 
