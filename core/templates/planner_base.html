@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <title>{% block title%} Base {% endblock %}</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="{% static 'ui_template/img/favicon.png' %}" rel="icon">
+    <link href="{% static 'ui_template/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+        rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="{% static 'ui_template/vendor/aos/aos.css' %}" rel="stylesheet">
+    <link href="{% static 'ui_template/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'ui_template/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+    <link href="{% static 'ui_template/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+    <link href="{% static 'ui_template/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="{% static 'ui_template/css/style.css' %}" rel="stylesheet">
+
+    {% block extra_links %} {% endblock %}
+</head>
+
+<body>
+
+    <!-- ======= Header ======= -->
+    <header id="custom-header" class="d-flex align-items-center">
+        <div class="container">
+            <div class="row justify-content-start align-items-center">
+
+                <div class="col">
+                    <button class="custom-btn custom-btn-primary" type="button" data-bs-toggle="offcanvas"
+                        data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                        <i class='bx bx-menu'></i>
+                    </button>
+                </div>
+
+                <div class="col">
+                    <div class="logo text-end">
+                        <h1><a href="{% url 'index' %}">{% block nav_title %} Nutri-Desk {% endblock %}</a></h1>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </header><!-- End Header -->
+
+    <!-- ======= Offcanvas ======= -->
+    <div class="offcanvas offcanvas-start" data-bs-scroll="false" tabindex="-1" id="offcanvasNavbar"
+        aria-labelledby="offcanvasNavbarLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menú</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div>
+                <hr>
+                <div class="row justify-content-start div-fill rounded-end active-div">
+                    <div class="col-1">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <div class="col">
+                        <p class="my-1">Resumen</p>
+                    </div>
+                </div>
+                <hr>
+                <p>Información del Usuario</p>
+                <a href="{% url 'perfil' %}">
+                    <div class="row justify-content-start div-fill rounded-end">
+                        <div class="col-1">
+                            <i class="fas fa-user-alt "></i>
+                        </div>
+                        <div class="col">
+                            <p class="my-1">Perfil</p>
+                        </div>
+                    </div>
+                </a>
+                <hr>
+                <p>Seguimiento</p>
+                <div class="row row-cols-1">
+                    <a href="{% url 'planes' %}">
+                        <div class="row justify-content-start div-fill rounded-end">
+                            <div class="col-1">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
+                            <div class="col align-items-center">
+                                <p class="my-1">Planes de alimenación</p>
+                            </div>
+                        </div>
+                    </a>
+                    <br>
+                    <a href="{% url 'smae' %}">
+                        <div class="row justify-content-start div-fill rounded-end">
+                            <div class="col-1">
+                                <i class="fas fa-balance-scale "></i>
+                            </div>
+                            <div class="col">
+                                <p class="my-1">SMAE</p>
+                            </div>
+                        </div>
+                    </a>
+                    <br>
+                    <a href="{% url 'diagnosticos' %}">
+                        <div class="row justify-content-start div-fill rounded-end">
+                            <div class="col-1">
+                                <i class="fas fa-file-medical "></i>
+                            </div>
+                            <div class="col">
+                                <p class="my-1">Diagnósticos</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <hr>
+                <p>Información Adicional</p>
+                <a href="{% url 'index' %}">
+                    <div class="row justify-content-start div-fill rounded-end">
+                        <div class="col-1">
+                            <i class="fas fa-question "></i>
+                        </div>
+                        <div class="col">
+                            <p class="my-1">Acerca de Nutridesk</p>
+                        </div>
+                    </div>
+                </a>
+                <hr>
+            </div>
+        </div>
+    </div>
+    <!-- ======= End Offcanvas ======= -->
+
+    {% block hero %}
+    {% endblock %}
+
+    <main id="main">
+
+        {% block section1 %} {% endblock %}
+        {% block section2 %} {% endblock %}
+        {% block section-testimonial %} {% endblock %}
+        {% block section-presentation%} {% endblock %}
+        {% block section-contact %} {% endblock %}
+
+        <!-- ======= Testimonials Section ======= -->
+
+
+
+    </main><!-- End #main -->
+
+    <!-- ======= Footer ======= -->
+    <footer class="footer" role="contentinfo">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h3>Acerca de Nutri-Desk</h3>
+                    <p>Nutri-Desk es un proyecto creado por estudiantes de la ESCOM-IPN; cuyo objetivo es brindar
+                        herramientas de
+                        apoyo y concientización nutricional accesibles y fáciles de manejar.</p>
+                    <p class="social">
+                        <a href="#"><span class="bi bi-twitter"></span></a>
+                        <a href="#"><span class="bi bi-facebook"></span></a>
+                        <a href="#"><span class="bi bi-instagram"></span></a>
+                        <a href="#"><span class="bi bi-linkedin"></span></a>
+                    </p>
+                </div>
+                <div class="col-md-7 ms-auto">
+                    <div class="row site-section pt-0">
+                        <div class="col-md-4 mb-4 mb-md-0">
+                            <h3>Navegación</h3>
+                            <ul class="list-unstyled">
+                                <li><a href="#">Nutri-Desk</a></li>
+                                <li><a href="#">Blog</a></li>
+                                <li><a href="#">Contacto</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-4 mb-4 mb-md-0">
+                            <h3>Servicios</h3>
+                            <ul class="list-unstyled">
+                                <li><a href="#">Team</a></li>
+                                <li><a href="#">Collaboration</a></li>
+                                <li><a href="#">Todos</a></li>
+                                <li><a href="#">Events</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-4 mb-4 mb-md-0">
+                            <h3>Disclaimer</h3>
+                            <ul class="list-unstyled">
+                                <li>
+                                    <p><b>Busca la ayuda de profesionales</b> cerca de ti. ¡Este sistema es única y
+                                        exclusivamente para<b>
+                                            uso auxiliar</b>! No pretende en ningún momento sustituir el labor de un
+                                        médico.</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row justify-content-center text-center">
+                <div class="col-md-7">
+                    <p class="copyright">&copy; Copyright SoftLand. All Rights Reserved</p>
+                    <div class="credits">
+                        <!--
+            All the links in the footer should remain intact.
+            You can delete the links only if you purchased the pro version.
+            Licensing information: https://bootstrapmade.com/license/
+            Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/buy/?theme=SoftLand
+          -->
+                        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+            class="bi bi-arrow-up-short"></i></a>
+
+    <!-- Vendor JS Files -->
+    <script src="{% static 'ui_template/vendor/aos/aos.js' %}"></script>
+    <script src="{% static 'ui_template/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'ui_template/vendor/php-email-form/validate.js' %}"></script>
+    <script src="{% static 'ui_template/vendor/swiper/swiper-bundle.min.js' %}"></script>
+
+    <!-- Template Main JS File -->
+    <script src="{% static 'ui_template/js/main.js' %}"></script>
+
+    {% block extra-scripts %} {% endblock %}
+
+</body>
+
+</html>

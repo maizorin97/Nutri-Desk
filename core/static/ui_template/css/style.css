@@ -24,10 +24,6 @@ a {
   transition: 0.3s all ease;
 }
 
-a:hover {
-  color: #000;
-}
-
 h1, h2, h3, h4, h5, h6, .font-heading {
   font-family: "Poppins", sans-serif;
   color: #000;
@@ -125,6 +121,21 @@ section {
   background: linear-gradient(-45deg, #1391a5, #274685);
   color: #fff;
   box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.15);
+}
+
+/* Default btn sre-tyling */
+.custom-btn {
+  border: none;
+  font-size: 40px;
+}
+
+.custom-btn.custom-btn-outline-white:hover {
+  background: #fff;
+  color: #2d71a1;
+}
+.custom-btn.custom-btn-primary {
+  background: none;
+  color: #fff;
 }
 
 /* Feature 1 */
@@ -556,6 +567,35 @@ section {
 }
 
 /*--------------------------------------------------------------
+# Header
+--------------------------------------------------------------*/
+#custom-header {
+  height: 50px;
+  transition: all 0.5s;
+  z-index: 997;
+  transition: all 0.5s;
+  background: rgba(39, 70, 133, 0.8);
+  margin-bottom: 2%;
+  padding: 2%;
+}
+
+#custom-header .logo h1 {
+  font-size: 28px;
+  margin: 0;
+  line-height: 1;
+  font-weight: 500;
+}
+
+#custom-header .logo h1 a, #custom-header .logo h1 a:hover, #custom-header i {
+  color: #fff;
+  text-decoration: none;
+}
+#custom-header .logo img {
+  padding: 0;
+  margin: 0;
+  max-height: 40px;
+}
+/*--------------------------------------------------------------
 # Navigation Menu
 --------------------------------------------------------------*/
 /**
@@ -601,7 +641,7 @@ section {
   margin: 0;
   padding: 10px 0;
   z-index: 99;
-  opacity: 0;
+  opacity: 1;
   visibility: hidden;
   background: #fff;
   box-shadow: 0px 0px 30px rgba(127, 137, 161, 0.25);
@@ -675,7 +715,7 @@ section {
   right: 0;
   left: 0;
   bottom: 0;
-  background: rgba(27, 94, 38, 0.9);
+  background: rgba(10, 10, 10, 0.39);
   transition: 0.3s;
   z-index: 999;
 }
@@ -843,4 +883,46 @@ section {
 }
 .social a i {
   line-height: 0;
+}
+
+
+/* Custom Behavior  */
+
+.card{
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: 0 6px 10px rgba(0,0,0,.08), 0 0 6px rgba(0,0,0,.05);
+  transition: .3s transform cubic-bezier(.155,1.105,.295,1.12),.3s box-shadow,.3s -webkit-transform cubic-bezier(.155,1.105,.295,1.12);
+  cursor: pointer;
+}
+
+.card:hover{
+  transform: scale(1.02);
+  box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
+}
+
+.div-fill {
+  /* "to left" / "to right" - affects initial color */
+  background: linear-gradient(to left, white 50%, #526b9d 50%) right;
+  background-size: 200%;
+  transition: .5s ease-out;
+}
+.div-fill:hover {
+  background-position: left;
+  cursor: pointer;
+  color:white;
+}
+
+.active-div{
+  background: #526b9d;
+  cursor: pointer;
+  color:white;
+}
+
+.custom-link{
+  display: inline;
+}
+
+.custom-link:hover{
+  color: white;
 }
