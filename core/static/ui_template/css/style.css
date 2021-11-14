@@ -967,3 +967,39 @@ section {
   display: inline;
   color: #526b9d;
 }
+
+.bg-cereales{
+  background: #ffe5d0;
+}
+
+.bg-verduras{
+  background: #d1e7dd;
+}
+
+.bg-frutas{
+  background: #fecba1;
+}
+
+.bg-animal{
+  background: #f8d7da;
+}
+
+.bg-leche{
+  background: #cff4fc;
+}
+
+.bg-leguminosas{
+  background: #ca6510;
+}
+
+.bg-grasas{
+  background: #fff3cd;
+}
+
+.bg-azucares{
+  background: #efadce;
+}
+
+.bg-libre{
+  background: #c5b3e6;
+}

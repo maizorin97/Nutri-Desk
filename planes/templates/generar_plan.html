@@ -110,6 +110,18 @@
               </div>
             </div>
 
+            <div class="d-flex flex-row justify-content-between flex-wrap">
+              <div><span class="badge bg-cereales text-dark">Cereales y Tubérculos</span></div>
+              <div><span class="badge bg-verduras text-dark">Verduras</span></div>
+              <div> <span class="badge bg-frutas text-dark">Frutas</span></div>
+              <div> <span class="badge bg-animal text-dark">Origen Animal</span></div>
+              <div><span class="badge bg-leche text-dark">Leche</span></div>
+              <div><span class="badge bg-leguminosas text-dark">Leguminosas</span></div>
+              <div><span class="badge bg-grasas text-dark">Grasas</span></div>
+              <div><span class="badge bg-azucares text-dark">Azucares</span></div>
+              <div><span class="badge bg-libre text-dark">Libres en Energía</span></div>
+            </div>
+
             <!-- ------- NEW MENU TEST ------- -->
             <div class="card my-4">
               <div class="card-header py-2">
@@ -469,12 +481,23 @@
     var llave_comida = ["Desayuno", "Colacion1", "Comida", "Colacion2", "Cena"]
     var llave_alimentos = ["Cereales y tubérculos", "Verduras", "Frutas", "Alimentos de origen animal",
       "Leche", "Leguminosas", "Grasas", "Azúcares", "Alimentos libres en energía"];
+    var colors={
+      "Cereales y tubérculos": "bg-cereales", 
+      "Verduras": "bg-verduras", 
+      "Frutas": "bg-frutas", 
+      "Alimentos de origen animal": "bg-animal",
+      "Leche": "bg-leche", 
+      "Leguminosas": "bg-leguminosas", 
+      "Grasas": "bg-grasas", 
+      "Azúcares": "bg-azucares", 
+      "Alimentos libres en energía": "bg-libre"
+    };
     var html_code = "<div>";
     for (var i = 0; i < plan.length; i++) {//[]
       for (var j = 0; j < plan[i]; j++) {//n
-        html_code += "<div><select class='form-control' name='" + llave_comida[tc] + "'>"
+        html_code += "<div><select class='form-select "+ colors[llave_alimentos[i]] + " border-light rounded-3' name='" + llave_comida[tc] + "'>"
         for (var k = 0; k < dic[llave_alimentos[i]].length; k++) {
-          html_code += "<option value = '" + dic[llave_alimentos[i]][k][1] + "'>" + dic[llave_alimentos[i]][k][0] + "</option>"
+          html_code += "<option class='bg-light' value = '" + dic[llave_alimentos[i]][k][1] + "'>" + dic[llave_alimentos[i]][k][0] + "</option>"
         }
         html_code += "</select></div>";
       }
