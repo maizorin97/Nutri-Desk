@@ -1,9 +1,18 @@
-{% extends 'base_navbar.html' %}
-{% block title %}Panel de control{% endblock %}
+{% extends 'planner_base.html' %}
+{% block title %} Perfil {% endblock %}
+
 {% load static %}
-{% block main_content %}
-<!--falta checar permisos de visualizacion-->
-<!-- Begin Page Content -->
+
+{% block extra_links %}
+
+<link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+
+{% endblock %}
+
+{% block active-perfil %} active-div {% endblock %}
+
+{% block section1 %}
+
 <div class="container-fluid">
 
   <!-- Page Heading -->
@@ -14,64 +23,57 @@
   <!-- Content Row -->
   <div class="row">
     <div class="col-12">
-      <div class="card shadow mb-4">
-        <div class="card-header py-3">
-          <h6 class="m-0 font-weight-bold text-primary"></h6>
+      <div class="row">
+        <div class="col-sm-12 col-md-4 align-self-center">
+          <img alt="" style="width:100%;" title="" class="img-circle img-thumbnail isTooltip"
+            src="{% static 'img/user1.png' %}" data-original-title="Usuario">
         </div>
-        <div class="card-body">
-          <div class="row">
-            <div class="col-sm-12 col-md-4 align-self-center">
-              <img alt="" style="width:100%;" title="" class="img-circle img-thumbnail isTooltip"
-                src="{% static 'img/user1.jpg' %}" data-original-title="Usuario">
-            </div>
-            <div class="col-sm-12 col-md-8 align-self-center">
-              <div class="table-responsive align-content-center">
-                <form method="POST">
-                  {% csrf_token %}
-                  <table class="table table-condensed table-responsive table-user-information">
-                    <tbody>
-                      <tr>
-                        <td><strong><i class="fas fa-id-card text-primary"></i> Nombre</strong></td>
-                        <td class="text-secondary">{{user.first_name}}</td>
-                      </tr>
-                      <tr>
-                        <td><strong><i class="fas fa-id-card text-primary"></i> Apellido</strong></td>
-                        <td class="text-secondary">{{user.last_name}}</td>
-                      </tr>
-                      <tr>
-                        <td><strong><i class="fas fa-venus-mars text-primary"></i> Sexo</strong></td>
-                        <td class="text-secondary">{{info_form.sexo}}</td>
-                      </tr>
-                      <tr>
-                        <td><strong><i class="fas fa-envelope text-primary"></i> Email</strong></td>
-                        <td class="text-secondary">{{user.username}}
-                          {{info_form.usuario}}
-                        </td>
-                      </tr>
-                      <tr>
-                        <td><strong><i class="fas fa-weight text-primary"></i> Peso (Kg)</strong></td>
-                        <td class="text-secondary">{{info_form.peso}}</td>
-                      </tr>
-                      <tr>
-                        <td><strong><i class="fas fa-arrows-alt-v text-primary"></i> Altura (Cm)</strong></td>
-                        <td class="text-secondary">{{info_form.altura}}</td>
-                      </tr>
-                      <tr>
-                        <td><strong><i class="fas fa-birthday-cake text-primary"></i> Fecha de Nacimiento</strong></td>
-                        <td class="text-secondary">{{info_form.fecha_nacimiento}}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <button type="submit" class="btn btn-primary">Actualizar datos</button>
-                  <button class="btn btn-dark btn-user">Modificar foto de perfil</button>
-                </form>
-              </div>
-            </div>
+        <div class="col-sm-12 col-md-8 align-self-center">
+          <div class="table-responsive align-content-center">
+            <form method="POST">
+              {% csrf_token %}
+              <table class="table table-condensed table-responsive table-user-information">
+                <tbody>
+                  <tr>
+                    <td><strong><i class="fas fa-id-card text-primary"></i> Nombre</strong></td>
+                    <td class="text-secondary">{{user.first_name}}</td>
+                  </tr>
+                  <tr>
+                    <td><strong><i class="fas fa-id-card text-primary"></i> Apellido</strong></td>
+                    <td class="text-secondary">{{user.last_name}}</td>
+                  </tr>
+                  <tr>
+                    <td><strong><i class="fas fa-venus-mars text-primary"></i> Sexo</strong></td>
+                    <td class="text-secondary">{{info_form.sexo}}</td>
+                  </tr>
+                  <tr>
+                    <td><strong><i class="fas fa-envelope text-primary"></i> Email</strong></td>
+                    <td class="text-secondary">{{user.username}}
+                      {{info_form.usuario}}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong><i class="fas fa-weight text-primary"></i> Peso (Kg)</strong></td>
+                    <td class="text-secondary">{{info_form.peso}}</td>
+                  </tr>
+                  <tr>
+                    <td><strong><i class="fas fa-arrows-alt-v text-primary"></i> Altura (Cm)</strong></td>
+                    <td class="text-secondary">{{info_form.altura}}</td>
+                  </tr>
+                  <tr>
+                    <td><strong><i class="fas fa-birthday-cake text-primary"></i> Fecha de Nacimiento</strong></td>
+                    <td class="text-secondary">{{info_form.fecha_nacimiento}}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <button type="submit" class="btn btn-primary">Actualizar datos</button>
+              <button class="btn btn-dark btn-user">Modificar foto de perfil</button>
+            </form>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
-<!-- /.container-fluid -->
-{% endblock %}
+
+
+  {% endblock %}

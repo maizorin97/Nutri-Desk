@@ -896,10 +896,10 @@ section {
   cursor: pointer;
 }
 
-.card:hover{
+/* .card:hover{
   transform: scale(1.02);
   box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
-}
+} */
 
 .div-fill {
   /* "to left" / "to right" - affects initial color */
@@ -925,4 +925,45 @@ section {
 
 .custom-link:hover{
   color: white;
+}
+
+.icon-sidenav {
+  font-size: 25px;
+}
+
+.deleButton, .seeButton{
+  font-size: 20px;
+}
+
+.deleteButton:hover{
+  color: crimson;
+  cursor: pointer;
+}
+
+.seeButton:hover{
+  color: #526b9d;
+  cursor: pointer;
+}
+
+.nav-button{
+  height: 10px;
+  width: 15px;
+  margin: auto;
+}
+
+.nav-button i{
+  text-align: center;
+  line-height: 50%;
+}
+
+.bg-primary{
+  background: #2d71a1;
+  background: linear-gradient(-45deg, #1391a5, #274685);
+  color: #fff;
+  box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.15);
+}
+
+.inline-icon{
+  display: inline;
+  color: #526b9d;
 }

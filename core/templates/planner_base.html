@@ -63,23 +63,27 @@
         <div class="offcanvas-body">
             <div>
                 <hr>
-                <div class="row justify-content-start div-fill rounded-end active-div">
-                    <div class="col-1">
-                        <i class="fas fa-file-alt"></i>
+                <a href="{% url 'panel' %}">
+                    <div
+                        class="row d-flex align-items-center justify-content-start div-fill rounded-end {% block active-resumen %}  {% endblock %}">
+                        <div class="col-1">
+                            <i class="fas fa-file-alt icon-sidenav"></i>
+                        </div>
+                        <div class="col">
+                            <p class="my-2 mx-2">Resumen</p>
+                        </div>
                     </div>
-                    <div class="col">
-                        <p class="my-1">Resumen</p>
-                    </div>
-                </div>
+                </a>
                 <hr>
                 <p>Información del Usuario</p>
                 <a href="{% url 'perfil' %}">
-                    <div class="row justify-content-start div-fill rounded-end">
+                    <div
+                        class="row d-flex align-items-center justify-content-start div-fill rounded-end {% block active-perfil %}  {% endblock %}">
                         <div class="col-1">
-                            <i class="fas fa-user-alt "></i>
+                            <i class="fas fa-user-alt icon-sidenav "></i>
                         </div>
                         <div class="col">
-                            <p class="my-1">Perfil</p>
+                            <p class="my-2 mx-2">Perfil</p>
                         </div>
                     </div>
                 </a>
@@ -87,34 +91,37 @@
                 <p>Seguimiento</p>
                 <div class="row row-cols-1">
                     <a href="{% url 'planes' %}">
-                        <div class="row justify-content-start div-fill rounded-end">
+                        <div
+                            class="row d-flex align-items-center justify-content-start div-fill rounded-end {% block active-planes %}  {% endblock %}">
                             <div class="col-1">
-                                <i class="fas fa-file-alt"></i>
+                                <i class="fas fa-file-alt icon-sidenav"></i>
                             </div>
                             <div class="col align-items-center">
-                                <p class="my-1">Planes de alimenación</p>
+                                <p class="my-2 mx-2">Planes de alimenación</p>
                             </div>
                         </div>
                     </a>
                     <br>
                     <a href="{% url 'smae' %}">
-                        <div class="row justify-content-start div-fill rounded-end">
+                        <div
+                            class="row d-flex align-items-center justify-content-start div-fill rounded-end {% block active-smae %}  {% endblock %}">
                             <div class="col-1">
-                                <i class="fas fa-balance-scale "></i>
+                                <i class="fas fa-balance-scale icon-sidenav "></i>
                             </div>
                             <div class="col">
-                                <p class="my-1">SMAE</p>
+                                <p class="my-2 mx-2">SMAE</p>
                             </div>
                         </div>
                     </a>
                     <br>
                     <a href="{% url 'diagnosticos' %}">
-                        <div class="row justify-content-start div-fill rounded-end">
+                        <div
+                            class="row d-flex align-items-center justify-content-start div-fill rounded-end {% block active-diagnosticos %}  {% endblock %}">
                             <div class="col-1">
-                                <i class="fas fa-file-medical "></i>
+                                <i class="fas fa-file-medical icon-sidenav"></i>
                             </div>
                             <div class="col">
-                                <p class="my-1">Diagnósticos</p>
+                                <p class="my-2 mx-2">Diagnósticos</p>
                             </div>
                         </div>
                     </a>
@@ -122,12 +129,12 @@
                 <hr>
                 <p>Información Adicional</p>
                 <a href="{% url 'index' %}">
-                    <div class="row justify-content-start div-fill rounded-end">
+                    <div class="row d-flex align-items-center justify-content-start div-fill rounded-end">
                         <div class="col-1">
-                            <i class="fas fa-question "></i>
+                            <i class="fas fa-question icon-sidenav"></i>
                         </div>
                         <div class="col">
-                            <p class="my-1">Acerca de Nutridesk</p>
+                            <p class="my-2 mx-2">Acerca de Nutridesk</p>
                         </div>
                     </div>
                 </a>
@@ -227,9 +234,13 @@
 
     <!-- Vendor JS Files -->
     <script src="{% static 'ui_template/vendor/aos/aos.js' %}"></script>
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
     <script src="{% static 'ui_template/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'ui_template/vendor/php-email-form/validate.js' %}"></script>
     <script src="{% static 'ui_template/vendor/swiper/swiper-bundle.min.js' %}"></script>
+    <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+    <script src="{% static 'js/sb-admin-2.min.js' %}"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Template Main JS File -->
     <script src="{% static 'ui_template/js/main.js' %}"></script>
