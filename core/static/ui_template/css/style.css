@@ -24,10 +24,6 @@ a {
   transition: 0.3s all ease;
 }
 
-a:hover {
-  color: #000;
-}
-
 h1, h2, h3, h4, h5, h6, .font-heading {
   font-family: "Poppins", sans-serif;
   color: #000;
@@ -127,6 +123,21 @@ section {
   box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.15);
 }
 
+/* Default btn sre-tyling */
+.custom-btn {
+  border: none;
+  font-size: 40px;
+}
+
+.custom-btn.custom-btn-outline-white:hover {
+  background: #fff;
+  color: #2d71a1;
+}
+.custom-btn.custom-btn-primary {
+  background: none;
+  color: #fff;
+}
+
 /* Feature 1 */
 .feature-1 .wrap-icon {
   margin: 0 auto;
@@ -172,6 +183,13 @@ section {
 }
 .step p:last-child {
   margin-bottom: 0px;
+}
+
+.step img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  overflow: hidden;
 }
 
 /* Review */
@@ -295,15 +313,7 @@ section {
     font-size: 2rem;
   }
 }
-.cta-section .btn {
-  background: #000000;
-  color: #fff;
-}
-.cta-section .btn i {
-  margin-right: 5px;
-  font-size: 24px;
-  line-height: 0;
-}
+
 
 /* Contact Form */
 .form-control {
@@ -557,6 +567,35 @@ section {
 }
 
 /*--------------------------------------------------------------
+# Header
+--------------------------------------------------------------*/
+#custom-header {
+  height: 50px;
+  transition: all 0.5s;
+  z-index: 997;
+  transition: all 0.5s;
+  background: rgba(39, 70, 133, 0.8);
+  margin-bottom: 2%;
+  padding: 2%;
+}
+
+#custom-header .logo h1 {
+  font-size: 28px;
+  margin: 0;
+  line-height: 1;
+  font-weight: 500;
+}
+
+#custom-header .logo h1 a, #custom-header .logo h1 a:hover, #custom-header i {
+  color: #fff;
+  text-decoration: none;
+}
+#custom-header .logo img {
+  padding: 0;
+  margin: 0;
+  max-height: 40px;
+}
+/*--------------------------------------------------------------
 # Navigation Menu
 --------------------------------------------------------------*/
 /**
@@ -602,7 +641,7 @@ section {
   margin: 0;
   padding: 10px 0;
   z-index: 99;
-  opacity: 0;
+  opacity: 1;
   visibility: hidden;
   background: #fff;
   box-shadow: 0px 0px 30px rgba(127, 137, 161, 0.25);
@@ -676,7 +715,7 @@ section {
   right: 0;
   left: 0;
   bottom: 0;
-  background: rgba(27, 94, 38, 0.9);
+  background: rgba(10, 10, 10, 0.39);
   transition: 0.3s;
   z-index: 999;
 }
@@ -737,7 +776,7 @@ section {
 # Hero Section
 --------------------------------------------------------------*/
 .hero-section {
-  background: linear-gradient(to right, rgba(39, 70, 133, 0.8) 0%, rgba(61, 179, 197, 0.8) 100%), url(../img/hero-bg.jpg);
+  background: linear-gradient(to right, rgba(39, 70, 133, 0.8) 0%, rgba(61, 179, 197, 0.8) 100%), url(../../img/header-bg.jpg);
   position: relative;
 }
 .hero-section .wave {
@@ -794,50 +833,7 @@ section {
   font-size: 18px;
   color: #fff;
 }
-.hero-section .iphone-wrap {
-  position: relative;
-}
-@media screen and (max-width: 992px) {
-  .hero-section .iphone-wrap {
-    text-align: center;
-  }
-}
-.hero-section .iphone-wrap .phone-2, .hero-section .iphone-wrap .phone-1 {
-  position: absolute;
-  top: -50%;
-  overflow: hidden;
-  left: 0;
-  box-shadow: 0 15px 50px 0 rgba(0, 0, 0, 0.3);
-  border-radius: 30px;
-}
-@media screen and (max-width: 992px) {
-  .hero-section .iphone-wrap .phone-2, .hero-section .iphone-wrap .phone-1 {
-    position: relative;
-    top: 0;
-    max-width: 100%;
-  }
-}
-.hero-section .iphone-wrap .phone-2, .hero-section .iphone-wrap .phone-1 {
-  width: 250px;
-}
-@media screen and (max-width: 992px) {
-  .hero-section .iphone-wrap .phone-1 {
-    margin-left: -150px;
-  }
-}
-.hero-section .iphone-wrap .phone-2 {
-  margin-top: 50px;
-  margin-left: 100px;
-  width: 250px;
-}
-@media screen and (max-width: 992px) {
-  .hero-section .iphone-wrap .phone-2 {
-    width: 250px;
-    position: absolute;
-    margin-top: 0px;
-    margin-left: 100px;
-  }
-}
+
 
 /*--------------------------------------------------------------
 # Footer
@@ -887,4 +883,123 @@ section {
 }
 .social a i {
   line-height: 0;
+}
+
+
+/* Custom Behavior  */
+
+.card{
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: 0 6px 10px rgba(0,0,0,.08), 0 0 6px rgba(0,0,0,.05);
+  transition: .3s transform cubic-bezier(.155,1.105,.295,1.12),.3s box-shadow,.3s -webkit-transform cubic-bezier(.155,1.105,.295,1.12);
+  cursor: pointer;
+}
+
+/* .card:hover{
+  transform: scale(1.02);
+  box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
+} */
+
+.div-fill {
+  /* "to left" / "to right" - affects initial color */
+  background: linear-gradient(to left, white 50%, #526b9d 50%) right;
+  background-size: 200%;
+  transition: .5s ease-out;
+}
+.div-fill:hover {
+  background-position: left;
+  cursor: pointer;
+  color:white;
+}
+
+.active-div{
+  background: #526b9d;
+  cursor: pointer;
+  color:white;
+}
+
+.custom-link{
+  display: inline;
+}
+
+.custom-link:hover{
+  color: white;
+}
+
+.icon-sidenav {
+  font-size: 25px;
+}
+
+.deleButton, .seeButton{
+  font-size: 20px;
+}
+
+.deleteButton:hover{
+  color: crimson;
+  cursor: pointer;
+}
+
+.seeButton:hover{
+  color: #526b9d;
+  cursor: pointer;
+}
+
+.nav-button{
+  height: 10px;
+  width: 15px;
+  margin: auto;
+}
+
+.nav-button i{
+  text-align: center;
+  line-height: 50%;
+}
+
+.bg-primary{
+  background: #2d71a1;
+  background: linear-gradient(-45deg, #1391a5, #274685);
+  color: #fff;
+  box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.15);
+}
+
+.inline-icon{
+  display: inline;
+  color: #526b9d;
+}
+
+.bg-cereales{
+  background: #ffe5d0;
+}
+
+.bg-verduras{
+  background: #d1e7dd;
+}
+
+.bg-frutas{
+  background: #fecba1;
+}
+
+.bg-animal{
+  background: #f8d7da;
+}
+
+.bg-leche{
+  background: #cff4fc;
+}
+
+.bg-leguminosas{
+  background: #ca6510;
+}
+
+.bg-grasas{
+  background: #fff3cd;
+}
+
+.bg-azucares{
+  background: #efadce;
+}
+
+.bg-libre{
+  background: #c5b3e6;
 }

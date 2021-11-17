@@ -80,7 +80,8 @@ class lista_planes(ListView):
                 colaciones_arr.append({
                     "tipoComida":colacion.idTipoComida.nombre,
                     "nombre":colacion.idAlimento.nombre,
-                    "racion":colacion.idAlimento.racion
+                    "racion":colacion.idAlimento.racion,
+                    "grupo":colacion.idAlimento.idGrupo.nombre
                 })
             return HttpResponse(json.dumps(colaciones_arr))
         else:
