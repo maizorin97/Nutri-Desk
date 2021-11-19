@@ -47,36 +47,36 @@ class DiagnosticoObesidad(models.Model):
     idDiagnostico = models.AutoField(primary_key=True)
     idUsuario = models.ForeignKey(User, on_delete=models.CASCADE)
     GENEROS = (
-        (1,'Mujer'),
-        (0,'Hombre'),
+        (0,'Mujer'),
+        (1,'Hombre'),
     )
     genero = models.CharField(max_length=1, choices=GENEROS, verbose_name="Genero")
     edad = models.DateField(verbose_name="Fecha de nacimiento", default=datetime.now)
     altura = models.FloatField(verbose_name="Altura en M")
     peso = models.FloatField(verbose_name="Peso en KG")
     BINARIO = (
-        (1,'Si'),
         (0,'No'),
+        (1,'Si'),
     )
     historial_obesidad = models.IntegerField(choices=BINARIO, verbose_name="Historial de sobrepeso en su familia")
     favc = models.IntegerField(choices=BINARIO, verbose_name="Come frecuentemente alimentos con altos niveles calóricos")
     VEGETALES = (
-        (1,'Nunca'),
-        (2,'Algunas veces'),
-        (3,'Siempre'),
+        (0,'Nunca'),
+        (1,'Algunas veces'),
+        (2,'Siempre'),
     )
     fcvc = models.IntegerField(choices=VEGETALES, verbose_name="Come vegetales en sus comidas")
     COMIDAS = (
-        (1,'Entre 1 y 2'),
-        (2,'Tres'),
-        (3,'Más de tres'),
+        (0,'Entre 1 y 2'),
+        (1,'Tres'),
+        (2,'Más de tres'),
     )
     npc = models.IntegerField(choices=COMIDAS, verbose_name="Número de comidas principales al día")
     ALIMENTOS = (
-        (1,'No'),
+        (0,'Siempre')
+        (1,'Frecuentemente'),
         (2,'Algunas veces'),
-        (3,'Frecuentemente'),
-        (4,'Siempre')
+        (3,'No'),
     )
     caec = models.IntegerField(choices=ALIMENTOS, verbose_name="Come algún alimento entre comidas")
     BINARIO = (
@@ -85,9 +85,9 @@ class DiagnosticoObesidad(models.Model):
     )
     smoke = models.IntegerField(choices=BINARIO, verbose_name="¿Fuma?")
     AGUA = (
-        (1,'Menos de un litro'),
-        (2,'Entre 1 y 2 litros'),
-        (3,'Más de 2 litros')
+        (0,'Menos de un litro'),
+        (1,'Entre 1 y 2 litros'),
+        (2,'Más de 2 litros')
     )
     ch2o = models.IntegerField(choices=AGUA, verbose_name="Consumo de agua diario")
     scc = models.IntegerField(choices=BINARIO, verbose_name="Monitorea el número de calorías que consume diario")
@@ -105,28 +105,28 @@ class DiagnosticoObesidad(models.Model):
     )
     tue = models.IntegerField(choices=DISPOSITIVOS, verbose_name="Tiempo que usa dispositivos electrónicos al día")
     ALCOHOL = (
-        (1,'No'),
+        (0,'Siempre')
+        (1,'Frecuentemente'),
         (2,'Algunas veces'),
-        (3,'Frecuentemente'),
-        (4,'Siempre')
+        (3,'No'),
     )
     calc = models.IntegerField(choices=ALCOHOL, verbose_name="Tiempo que usa dispositivos electrónicos al día")
     TRANSPORTE = (
-        (1,'Automóvil'),
-        (2,'Motocicleta'),
-        (3,'Bicicleta'),
-        (4,'Transporte público'),
-        (5,'Caminar')
+        (0,'Automóvil'),
+        (1,'Motocicleta'),
+        (2,'Bicicleta'),
+        (3,'Transporte público'),
+        (4,'Caminar')
     )
     mtrans = models.IntegerField(choices=TRANSPORTE, verbose_name="Medio de transporte principal")
     OBESIDAD = (
-        (1,'Peso insuficiente'),
-        (2,'Peso normal'),
-        (3,'Sobrepeso nivel 1'),
-        (4,'Sobrepeso nivel 2'),
-        (5,'Obesidad tipo 1'),
-        (6,'Obesidad tipo 2'),
-        (7,'Obesidad tipo 3')
+        (0,'Peso insuficiente'),
+        (1,'Peso normal'),
+        (2,'Sobrepeso nivel 1'),
+        (3,'Sobrepeso nivel 2'),
+        (4,'Obesidad tipo 1'),
+        (5,'Obesidad tipo 2'),
+        (6,'Obesidad tipo 3')
     )
     fecha_creacion = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de diagnóstico")
     nobeyesdad = models.IntegerField(choices=OBESIDAD, verbose_name="Peso corporal")
