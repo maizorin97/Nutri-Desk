@@ -73,7 +73,7 @@ class DiagnosticoObesidad(models.Model):
     )
     npc = models.IntegerField(choices=COMIDAS, verbose_name="Número de comidas principales al día")
     ALIMENTOS = (
-        (0,'Siempre')
+        (0,'Siempre'),
         (1,'Frecuentemente'),
         (2,'Algunas veces'),
         (3,'No'),
@@ -105,7 +105,7 @@ class DiagnosticoObesidad(models.Model):
     )
     tue = models.IntegerField(choices=DISPOSITIVOS, verbose_name="Tiempo que usa dispositivos electrónicos al día")
     ALCOHOL = (
-        (0,'Siempre')
+        (0,'Siempre'),
         (1,'Frecuentemente'),
         (2,'Algunas veces'),
         (3,'No'),
