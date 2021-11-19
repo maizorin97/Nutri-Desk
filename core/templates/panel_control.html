@@ -50,7 +50,7 @@
         <div class="card-body">
           <div class="row no-gutters align-items-center">
             <div class="col mr-2">
-              <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Tu Altura</div>
+              <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Tu Altura</div>
               <div class="h5 mb-0 font-weight-bold text-gray-800">{{infoUser.altura}} cm</div>
             </div>
             <div class="col-auto">
@@ -67,7 +67,7 @@
         <div class="card-body">
           <div class="row no-gutters align-items-center">
             <div class="col mr-2">
-              <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Plan de Alimentación</div>
+              <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Plan de Alimentación</div>
               <div class="row no-gutters align-items-center">
                 <div class="col-auto">
                   <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
@@ -88,7 +88,7 @@
         <div class="card-body">
           <div class="row no-gutters align-items-center">
             <div class="col mr-2">
-              <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Índice de Masa Corporal</div>
+              <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Índice de Masa Corporal</div>
               <div class="h5 mb-0 font-weight-bold text-gray-800" id="txtIMC">
 
                 <script>
@@ -262,21 +262,15 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.6.0/dist/chart.min.js"></script>
 
 <script>
-  const labels = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-  ];
+  const labels = {{labels|safe}};
+  
   const data = {
     labels: labels,
     datasets: [{
-      label: 'Talla en cms',
+      label: 'Peso en kgs',
       backgroundColor: 'rgb(255, 99, 132)',
       borderColor: 'rgb(255, 99, 132)',
-      data: [0, 10, 5, 2, 20, 30, 45],
+      data: {{data|safe}},
     }]
   };
 
@@ -293,17 +287,29 @@
 
   const pie_data = {
     labels: [
-      'Red',
-      'Blue',
-      'Yellow'
+      'Cereales y Tubérculos',
+      'Verduras',
+      'Frutas',
+      'Origen Animal',
+      'Leche',
+      'Leguminosas',
+      'Grasas',
+      'Azucares',
+      'Libres en Energía'
     ],
     datasets: [{
       label: 'My First Dataset',
-      data: [300, 50, 100],
+      data: [{{cereales}}, {{verduras}}, {{frutas}}, {{animal}}, {{leche}}, {{leguminosas}}, {{grasas}}, {{azucar}}, {{libre}} ],
       backgroundColor: [
-        'rgb(255, 99, 132)',
-        'rgb(54, 162, 235)',
-        'rgb(255, 205, 86)'
+        '#ffe5d0',
+        '#d1e7dd',
+        '#fecba1',
+        '#f8d7da',
+        '#cff4fc',
+        '#ca6510',
+        '#fff3cd',
+        '#efadce',
+        '#c5b3e6'
       ],
       hoverOffset: 4
     }]

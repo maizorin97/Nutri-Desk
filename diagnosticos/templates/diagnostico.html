@@ -1,100 +1,118 @@
-{% extends 'base_navbar.html' %}
-{% block title %}Diagnostico{% endblock %}
+{% extends 'planner_base.html' %}
+{% block title %} Perfil {% endblock %}
+
 {% load static %}
-{% block main_content %}
-<div class="card o-hidden border-0 shadow-lg my-5">
-    <div class="card-body p-0">
-        <!-- Nested Row within Card Body -->
-        <div class="row">
-            <div class="col-lg-5 d-none d-lg-block text-center">
-                <img src="{% static 'img/nutriologos.png' %}" class="img-fluid">
-                <img src="{% static 'img/doctor.png' %}" class="img-fluid">
-            </div>
-            <div class="col-lg-7">
-                <div class="p-5">
-                    <div class="text-center">
-                        <h1 class="h4 text-gray-900 mb-2">Cuestionario Informativo</h1>
-                        <p class="mb-4 text-justify">Por favor conteste el siguiente cuestionario con información real y actualizada, sólo así
-                                        se le brindará la atención apropiada. Los datos recolectados serán usados única y exclusivamente para la creación de diagnósticos y
-                            planes de alimentación dentro del sistema.</p>
-                    </div>
-                    <form method="POST">
-                        {% csrf_token %}
-                        <div class="form-group row">
-                            <div class="col-sm-4 align-self-center">
-                                {{diagnos_form.fecha_nacimiento.label}}
-                                {{diagnos_form.fecha_nacimiento}}
-                            </div>
-                            <div class="col-sm-4 align-self-center">
-                                {{diagnos_form.peso.label}}
-                                {{diagnos_form.peso}}
-                            </div>
-                            <div class="col-sm-4 align-self-center">
-                                {{diagnos_form.altura.label}}
-                                {{diagnos_form.altura}}
-                            </div>
+
+{% block extra_links %}
+
+<link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+
+{% endblock %}
+
+{% block active-diagnosticos %} active-div {% endblock %}
+
+{% block section1 %}
+<div class="container">
+    <div class="card o-hidden border-0 shadow-lg my-5">
+        <div class="card-body p-0">
+            <!-- Nested Row within Card Body -->
+            <div class="row">
+                <div class="col-lg-5 d-none d-lg-block text-center">
+                    <img src="{% static 'img/nutriologos.png' %}" class="img-fluid">
+                    <img src="{% static 'img/doctor.png' %}" class="img-fluid">
+                </div>
+                <div class="col-lg-7">
+                    <div class="p-5">
+                        <div class="text-center">
+                            <h1 class="h4 text-gray-900 mb-2">Cuestionario Informativo</h1>
+                            <p class="mb-4 text-justify">Por favor conteste el siguiente cuestionario con información
+                                real y actualizada, sólo así
+                                se le brindará la atención apropiada. Los datos recolectados serán usados única y
+                                exclusivamente para la creación de diagnósticos y
+                                planes de alimentación dentro del sistema.</p>
                         </div>
-                        <div class="form-group row text-center">
-                            <div class="col-12">
-                                {{diagnos_form.sexo.label}}
-                                {{diagnos_form.sexo}}
+                        <form method="POST">
+                            {% csrf_token %}
+                            <div class="form-group row">
+                                <div class="col-sm-4 align-self-center">
+                                    {{diagnos_form.fecha_nacimiento.label}}
+                                    {{diagnos_form.fecha_nacimiento}}
+                                </div>
+                                <div class="col-sm-4 align-self-center">
+                                    {{diagnos_form.peso.label}}
+                                    {{diagnos_form.peso}}
+                                </div>
+                                <div class="col-sm-4 align-self-center">
+                                    {{diagnos_form.altura.label}}
+                                    {{diagnos_form.altura}}
+                                </div>
                             </div>
-                        </div>
+                            <div class="form-group row text-center">
+                                <div class="col-12">
+                                    {{diagnos_form.sexo.label}}
+                                    {{diagnos_form.sexo}}
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="form-group row">
+                                <div class="col-sm-4 align-self-center">
+                                    {{diagnos_form.alcoholico.label}}
+                                    {{diagnos_form.alcoholico}}
+                                </div>
+                                <div class="col-sm-4 align-self-center">
+                                    {{diagnos_form.fumador.label}}
+                                    {{diagnos_form.fumador}}
+                                </div>
+                                <div class="col-sm-4 align-self-center">
+                                    {{diagnos_form.deporte.label}}
+                                    {{diagnos_form.deporte}}
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="form-group row">
+                                <div class="col-sm-6 align-self-center">
+                                    {{diagnos_form.pres_hi.label}}
+                                    {{diagnos_form.pres_hi}}
+                                </div>
+                                <div class="col-sm-6 align-self-center">
+                                    {{diagnos_form.pres_lo.label}}
+                                    {{diagnos_form.pres_lo}}
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-6 align-self-center">
+                                    {{diagnos_form.glucosa.label}}
+                                    {{diagnos_form.glucosa}}
+                                </div>
+                                <div class="col-sm-6 align-self-center">
+                                    {{diagnos_form.colesterol.label}}
+                                    {{diagnos_form.colesterol}}
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-user btn-block">Generar
+                                diagnóstico</button>
+                        </form>
                         <hr>
-                        <div class="form-group row">
-                            <div class="col-sm-4 align-self-center">
-                                {{diagnos_form.alcoholico.label}}
-                                {{diagnos_form.alcoholico}}
-                            </div>
-                            <div class="col-sm-4 align-self-center">
-                                {{diagnos_form.fumador.label}}
-                                {{diagnos_form.fumador}}
-                            </div>
-                            <div class="col-sm-4 align-self-center">
-                                {{diagnos_form.deporte.label}}
-                                {{diagnos_form.deporte}}
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="form-group row">
-                            <div class="col-sm-6 align-self-center">
-                                {{diagnos_form.pres_hi.label}}
-                                {{diagnos_form.pres_hi}}
-                            </div>
-                            <div class="col-sm-6 align-self-center">
-                                {{diagnos_form.pres_lo.label}}
-                                {{diagnos_form.pres_lo}}
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-sm-6 align-self-center">
-                                {{diagnos_form.glucosa.label}}
-                                {{diagnos_form.glucosa}}
-                            </div>
-                            <div class="col-sm-6 align-self-center">
-                                {{diagnos_form.colesterol.label}}
-                                {{diagnos_form.colesterol}}
-                            </div>
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-user btn-block">Generar diagnóstico</button>
-                    </form>
-                    <hr>
-                    {% if resultado is not null %}
-                        Resultado:<br/>
-                        Según nuestro modelo predictivo y los datos ingresados 
+                        {% if resultado is not null %}
+                        Resultado:<br />
+                        Según nuestro modelo predictivo y los datos ingresados
                         {% if resultado == 1 %}
-                            , esta persona es propensa a padecer alguna enfermedad cardiovascular, en el corto o mediano plazo, si es que no la padece ya. Le 
-                            recomendames encarecidamente asistir a su médico de inmediato.
+                        , esta persona es propensa a padecer alguna enfermedad cardiovascular, en el corto o mediano
+                        plazo, si es que no la padece ya. Le
+                        recomendames encarecidamente asistir a su médico de inmediato.
                         {% else %}
-                            , esta persona no es propensa a padecer alguna enfermedad cardiovascula, en el corto o mediano plazo,
-                            sin embargo, deberia consultar a su médico antes de tomar cualquier conclusión.
+                        , esta persona no es propensa a padecer alguna enfermedad cardiovascula, en el corto o mediano
+                        plazo,
+                        sin embargo, deberia consultar a su médico antes de tomar cualquier conclusión.
                         {% endif %}
-                        <br/>
-                        Si quiere conocer más de como se obtienen estas predicciones, puede hacerlo dando clic 
-                        <a href="https://github.com/MintBoy97/Nutri-Desk/blob/master/modelos-predictivos/Analisis%20Nutri-Desk.ipynb">aquí</a>.
-                    {% else %}
+                        <br />
+                        Si quiere conocer más de como se obtienen estas predicciones, puede hacerlo dando clic
+                        <a
+                            href="https://github.com/MintBoy97/Nutri-Desk/blob/master/modelos-predictivos/Analisis%20Nutri-Desk.ipynb">aquí</a>.
+                        {% else %}
                         Ingresa tus datos fisiológicos actualizados para obtener un diagnóstico.
-                    {% endif %}
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
