@@ -1,7 +1,7 @@
 from django import forms
-from .models import Diagnostico
+from .models import DiagnosticoCardio
 
-class FormaDiagnostico(forms.ModelForm):
+class FormaDiagnosticoCardio(forms.ModelForm):
     fecha_nacimiento = forms.DateField(label="Fecha de nacimiento", required=True, widget=forms.DateInput(
         attrs={'class':'form-control', 'placeholder':'Fecha de nacimiento','type':'date'}))
     altura = forms.FloatField(label="Altura en centimetros", required=True, widget=forms.NumberInput(
@@ -25,5 +25,5 @@ class FormaDiagnostico(forms.ModelForm):
     colesterol = forms.CharField(label="Nivel de colesterol", required=True, widget=forms.Select(
         attrs={'class':'form-control', 'placeholder':'Colesterol'}, choices=((0,'Normal'),(1,'Arriba de lo normal'),(2,'Muy arriba de lo normal'))))
     class Meta:
-        model = Diagnostico
+        model = DiagnosticoCardio
         fields = ('colesterol', 'glucosa', 'fecha_nacimiento', 'altura', 'peso', 'sexo', 'pres_hi', 'pres_lo','fumador', 'alcoholico', 'deporte')

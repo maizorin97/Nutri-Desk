@@ -2,12 +2,12 @@ from django.shortcuts import render, redirect
 from . import forms, models
 
 from django.contrib.auth.models import User
-from .models import Diagnostico
+from .models import DiagnosticoCardio
 
 # Create your views here.
 def diagnostico(request):
     if request.method == "POST":
-        diagnos_form = forms.FormaDiagnostico(request.POST)
+        diagnos_form = forms.FormaDiagnosticoCardio(request.POST)
         if diagnos_form.is_valid():
             fd = diagnos_form.save(commit=False)
             fd.idUsuario = User.objects.get(id=request.user.id)
@@ -18,7 +18,7 @@ def diagnostico(request):
         else:
             return render(request, "diagnostico.html",{"diagnos_form": diagnos_form})
     else:
-        diagnos_form = forms.FormaDiagnostico()
+        diagnos_form = forms.FormaDiagnosticoCardio()
         return render(request, "diagnostico.html", {"diagnos_form": diagnos_form})
 
 
@@ -32,7 +32,7 @@ STD_DATA = {
 }
 
 
-def genera_diagnostico(info:Diagnostico):
+def genera_diagnostico(info:DiagnosticoCardio):
     import joblib
     import pandas as pd
     from datetime import datetime as dt
