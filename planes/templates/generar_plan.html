@@ -357,7 +357,7 @@
   var dict_alimentos;
   function calcular_requisitos() {
     var peso = {{ infoUser.peso }};
-    var altura = {{ infoUser.altura }};
+    var altura = {{ infoUser.altura }}/100;
     var sexo = '{{infoUser.sexo}}';
     var edad = {{ edad }};
     var imc = (peso / Math.pow(altura, 2));
