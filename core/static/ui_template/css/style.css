@@ -566,35 +566,7 @@ section {
   max-height: 40px;
 }
 
-/*--------------------------------------------------------------
-# Header
---------------------------------------------------------------*/
-#custom-header {
-  height: 50px;
-  transition: all 0.5s;
-  z-index: 997;
-  transition: all 0.5s;
-  background: rgba(39, 70, 133, 0.8);
-  margin-bottom: 2%;
-  padding: 2%;
-}
 
-#custom-header .logo h1 {
-  font-size: 28px;
-  margin: 0;
-  line-height: 1;
-  font-weight: 500;
-}
-
-#custom-header .logo h1 a, #custom-header .logo h1 a:hover, #custom-header i {
-  color: #fff;
-  text-decoration: none;
-}
-#custom-header .logo img {
-  padding: 0;
-  margin: 0;
-  max-height: 40px;
-}
 /*--------------------------------------------------------------
 # Navigation Menu
 --------------------------------------------------------------*/
@@ -887,6 +859,37 @@ section {
 
 
 /* Custom Behavior  */
+
+/*--------------------------------------------------------------
+# Header
+--------------------------------------------------------------*/
+#custom-header {
+  height: 50px;
+  transition: all 0.5s;
+  z-index: 997;
+  transition: all 0.5s;
+  background: rgba(39, 70, 133, 0.8);
+  background: linear-gradient(-45deg, #1391a5, #274685);
+  margin-bottom: 2%;
+  padding: 2%;
+}
+
+#custom-header .logo h1 {
+  font-size: 28px;
+  margin: 0;
+  line-height: 1;
+  font-weight: 500;
+}
+
+#custom-header .logo h1 a, #custom-header .logo h1 a:hover, #custom-header i {
+  color: #fff;
+  text-decoration: none;
+}
+#custom-header .logo img {
+  padding: 0;
+  margin: 0;
+  max-height: 40px;
+}
 
 .card{
   border-radius: 4px;

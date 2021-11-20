@@ -5,9 +5,10 @@ from django.views.generic import TemplateView, CreateView, UpdateView
 from django.contrib.auth.views import LoginView, LogoutView
 
 from core.models import InfoUsuario, PesosUsuario
+from smae.models import Alimento
 
 from django.urls import reverse_lazy
-from datetime import timedelta
+from datetime import timedelta, date
 from django.utils import timezone
 
 from . import models, forms
@@ -53,9 +54,52 @@ def registro(request):
 
 def panel_control(request):
     infoUser = InfoUsuario.objects.get(usuario=request.user)
-    pesosUser = PesosUsuario.objects.filter(usuario=request.user)
-    print(PesosUsuario)
-    return render(request, 'panel_control.html', {'infoUser': infoUser, 'pesosUser': pesosUser})
+    pesosUser = PesosUsuario.objects.filter(usuario=request.user).values('peso')
+    fechasPeso = PesosUsuario.objects.filter(usuario=request.user).values('fecha_creacion')
+    labels=[]
+    data=[]
+    verduras= Alimento.objects.filter(idGrupo=1).count()
+    frutas= Alimento.objects.filter(idGrupo=2).count()
+    cereales= Alimento.objects.filter(idGrupo=3).count() +  Alimento.objects.filter(idGrupo=4).count()
+    leguminosas= Alimento.objects.filter(idGrupo=5).count()
+    animal= Alimento.objects.filter(idGrupo=6).count() + Alimento.objects.filter(idGrupo=7).count() + Alimento.objects.filter(idGrupo=8).count() + Alimento.objects.filter(idGrupo=9).count()
+    leche= Alimento.objects.filter(idGrupo=10).count() + Alimento.objects.filter(idGrupo=11).count() + Alimento.objects.filter(idGrupo=12).count() + Alimento.objects.filter(idGrupo=13).count()
+    azucar= Alimento.objects.filter(idGrupo=16).count() + Alimento.objects.filter(idGrupo=17).count()
+    libre= Alimento.objects.filter(idGrupo=18).count()
+    grasas= Alimento.objects.filter(idGrupo=21).count() + Alimento.objects.filter(idGrupo=22).count()
+
+    for peso in pesosUser:
+        data.append(peso['peso'])
+
+    for fecha in fechasPeso:
+        labels.append(fecha['fecha_creacion'].isoformat())
+    # print("verduras" + str(verduras))
+    # print("frutas" + str(frutas))
+    # print("cereales" + str(cereales))
+    # print("legu" + str(leguminosas))
+    # print("ani" + str(animal))
+    # print("leche" + str(leche))
+    # print("azu" + str(azucar))
+    # print("lib" + str(libre))
+    # print("gra" + str(grasas))
+
+    print(data)
+    print(labels)
+    return render(request, 'panel_control.html', {
+        'infoUser': infoUser, 
+        'pesosUser': pesosUser,
+        'verduras': verduras,
+        'frutas':frutas,
+        'cereales':cereales,
+        'leguminosas':leguminosas,
+        'animal':animal,
+        'leche':leche,
+        'azucar':azucar,
+        'libre':libre,
+        'grasas':grasas,
+        'data': data,
+        'labels' : labels
+    })
 
 
 #path('perfil/<int:id>/', views.perfil, name='perfil'),
