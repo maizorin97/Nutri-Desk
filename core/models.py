@@ -36,7 +36,7 @@ class PesosUsuario(models.Model):
 
 class CalendarioUsuario(models.Model):
     idCalendario = models.AutoField(primary_key=True, verbose_name="Id Calendario")
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Id Usuario")
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name="Id Usuario", unique=True)
     planLunes = models.ForeignKey(Plan, on_delete=models.SET_NULL, verbose_name="Plan de alimentacion lunes", blank=True, null=True, related_name="%(class)s_requests_lunes")
     planMartes = models.ForeignKey(Plan, on_delete=models.SET_NULL, verbose_name="Plan de alimentacion martes", blank=True, null=True, related_name="%(class)s_requests_martes")
     planMiercoles = models.ForeignKey(Plan, on_delete=models.SET_NULL, verbose_name="Plan de alimentacion miércoles", blank=True, null=True, related_name="%(class)s_requests_miercoles")
@@ -65,7 +65,7 @@ class BitacoraUsuario(models.Model):
         ('2', 'Feliz'),
         ('2', 'Muy feliz'),
     )
-    estado_animo = models.CharField(max_length=20, choices=ESTADO_ANIMO, verbose_name="Comentario usuario")
+    estado_animo = models.CharField(max_length=20, choices=ESTADO_ANIMO, verbose_name="Estado usuario")
     BINARIO = (
         ('0', 'No'),
         ('1', 'Si'),
