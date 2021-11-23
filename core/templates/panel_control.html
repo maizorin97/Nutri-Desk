@@ -189,18 +189,25 @@
 
     <div class="col-lg-6 mb-4">
 
-      <!-- Illustrations -->
+    
+    <form method="post">
+    {% csrf_token %}
       <div class="card shadow mb-4">
         <div class="card-header py-3">
           <h6 class="m-0 font-weight-bold text-primary">Recordatorios</h6>
         </div>
         <div class="card-body">
           <h6> Hoy es: {{ fecha | date:"l j F Y "}} </h6>
-          <div class="bg-warning d-flex justify-content-center rounded text-dark">No tienes Planes asignados para hoy
-          </div>
-          
+          {% if plan_hoy == None %}
+          <div class="bg-warning d-flex justify-content-center rounded text-dark">No tienes Planes asignados para hoy</div>
+          {% else %}
+          <a href="{% url 'planes' %}">
+          <div class="bg-success d-flex justify-content-center rounded text-white">  Plan asignado para hoy: {{ plan_hoy.descripcion }} </div>
+          </a>
+          {% endif %}
           <hr>
 
+          {% if existe_bitacora_hoy == false %}
           <h6>Encuesta Diaria</h6>
           <div class="d-flex flex-wrap justify-content-between">
             <div>
@@ -208,19 +215,19 @@
             </div>
             <div class="btn-group" data-toggle="buttons">
 
-              <input type="radio" class="btn-check" name="sentimientos" id="deprimido" autocomplete="off" checked>
+              <input type="radio" class="btn-check" name="sentimientos" id="deprimido" autocomplete="off" value="0">
               <label class="btn btn-outline-danger radio-btn" for="deprimido"><i class="fas fa-sad-tear"></i></label>
   
-              <input type="radio" class="btn-check" name="sentimientos" id="triste" autocomplete="off">
+              <input type="radio" class="btn-check" name="sentimientos" id="triste" autocomplete="off" value="1">
               <label class="btn btn-outline-warning radio-btn" for="triste"><i class="fas fa-frown"></i></label>
   
-              <input type="radio" class="btn-check" name="sentimientos" id="neutral" autocomplete="off">
+              <input type="radio" class="btn-check" name="sentimientos" id="neutral" autocomplete="off" checked value="2">
               <label class="btn btn-outline-secondary radio-btn" for="neutral"><i class="fas fa-meh"></i></label>
   
-              <input type="radio" class="btn-check" name="sentimientos" id="feliz" autocomplete="off">
+              <input type="radio" class="btn-check" name="sentimientos" id="feliz" autocomplete="off" value="3">
               <label class="btn btn-outline-info radio-btn" for="feliz"><i class="fas fa-smile"></i></label>
   
-              <input type="radio" class="btn-check" name="sentimientos" id="pleno" autocomplete="off">
+              <input type="radio" class="btn-check" name="sentimientos" id="pleno" autocomplete="off" value="4">
               <label class="btn btn-outline-success radio-btn" for="pleno"><i class="fas fa-grin"></i></label>
             </div>
           </div>
@@ -231,28 +238,34 @@
             </div>
             <div class="btn-group ms-5" data-toggle="buttons">
 
-              <input type="checkbox" class="btn-check"  id="agua" autocomplete="off">
+              <input type="checkbox" class="btn-check" name="agua" id="agua" autocomplete="off">
               <label class="btn btn-outline-info radio-btn" for="agua"><i class="fas fa-tint"></i></label>
   
-              <input type="checkbox" class="btn-check"  id="run" autocomplete="off">
+              <input type="checkbox" class="btn-check"  name="run" id="run" autocomplete="off">
               <label class="btn btn-outline-warning radio-btn" for="run"><i class="fas fa-running"></i></label>
   
-              <input type="checkbox" class="btn-check" id="manzana" autocomplete="off">
+              <input type="checkbox" class="btn-check" name="manzana" id="manzana" autocomplete="off">
               <label class="btn btn-outline-success radio-btn" for="manzana"><i class="fas fa-apple-alt"></i></label>
   
-              <input type="checkbox" class="btn-check" id="cama" autocomplete="off">
+              <input type="checkbox" class="btn-check" name="cama" id="cama" autocomplete="off">
               <label class="btn btn-outline-secondary radio-btn" for="cama"><i class="fas fa-bed"></i></label>
 
             </div>
           </div>
 
           <div class="d-flex justify-content-end mt-4">
-            <textarea class="form-control me-2" aria-label="With textarea"></textarea>
+            <div class="me-5">
+              <p>Comentario del día</p>
+            </div>
+            <textarea class="form-control me-2" name="txtComentario" aria-label="With textarea" maxlength="200"></textarea>
             <button type="submit" class="btn btn-primary">Registrar respuesta</button>
           </div>
-
+          {% else %}
+          ¡Eso es todo por hoy, haz terminado con tu encuesta diaria!
+          {% endif %}
         </div>
       </div>
+    </form>
 
 
       <!-- Approach -->

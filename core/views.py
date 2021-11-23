@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect
 from django.views.generic import TemplateView, CreateView, UpdateView
 from django.contrib.auth.views import LoginView, LogoutView
 
-from core.models import InfoUsuario, PesosUsuario, CalendarioUsuario
+from core.models import InfoUsuario, PesosUsuario, CalendarioUsuario, BitacoraUsuario
 from smae.models import Alimento
 
 from django.urls import reverse_lazy
@@ -60,6 +60,34 @@ def panel_control(request):
     labels=[]
     data=[]
     fecha_actual= datetime.now()
+    existe_bitacora_hoy = BitacoraUsuario.objects.filter(usuario=request.user).filter(fecha_registro=datetime.now()).count() > 0
+    exise_plan_hoy = CalendarioUsuario.objects.filter(usuario=request.user).count() > 0
+    plan_hoy = None
+    if exise_plan_hoy:
+        week_day_now = 0#fecha_actual.weekday()
+        #plan_hoy = CalendarioUsuario.objects.get(usuario=request.user)._meta.get_field(week_day_map[week_day_now])
+        plan_hoy = CalendarioUsuario.objects.get(usuario=request.user)
+
+        if(week_day_now == 0):
+            plan_hoy = plan_hoy.planLunes
+        elif(week_day_now == 1):
+            plan_hoy = plan_hoy.planMartes
+        elif(week_day_now == 2):
+            plan_hoy = plan_hoy.planMiercoles
+        elif(week_day_now == 3):
+            plan_hoy = plan_hoy.planJueves
+        elif(week_day_now == 4):
+            plan_hoy = plan_hoy.planViernes
+        elif(week_day_now == 5):
+            plan_hoy = plan_hoy.planSabado
+        elif(week_day_now == 6):
+            plan_hoy = plan_hoy.planDomingo
+        
+        if (plan_hoy == None):
+            print("No hay plan para el dia de hoy")
+        else:
+            print(plan_hoy)
+    
     verduras= Alimento.objects.filter(idGrupo=1).count()
     frutas= Alimento.objects.filter(idGrupo=2).count()
     cereales= Alimento.objects.filter(idGrupo=3).count() +  Alimento.objects.filter(idGrupo=4).count()
@@ -75,18 +103,20 @@ def panel_control(request):
 
     for fecha in fechasPeso:
         labels.append(fecha['fecha_creacion'].isoformat())
-    # print("verduras" + str(verduras))
-    # print("frutas" + str(frutas))
-    # print("cereales" + str(cereales))
-    # print("legu" + str(leguminosas))
-    # print("ani" + str(animal))
-    # print("leche" + str(leche))
-    # print("azu" + str(azucar))
-    # print("lib" + str(libre))
-    # print("gra" + str(grasas))
+    
+    if request.method == "POST":
+        
+        nuevo_registro = BitacoraUsuario(
+            usuario = request.user,
+            comentario = None if request.POST.get("txtComentario") == '' else request.POST.get("txtComentario"),
+            estado_animo = request.POST.get("sentimientos"),
+            agua = 1 if request.POST.get("agua") == 'on' else 0,
+            ejercicio = 1 if request.POST.get("run") == 'on' else 0,
+            buen_suenio = 1 if request.POST.get("cama") == 'on' else 0,
+            comer_sano = 1 if request.POST.get("manzana") == 'on' else 0,
+        ).save()
 
-    print(data)
-    print(labels)
+
     return render(request, 'panel_control.html', {
         'infoUser': infoUser, 
         'pesosUser': pesosUser,
@@ -101,7 +131,9 @@ def panel_control(request):
         'grasas':grasas,
         'data': data,
         'labels' : labels,
-        'fecha': fecha_actual
+        'fecha': fecha_actual,
+        'existe_bitacora_hoy': existe_bitacora_hoy,
+        'plan_hoy': plan_hoy
     })
 
 

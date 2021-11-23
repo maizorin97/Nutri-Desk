@@ -62,8 +62,8 @@ class BitacoraUsuario(models.Model):
         ('0', 'Muy triste'),
         ('1', 'Triste'),
         ('2', 'Normal'),
-        ('2', 'Feliz'),
-        ('2', 'Muy feliz'),
+        ('3', 'Feliz'),
+        ('4', 'Muy feliz'),
     )
     estado_animo = models.CharField(max_length=20, choices=ESTADO_ANIMO, verbose_name="Estado usuario")
     BINARIO = (
