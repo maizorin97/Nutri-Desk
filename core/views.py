@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect
 from django.views.generic import TemplateView, CreateView, UpdateView
 from django.contrib.auth.views import LoginView, LogoutView
 
-from core.models import InfoUsuario, PesosUsuario
+from core.models import InfoUsuario, PesosUsuario, CalendarioUsuario
 from smae.models import Alimento
 
 from django.urls import reverse_lazy
@@ -36,12 +36,13 @@ def registro(request):
             info = info_form.save(commit=False)
             info.usuario = user
             info.save()
-            # Esto solo es para ir guardando un historial de pesos del usuario
+            # Guardar historial de pesos del usuario
             info_user = get_object_or_404(InfoUsuario, usuario=user)
-            pesos_history = PesosUsuario(
-                usuario=info_user.usuario, peso=info_user.peso)
+            pesos_history = PesosUsuario(usuario=info_user.usuario, peso=info_user.peso)
             pesos_history.save()
-            ##################################################################
+            # Inicializar calendario vacio para planes
+            calendario = CalendarioUsuario(usuario=info_user.usuario)
+            calendario.save()
             # exito
             return redirect("ingresar")
         else:
