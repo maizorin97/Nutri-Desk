@@ -36,20 +36,26 @@
         <div class="container">
             <div class="row justify-content-start align-items-center">
 
-                <div class="col">
+                <div class="col-lg-1 col-md-1 col-sm-6 col-6">
                     <button class="custom-btn custom-btn-primary" type="button" data-bs-toggle="offcanvas"
                         data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
                         <i class='bx bx-menu'></i>
                     </button>
                 </div>
-
-                <div class="col">
+                <div class="col offset-lg-2 offset-md-2 d-none d-sm-none d-md-block">
+                    <form action="" method="post">
+                        <div class="input-group input-group-sm">
+                            <input type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+                            <button class="search-button" type="button"><i class="fas fa-search putoBoton" style="color: #274685;"></i></button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-6">
                     <div class="logo text-end">
                         <h1><a href="{% url 'index' %}">{% block nav_title %} Nutri-Desk {% endblock %}</a></h1>
                     </div>
                 </div>
             </div>
-
         </div>
     </header><!-- End Header -->
 

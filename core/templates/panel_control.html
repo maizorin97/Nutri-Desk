@@ -28,7 +28,7 @@
   <div class="row">
 
     <!-- Peso Card Example -->
-    <div class="col-xl-3 col-md-6 mb-4">
+    <div class="col-xl-4 col-md-6 mb-4">
       <div class="card border-left-primary shadow h-100 py-2">
         <div class="card-body">
           <div class="row no-gutters align-items-center">
@@ -45,13 +45,13 @@
     </div>
 
     <!-- Altura Card Example -->
-    <div class="col-xl-3 col-md-6 mb-4">
+    <div class="col-xl-4 col-md-6 mb-4">
       <div class="card border-left-success shadow h-100 py-2">
         <div class="card-body">
           <div class="row no-gutters align-items-center">
             <div class="col mr-2">
-              <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Tu Altura</div>
-              <div class="h5 mb-0 font-weight-bold text-gray-800">{{infoUser.altura}} cm</div>
+              <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Tu Talla</div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">69 cm</div>
             </div>
             <div class="col-auto">
               <i class="fas fa-arrows-alt-v fa-2x text-gray-300"></i>
@@ -61,29 +61,8 @@
       </div>
     </div>
 
-    <!-- Task (Monthly) Card Example -->
-    <div class="col-xl-3 col-md-6 mb-4">
-      <div class="card border-left-info shadow h-100 py-2">
-        <div class="card-body">
-          <div class="row no-gutters align-items-center">
-            <div class="col mr-2">
-              <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Plan de Alimentación</div>
-              <div class="row no-gutters align-items-center">
-                <div class="col-auto">
-                  <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
-                </div>
-              </div>
-            </div>
-            <div class="col-auto">
-              <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <!-- IMC Card Example -->
-    <div class="col-xl-3 col-md-6 mb-4">
+    <div class="col-xl-4 col-md-6 mb-4">
       <div class="card border-left-warning shadow h-100 py-2">
         <div class="card-body">
           <div class="row no-gutters align-items-center">
@@ -216,91 +195,139 @@
           <h6 class="m-0 font-weight-bold text-primary">Recordatorios</h6>
         </div>
         <div class="card-body">
-          <div class="text-center">
-            <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="{% static 'img/saludable.png' %}"
-              alt="">
+          <h6> Hoy es: {{ fecha | date:"l j F Y "}} </h6>
+          <div class="bg-warning d-flex justify-content-center rounded text-dark">No tienes Planes asignados para hoy
           </div>
-          <p class="text-justify">Nutridesk te ofrece planes de alimentación funcionales y muy aproximados a tus
-            necesidades, sin embargo, es recomendable asesorarte con un médico o
-            nutriólogo de confianza, según sea el caso para así poder brindarte una atención aún más personalizada</p>
-          <a target="_blank" rel="nofollow"
-            href="https://www.google.com/search?sxsrf=ALeKk01eyW5Rl9wsZFyo0_ZehjUtTKJq2w%3A1584404187275&source=hp&ei=2xZwXoudDYn-tAXe7ICwDg&q=nutriólogos&oq=nutrilogos&gs_l=psy-ab.3.0.0i10i203j0i10l9.3172.5868..7560...2.0..0.234.1425.4j4j2......0....1..gws-wiz.....10..35i362i39j0j35i39j0i203.SJX_aIroIHc">Nutriólogos
-            por tu zona &rarr;</a>
-        </div>
-      </div>
-    </div>
+          
+          <hr>
 
+          <h6>Encuesta Diaria</h6>
+          <div class="d-flex flex-wrap justify-content-between">
+            <div>
+              <p>¿Como te sientes hoy?</p>
+            </div>
+            <div class="btn-group" data-toggle="buttons">
 
-    <!-- Approach -->
-    <div class="col-12 mb-4">
-
-      <div class="card shadow mb-4">
-        <div class="card-header py-3">
-          <h6 class="m-0 font-weight-bold text-primary">Información Adicional</h6>
-        </div>
-        <div class="card-body">
-          <p class="text-justify">Desde hace muchos años México vive una problemática de salud pública muy grave, donde
-            un 39.1% de los adultos mayores de 20 años padecen sobrepeso y un 36.1% obesidad, es decir, 3 de cada 4
-            personas tienen obesidad en el país.
-            En el último año 2019 esta tendencia siguió aumentando hasta casi un 75.2% . (Datos del INEGI y Sector Salud
-            en diciembre de 2019).</p>
-          <p class=" text-justify mb-0">Nuestro objetivo siempre será reducir esa cifra, ayudando a todo aquel que esté
-            dispuesto a recibir nuestro apoyo.</p>
-        </div>
-      </div>
-
-    </div>
-
-  </div>
-</div>
-<!-- /.container-fluid -->
-
-{% endblock %}
-
-{% block extra-scripts %}
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js@3.6.0/dist/chart.min.js"></script>
-
-<script>
-  const labels = {{labels|safe}};
+              <input type="radio" class="btn-check" name="sentimientos" id="deprimido" autocomplete="off" checked>
+              <label class="btn btn-outline-danger radio-btn" for="deprimido"><i class="fas fa-sad-tear"></i></label>
   
-  const data = {
-    labels: labels,
-    datasets: [{
-      label: 'Peso en kgs',
-      backgroundColor: 'rgb(255, 99, 132)',
-      borderColor: 'rgb(255, 99, 132)',
-      data: {{data|safe}},
-    }]
+              <input type="radio" class="btn-check" name="sentimientos" id="triste" autocomplete="off">
+              <label class="btn btn-outline-warning radio-btn" for="triste"><i class="fas fa-frown"></i></label>
+  
+              <input type="radio" class="btn-check" name="sentimientos" id="neutral" autocomplete="off">
+              <label class="btn btn-outline-secondary radio-btn" for="neutral"><i class="fas fa-meh"></i></label>
+  
+              <input type="radio" class="btn-check" name="sentimientos" id="feliz" autocomplete="off">
+              <label class="btn btn-outline-info radio-btn" for="feliz"><i class="fas fa-smile"></i></label>
+  
+              <input type="radio" class="btn-check" name="sentimientos" id="pleno" autocomplete="off">
+              <label class="btn btn-outline-success radio-btn" for="pleno"><i class="fas fa-grin"></i></label>
+            </div>
+          </div>
+        
+          <div class="d-flex flex-wrap justify-content-between mt-2">
+            <div class="me-5">
+              <p>Hábitos de Hoy</p>
+            </div>
+            <div class="btn-group ms-5" data-toggle="buttons">
+
+              <input type="checkbox" class="btn-check"  id="agua" autocomplete="off">
+              <label class="btn btn-outline-info radio-btn" for="agua"><i class="fas fa-tint"></i></label>
+  
+              <input type="checkbox" class="btn-check"  id="run" autocomplete="off">
+              <label class="btn btn-outline-warning radio-btn" for="run"><i class="fas fa-running"></i></label>
+  
+              <input type="checkbox" class="btn-check" id="manzana" autocomplete="off">
+              <label class="btn btn-outline-success radio-btn" for="manzana"><i class="fas fa-apple-alt"></i></label>
+  
+              <input type="checkbox" class="btn-check" id="cama" autocomplete="off">
+              <label class="btn btn-outline-secondary radio-btn" for="cama"><i class="fas fa-bed"></i></label>
+
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-end mt-4">
+            <textarea class="form-control me-2" aria-label="With textarea"></textarea>
+            <button type="submit" class="btn btn-primary">Registrar respuesta</button>
+          </div>
+
+        </div>
+      </div>
+
+
+      <!-- Approach -->
+      <div class="col-12 mb-4">
+
+        <div class="card shadow mb-4">
+          <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Información Adicional</h6>
+          </div>
+          <div class="card-body">
+            <p class="text-justify">Desde hace muchos años México vive una problemática de salud pública muy grave,
+              donde
+              un 39.1% de los adultos mayores de 20 años padecen sobrepeso y un 36.1% obesidad, es decir, 3 de cada 4
+              personas tienen obesidad en el país.
+              En el último año 2019 esta tendencia siguió aumentando hasta casi un 75.2% . (Datos del INEGI y Sector
+              Salud
+              en diciembre de 2019).</p>
+            <p class=" text-justify mb-0">Nuestro objetivo siempre será reducir esa cifra, ayudando a todo aquel que
+              esté
+              dispuesto a recibir nuestro apoyo.</p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+  <!-- /.container-fluid -->
+
+  {% endblock %}
+
+  {% block extra-scripts %}
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.6.0/dist/chart.min.js"></script>
+
+  <script>
+    const labels = {{ labels| safe}};
+
+    const data = {
+      labels: labels,
+      datasets: [{
+        label: 'Peso en kgs',
+        backgroundColor: 'rgb(255, 99, 132)',
+        borderColor: 'rgb(255, 99, 132)',
+        data: {{ data| safe}}
+      }]
   };
 
-  const config = {
-    type: 'line',
-    data: data,
-    options: {}
-  };
+    const config = {
+      type: 'line',
+      data: data,
+      options: {}
+    };
 
-  const myChart = new Chart(
-    document.getElementById('myChart'),
-    config
-  );
+    const myChart = new Chart(
+      document.getElementById('myChart'),
+      config
+    );
 
-  const pie_data = {
-    labels: [
-      'Cereales y Tubérculos',
-      'Verduras',
-      'Frutas',
-      'Origen Animal',
-      'Leche',
-      'Leguminosas',
-      'Grasas',
-      'Azucares',
-      'Libres en Energía'
-    ],
-    datasets: [{
-      label: 'My First Dataset',
-      data: [{{cereales}}, {{verduras}}, {{frutas}}, {{animal}}, {{leche}}, {{leguminosas}}, {{grasas}}, {{azucar}}, {{libre}} ],
-      backgroundColor: [
+    const pie_data = {
+      labels: [
+        'Cereales y Tubérculos',
+        'Verduras',
+        'Frutas',
+        'Origen Animal',
+        'Leche',
+        'Leguminosas',
+        'Grasas',
+        'Azucares',
+        'Libres en Energía'
+      ],
+      datasets: [{
+        label: 'My First Dataset',
+        data: [{{ cereales }}, {{ verduras }}, {{ frutas }}, {{ animal }}, {{ leche }}, {{ leguminosas }}, {{ grasas }}, {{ azucar }}, {{ libre }} ],
+        backgroundColor: [
         '#ffe5d0',
         '#d1e7dd',
         '#fecba1',
@@ -310,21 +337,21 @@
         '#fff3cd',
         '#efadce',
         '#c5b3e6'
-      ],
-      hoverOffset: 4
-    }]
-  };
+        ],
+        hoverOffset: 4
+      }]
+    };
 
-  const pie_config = {
-    type: 'doughnut',
-    data: pie_data,
-  };
+    const pie_config = {
+      type: 'doughnut',
+      data: pie_data,
+    };
 
-  const pie_chart = new Chart(
-    document.getElementById('pie-chart'),
-    pie_config
-  );
-</script>
+    const pie_chart = new Chart(
+      document.getElementById('pie-chart'),
+      pie_config
+    );
+  </script>
 
 
-{% endblock %}
+  {% endblock %}

@@ -1006,3 +1006,26 @@ section {
 .bg-libre{
   background: #c5b3e6;
 }
+
+.search-button{
+  background: white;
+  border: none;
+  border-radius: 3px;
+}
+
+.radio-btn{
+  position: relative;
+  height: 40px;
+  width: 30px;
+  font-size: 30px;
+}
+
+.radio-btn  i{
+  position: absolute;
+  top: 5px;
+  left: 15px;
+}
+
+.spacer{
+  width: 20px;
+}

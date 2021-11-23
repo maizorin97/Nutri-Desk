@@ -8,7 +8,7 @@ from core.models import InfoUsuario, PesosUsuario
 from smae.models import Alimento
 
 from django.urls import reverse_lazy
-from datetime import timedelta, date
+from datetime import datetime, timedelta, date
 from django.utils import timezone
 
 from . import models, forms
@@ -58,6 +58,7 @@ def panel_control(request):
     fechasPeso = PesosUsuario.objects.filter(usuario=request.user).values('fecha_creacion')
     labels=[]
     data=[]
+    fecha_actual= datetime.now()
     verduras= Alimento.objects.filter(idGrupo=1).count()
     frutas= Alimento.objects.filter(idGrupo=2).count()
     cereales= Alimento.objects.filter(idGrupo=3).count() +  Alimento.objects.filter(idGrupo=4).count()
@@ -98,7 +99,8 @@ def panel_control(request):
         'libre':libre,
         'grasas':grasas,
         'data': data,
-        'labels' : labels
+        'labels' : labels,
+        'fecha': fecha_actual
     })
 
 
