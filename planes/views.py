@@ -107,16 +107,20 @@ def get_datos(request):
     grupos=[]
     alimentos=[]
     for grupo in listaGrupos:
-        grupos.append({"nombre":grupo.nombre})
+       
+        grupos.append({
+                        "idGrupo":grupo.idGrupo,
+                        "nombre":grupo.nombre,
+                        "subgrupo":grupo.subgrupo,
+                        "energia":grupo.energia})
     for alimento in listaAlimentos:
         alimentos.append({
-            "idGrupo":alimento.idGrupo.nombre,
+            "idGrupo":alimento.idGrupo.idGrupo,
             "nombre":alimento.nombre,
             "idAlimento":alimento.idAlimento,
             "energia":alimento.idGrupo.energia,
             "proteina":alimento.idGrupo.proteina            
         })
-     
     return HttpResponse(json.dumps({"listaGrupos":grupos,"listaAlimentos":alimentos}))
 
 
