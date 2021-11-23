@@ -50,6 +50,7 @@ class FormaDatosFisiologicos(forms.ModelForm):
         attrs={'class':'form-control', 'placeholder':'Peso en kilogramos'}))
     sexo = forms.CharField(label="Sexo", required=True, widget=forms.Select(
         attrs={'class':'form-control', 'placeholder':'Elige tu sexo'}, choices=(('H','Hombre'),('M','Mujer'))))
+    foto = forms.ImageField( required=False)
     class Meta:
         model = InfoUsuario
-        fields = ('fecha_nacimiento', 'altura', 'peso', 'sexo')
+        fields = ('fecha_nacimiento', 'altura', 'peso', 'sexo','foto')

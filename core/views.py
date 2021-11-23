@@ -144,12 +144,13 @@ def perfil(request):
     if request.method == "POST":
         info_user = get_object_or_404(InfoUsuario, usuario=request.user)
         info_form = forms.FormaDatosFisiologicos(
-            request.POST or None, instance=info_user)
+            request.POST or None, request.FILES, instance=info_user)
         print("intentando guardar")
         print(info_form.errors)
         if info_form.is_valid():
             print("se pudo")
             info_form.save()
+            print(info_form.cleaned_data)
             # Esto solo es para ir guardando un historial de pesos del usuario
             info_user = get_object_or_404(InfoUsuario, usuario=request.user)
             pesos_history = PesosUsuario(
@@ -163,8 +164,8 @@ def perfil(request):
     else:
         info_user = get_object_or_404(InfoUsuario, usuario=request.user)
         info_form = forms.FormaDatosFisiologicos(instance=info_user)
-
-        return render(request, "perfil.html", {'info_form': info_form})
+        
+        return render(request, "perfil.html", {'info_form': info_form,'infoUser':info_user})
 
 
 class cerrar(LogoutView):
