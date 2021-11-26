@@ -134,6 +134,8 @@ def perfil(request):
 
         return render(request, "perfil.html", {'info_form': info_form})
 
+class contacto(TemplateView):
+    template_name = "contacto.html"
 
 class cerrar(LogoutView):
     template_name = "cerrar.html"

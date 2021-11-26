@@ -45,8 +45,10 @@
                 <div class="col offset-lg-2 offset-md-2 d-none d-sm-none d-md-block">
                     <form action="" method="post">
                         <div class="input-group input-group-sm">
-                            <input type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
-                            <button class="search-button" type="button"><i class="fas fa-search putoBoton" style="color: #274685;"></i></button>
+                            <input type="text" class="form-control" placeholder=""
+                                aria-label="Example text with button addon" aria-describedby="button-addon1">
+                            <button class="search-button" type="button"><i class="fas fa-search putoBoton"
+                                    style="color: #274685;"></i></button>
                         </div>
                     </form>
                 </div>
@@ -108,7 +110,7 @@
                         </div>
                     </a>
                     <br>
-                    <a href="{% url 'smae' %}">
+                    <a href="{% url 'smae' %}" class="smae">
                         <div
                             class="row d-flex align-items-center justify-content-start div-fill rounded-end {% block active-smae %}  {% endblock %}">
                             <div class="col-1">
@@ -149,6 +151,26 @@
         </div>
     </div>
     <!-- ======= End Offcanvas ======= -->
+
+    <!-- Modal -->
+    <div class="modal fade" id="loadingModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="loadingModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h3 class="text-center">Un momento, estamos cargando los alimentos</h3>
+                    <div class="d-flex justify-content-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     {% block hero %}
     {% endblock %}
@@ -217,6 +239,8 @@
                 </div>
             </div>
 
+
+
             <div class="row justify-content-center text-center">
                 <div class="col-md-7">
                     <p class="copyright">&copy; Copyright SoftLand. All Rights Reserved</p>
@@ -252,6 +276,14 @@
     <script src="{% static 'ui_template/js/main.js' %}"></script>
 
     {% block extra-scripts %} {% endblock %}
+
+    <script>
+        $('.smae').on('click', function (e) {
+            var myModal = new bootstrap.Modal(document.getElementById('loadingModal'))
+            myModal.show()
+        });
+
+    </script>
 
 </body>
 
