@@ -490,23 +490,32 @@
 
 
   function get_plan(kcal) {
-    /* [[desayuno],[colacion1],[comida],[colacion2],[cena]]
-    [CEREALES Y TUBÉRCULOS,VERDURAS,FRUTAS,ALIMENTOS DE ORIGEN ANIMAL,LECHE Y SUSTITUTOS,
-    LEGUMINOSAS,GRASAS,AZÚCARES,ALIMENTOS LIBRES DE ENERGÍA]*/
-    if (kcal < 1000) {
-      return [[1, 1, 1, 1, 1, 0, 1, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [2, 2, 1, 1, 1, 0, 1, 0, 0], [0, 0, 0, 0, 1, 0, 0, 0, 0], [1, 1, 1, 0, 0, 0, 0, 0, 1]];
-    } else if (kcal < 1200) {
-      return [[2, 1, 1, 0, 0, 0, 1, 0, 1], [1, 0, 0, 0, 1, 0, 0, 0, 0], [2, 2, 1, 2, 1, 0, 1, 0, 0], [0, 1, 0, 0, 1, 0, 0, 0, 0], [1, 1, 0, 0, 1, 0, 0, 0, 0]];
-    } else if (kcal < 1400) {
-      return [[2, 1, 1, 1, 1, 0, 1, 0, 0], [0, 0, 1, 0, 1, 0, 0, 0, 0], [2, 2, 0, 2, 0, 0, 1, 0, 0], [1, 0, 0, 0, 1, 0, 0, 0, 0], [1, 1, 1, 1, 1, 0, 0, 0, 0]];
-    } else if (kcal < 1600) {
-      return [[2, 2, 1, 0, 1, 0, 1, 0, 0], [0, 1, 0, 1, 0, 0, 0, 0, 0], [2, 2, 1, 2, 1, 0, 1, 0, 0], [1, 0, 1, 0, 0, 0, 0, 0, 0], [1, 2, 1, 1, 0, 0, 0, 0, 1]];
-    } else if (kcal < 1800) {
-      return [[3, 1, 2, 1, 1, 0, 1, 0, 0], [1, 1, 0, 0, 0, 0, 0, 0, 0], [2, 2, 1, 2, 1, 0, 1, 0, 0], [1, 0, 0, 0, 1, 0, 0, 0, 0], [1, 2, 1, 1, 0, 0, 0, 0, 1]];
-    } else /*if (kcal < 2000)*/ {
-      return [[3, 1, 2, 2, 1, 0, 1, 0, 0], [1, 1, 0, 0, 0, 0, 0, 0, 0], [2, 2, 1, 2, 1, 0, 1, 0, 1], [1, 0, 1, 0, 0, 0, 0, 0, 0], [1, 2, 1, 1, 1, 0, 0, 0, 0]];
-    }
-  }
+          /* [[desayuno],[colacion1],[comida],[colacion2],[cena]]
+          [CEREALES Y TUBÉRCULOS,VERDURAS,FRUTAS,ALIMENTOS DE ORIGEN ANIMAL,LECHE Y SUSTITUTOS,
+          LEGUMINOSAS,GRASAS,AZÚCARES,ALIMENTOS LIBRES DE ENERGÍA]*/
+          let alimentos=[]
+          alimentos[0]=algoritmo_genetico(kcal*0.2666)
+          alimentos[1]=algoritmo_genetico(kcal*0.1)
+          alimentos[2]=algoritmo_genetico(kcal*0.2666)
+          alimentos[3]=algoritmo_genetico(kcal*0.1)
+          alimentos[4]=algoritmo_genetico(kcal*0.2666)
+          /*
+          if (kcal < 1000) {
+              return [[1, 1, 1, 1, 1, 0, 1, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [2, 2, 1, 1, 1, 0, 1, 0, 0], [0, 0, 0, 0, 1, 0, 0, 0, 0], [1, 1, 1, 0, 0, 0, 0, 0, 1]];
+          } else if (kcal < 1200) {
+              return [[2, 1, 1, 0, 0, 0, 1, 0, 1], [1, 0, 0, 0, 1, 0, 0, 0, 0], [2, 2, 1, 2, 1, 0, 1, 0, 0], [0, 1, 0, 0, 1, 0, 0, 0, 0], [1, 1, 0, 0, 1, 0, 0, 0, 0]];
+          } else if (kcal < 1400) {
+              return [[2, 1, 1, 1, 1, 0, 1, 0, 0], [0, 0, 1, 0, 1, 0, 0, 0, 0], [2, 2, 0, 2, 0, 0, 1, 0, 0], [1, 0, 0, 0, 1, 0, 0, 0, 0], [1, 1, 1, 1, 1, 0, 0, 0, 0]];
+          } else if (kcal < 1600) {
+              return [[2, 2, 1, 0, 1, 0, 1, 0, 0], [0, 1, 0, 1, 0, 0, 0, 0, 0], [2, 2, 1, 2, 1, 0, 1, 0, 0], [1, 0, 1, 0, 0, 0, 0, 0, 0], [1, 2, 1, 1, 0, 0, 0, 0, 1]];
+          } else if (kcal < 1800) {
+              return [[3, 1, 2, 1, 1, 0, 1, 0, 0], [1, 1, 0, 0, 0, 0, 0, 0, 0], [2, 2, 1, 2, 1, 0, 1, 0, 0], [1, 0, 0, 0, 1, 0, 0, 0, 0], [1, 2, 1, 1, 0, 0, 0, 0, 1]];
+          } else if (kcal < 2000) {
+              return [[3, 1, 2, 2, 1, 0, 1, 0, 0], [1, 1, 0, 0, 0, 0, 0, 0, 0], [2, 2, 1, 2, 1, 0, 1, 0, 1], [1, 0, 1, 0, 0, 0, 0, 0, 0], [1, 2, 1, 1, 1, 0, 0, 0, 0]];
+          }
+          */
+         return alimentos
+      }
 
   
   function construir_colacion(tc, plan, dic) {
@@ -514,22 +523,35 @@
     var llave_alimentos = ["Cereales y tubérculos", "Verduras", "Frutas", "Alimentos de origen animal",
       "Leche", "Leguminosas", "Grasas", "Azúcares", "Alimentos libres en energía"];
     var colors={
-      "Cereales y tubérculos": "bg-cereales", 
-      "Verduras": "bg-verduras", 
-      "Frutas": "bg-frutas", 
-      "Alimentos de origen animal": "bg-animal",
-      "Leche": "bg-leche", 
-      "Leguminosas": "bg-leguminosas", 
-      "Grasas": "bg-grasas", 
-      "Azúcares": "bg-azucares", 
-      "Alimentos libres en energía": "bg-libre"
+      3: "bg-cereales", 
+      4: "bg-cereales",
+      1: "bg-verduras", 
+      2: "bg-frutas", 
+      6: "bg-animal",
+      7: "bg-animal",
+      8: "bg-animal",
+      9: "bg-animal",
+      10: "bg-leche", 
+      11: "bg-leche", 
+      12: "bg-leche", 
+      13: "bg-leche", 
+      5: "bg-leguminosas", 
+      20: "bg-grasas", 
+      21: "bg-grasas", 
+      22: "bg-grasas", 
+      16: "bg-azucares", 
+      17: "bg-azucares", 
+      14: "bg-libre",
+      15: "bg-libre",
+      18: "bg-libre",
+      19: "bg-libre"
     };
     var html_code = "<div>";
     for (var i = 0; i < plan.length; i++) {//[]
       for (var j = 0; j < plan[i]; j++) {//n
-        html_code += "<div><select class='form-select "+ colors[llave_alimentos[i]] + " border-light rounded-3' name='" + llave_comida[tc] + "'>"
-        for (var k = 0; k < dic[llave_alimentos[i]].length; k++) {
-          html_code += "<option class='bg-light' value = '" + dic[llave_alimentos[i]][k][1] + "'>" + dic[llave_alimentos[i]][k][0] + "</option>"
+        html_code += "<div><select class='form-select "+ colors[dic[i][1]] + " border-light rounded-3' name='" + llave_comida[tc] + "'>"
+        for (var k = 0; k < dic[i].length-2; k++) {
+          html_code += "<option class='bg-light' value = '" + dic[i][k+2][1] + "'>" + dic[i][k+2][0] + "</option>"
         }
         html_code += "</select></div>";
       }
@@ -715,25 +737,32 @@
       type: 'GET',
       headers: { 'X-CSRFToken': '{{ csrf_token }}' },
       dataType: "json",
-      success: function (result) {
-        dic_al = {};
-        dict_alimentos = {};
-        result.listaAlimentos.forEach((alimento) => {
-          dic_al[alimento.idAlimento] = [alimento.energia, alimento.proteina];
-        });
-        result.listaGrupos.forEach((grupo) => {
-          dict_alimentos[grupo.nombre] = []
-        });
-        result.listaAlimentos.forEach((alimento) => {
-          dict_alimentos[alimento.idGrupo].push([alimento.nombre, alimento.idAlimento]);
-        });
-        document.getElementById("div-cargadorBoton").innerHTML = `
+      success: function(result) {
+              dic_al={};
+              dict_alimentos=[];
+              dict_alimentos_aux={}
+              result.listaAlimentos.forEach((alimento)=>{
+                dic_al[alimento.idAlimento]=[alimento.energia,alimento.proteina];
+              });
+              result.listaGrupos.forEach((grupo)=>{
+                dict_alimentos_aux[grupo.idGrupo]=[grupo.energia,grupo.idGrupo]
+              });
+              result.listaAlimentos.forEach((alimento)=>{
+                dict_alimentos_aux[alimento.idGrupo].push([alimento.nombre,alimento.idAlimento]);
+              });
+              for(let [key,value] of Object.entries(dict_alimentos_aux)){
+                if(value.length > 2){
+                  dict_alimentos.push(value)
+                }
+              }
+              console.log(dict_alimentos)
+              document.getElementById("div-cargadorBoton").innerHTML = `
               <button id="cargadorBoton" class="align-middle btn btn-primary"
               onclick="calcular_requisitos()">
                 Calcular requerimientos
               </button>
-            `
-      }
+        `
+            }
     });
   });
   function getAlimentoRow(json) {
@@ -746,9 +775,298 @@
     `;
     return innerHTML;
   }
-  /*
+      /*
+  * Funaciones auxiliares
+*/
+String.prototype.replaceAt = function(index, replacement) {
+    return this.substr(0, index) + replacement + this.substr(index + replacement.length);
+}
+    var precision=0
+    var n_bits
+    var n_alimentos
+    var n_individuos=30
+   function algoritmo_genetico(kcal){
+    let max_raciones_por_alimento=3
+    let n_iteraciones=200
+    let resultado
+    n_alimentos=dict_alimentos.length
+    n_bits=get_n_bits(max_raciones_por_alimento)
+    let poblacion = gen_poblacion_inicial(n_individuos)
+    for (let i=0 ; i<n_iteraciones-1;i++){
+      poblacion = gen_nueva_poblacion(poblacion,kcal)
+    }
+    console.log("resultado:"+get_z(poblacion[0],kcal))
+    return get_alimentos(poblacion[0])
 
+    function cruce(numeroA,numeroB,posicion){
+      let numeroB_bin=convertBase(numeroB,10,2)
+      let numeroA_bin=convertBase(numeroA,10,2)
+      aux=[]
+      for(i=n_bits-1; i> posicion;i--){
+        aux[i]=numeroB_bin[numeroB_bin.length-1+(i-n_bits-1)]
+      }
+      for(i=posicion;i>0;i--){
+        let posicionA=numeroA_bin.length-1+(i-n_bits-1)
+        if(posicionA >=0 )
+          aux[i]=numeroA_bin[posicionA]
+        else
+          break
+      }
+      return convertBase(aux.join(""),2,10)
+    }
+    function mutacion(numero,posicion){
+      let aux=convertBase(numero,10,2)
+      while(posicion+1 > aux.length )
+        aux="0"+aux
+      if(aux[posicion] === '1'){
+        aux=aux.replaceAt(posicion,'0')  
+      }
+      else{
+        aux=aux.replaceAt(posicion,'1')
+      }
+      return convertBase(aux,2,10)
+    }
+    function gen_nueva_poblacion(poblacion,objetivo){
+      let resultados=[]
+      let resultados2
+      for( let poblador of poblacion){
+        resultados.push(get_z(poblador,objetivo))
+      }
+      resultados2=resultados.map(z =>{
+        return 1/(1+z)
+      })
+      // Suma de todos los resultados
+      let suma=suma_vect(resultados2)
+      // Obtencion de vector con porcentajes acumulados
+      let acum=cumsum(divide_vect(resultados2,suma))
+      let vect_padres=zeros(poblacion.length)
+      //Seleccion aleatoria de los mejores vectores
+      for (let poblador of poblacion)
+        vect_padres[bisect(acum, Math.random())] += 1
+      // juntamos el vector de los padres seleccionados y la poblacion
+      let arr_padres_poblacion = vect_padres.map((valor,index)=>{
+        return [valor,poblacion[index]]
+      })
+      //ordenamos ese vector
+      arr_padres_poblacion.sort((a,b)=>{
+        return b[0]-a[0]
+      })
+      //regresamos a su forma original los vectores
+      vect_padres =arr_padres_poblacion.map((valor,index)=>{
+        poblacion[index]=valor[1]
+        return valor[0]
+      })
+      // numero de vectores diferentes de zero
+      let vectores_dif_zero=0
+      for (vector of vect_padres){
+        if(vector !== 0){
+          vectores_dif_zero+=1
+        }
+      }
+      //calculo de hijos a generar
+    let num_hijos=n_individuos-vectores_dif_zero
+   //generacion de los hijos
+    for (let i=0; i< num_hijos;i++){
+        if (vectores_dif_zero >= 2){
+            let aleat=Math.floor(Math.random()*(2*n_bits))
+            if(aleat-n_bits >= 0){
+                poblacion[vectores_dif_zero+i] = cruce(poblacion[0],poblacion[1],aleat-n_bits)
+              }
+            else{
+                poblacion[vectores_dif_zero+i] = mutacion(poblacion[0],aleat)
+              }
+        }
+        else{
+            aleat=Math.floor(Math.random()*n_bits)
+            poblacion[vectores_dif_zero+i] = mutacion(poblacion[0],aleat)
+          }
+    }
+      return poblacion
+
+    }
+    /*
+     * Funciones de bisect // https://stackoverflow.com/questions/43359623/javascripts-equivalent-of-rs-findinterval-or-pythons-bisect-bisect-left
     */
+    function bisect(sortedList, el){
+  
+  if(!sortedList.length) return 0;
+
+  if(sortedList.length == 1) {
+    return el > sortedList[0] ? 1 : 0;
+  }
+
+  let lbound = 0;
+  let rbound = sortedList.length - 1;
+  return bisect(lbound, rbound);
+
+// note that this function depends on closure over lbound and rbound
+// to work correctly
+  function bisect(lb, rb){
+    if(rb - lb == 1){
+      if(sortedList[lb] < el && sortedList[rb] >= el){
+        return lb + 1;
+      }
+
+      if(sortedList[lb] == el){
+        return lb;
+      }
+    }
+
+    if(sortedList[lb] > el){
+      return 0;
+    }
+
+    if(sortedList[rb] < el){
+      return sortedList.length
+    }
+
+    let midPoint = lb + (Math.floor((rb - lb) / 2));
+    let midValue = sortedList[midPoint];
+
+    if(el <= midValue){
+      rbound = midPoint
+    }
+
+    else if(el > midValue){
+      lbound = midPoint
+    }
+
+    return bisect(lbound, rbound);
+  }
+}
+    /*
+      * Funciones de manejo de arreglos
+    */
+    function zeros(longitud){
+      let arr=[];
+
+      for( i= 0 ; i<longitud ; i++){
+        arr.push(0)
+      }
+      
+      return arr
+    }
+    //https://stackoverflow.com/questions/20477177/creating-an-array-of-cumulative-sum-in-javascript/45658551
+    function cumsum(vector){
+      const cumulativeSum = (sum => value => sum += value)(0);
+      return vector.map(cumulativeSum);
+    }
+    function divide_vect(vector,divisor){
+      return vector.map(valor=> valor/divisor)
+    }
+    function suma_vect(vector){
+      let suma=0
+      vector.forEach(valor=>suma+=valor)
+      return suma
+    }
+
+    /*
+     * Funciones correspondientes al algoritmo
+    */
+    function get_z(poblador,objetivo){
+      let alimentos=get_alimentos(poblador)
+      let z=0
+      for (let i=0 ; i<alimentos.length ; i++){
+        z+=alimentos[i]*dict_alimentos[i][0]
+      }
+      return Math.abs(z-objetivo)
+    }
+    function get_energia(poblador){
+      let alimentos=get_alimentos(poblador)
+      let z=0
+      for (let i=0 ; i<alimentos.length ; i++){
+        z+=alimentos[i]*dict_alimentos[i][0]
+      }
+      return z
+    }
+    function get_alimentos(valor){
+      let alimentos=[]
+      let valor_bin=convertBase(valor,10,2)
+      let bits_por_alimento=n_bits/n_alimentos
+      let bits_sobrantes=n_bits-valor_bin.length
+      for(let i=0;i<bits_sobrantes;i++){
+        valor_bin="0"+valor_bin
+      }
+      for(let i=bits_por_alimento;i<(n_bits+bits_por_alimento);i+=bits_por_alimento){
+        alimentos.push(Math.round(
+          parseInt(
+            convertBase(valor_bin.substring(i-bits_por_alimento,i),2,10))/
+            Math.pow(10,precision)))
+      }
+      return alimentos
+    }
+    function get_n_bits(raciones){
+       let n_bits 
+       //n_bits=n_alimentos*bits para cada alimento
+       n_bits=n_alimentos*Math.ceil(Math.log2((raciones+1)*Math.pow(10,precision)));  
+       return n_bits
+      }
+    function gen_poblacion_inicial(n_individuos){
+      let poblacion = []
+      for(let i=0;i<n_individuos;i++){
+        poblador=get_random_int()
+        poblacion.push(poblador)
+      }
+      return poblacion
+    }
+    function get_random_int(){
+      let n_iteraciones = Math.floor(n_bits/35) //2**35 es aproximadamente el numero maximo aleatorio
+      let  residuo = n_bits%35
+      let max_aleatorio=Math.pow(2,35)
+      let aux=""//cadena auxiliar donde se iran guardando los resultados
+      for (let i = 0;i<n_iteraciones;i++){
+        aux+=(Math.floor(Math.random()*(max_aleatorio))).toString(2)
+      }
+      aux+=(Math.floor(Math.random()*(Math.pow(2,residuo)))).toString(2)
+      return convertBase(aux,2,10)
+    }
+  /*
+   * Funciones  para el manejo de bigints //https://stackoverflow.com/questions/39334494/converting-large-numbers-from-binary-to-decimal-and-back-in-javascript
+  */
+    function parseBigInt(bigint, base) {
+  //convert bigint string to array of digit values
+  for (var values = [], i = 0; i < bigint.length; i++) {
+    values[i] = parseInt(bigint.charAt(i), base);
+  }
+  return values;
+}
+
+function formatBigInt(values, base) {
+  //convert array of digit values to bigint string
+  for (var bigint = '', i = 0; i < values.length; i++) {
+    bigint += values[i].toString(base);
+  }
+  return bigint;
+}
+
+function convertBase(bigint, inputBase, outputBase) {
+  //takes a bigint string and converts to different base
+  var inputValues = parseBigInt(bigint, inputBase),
+    outputValues = [], //output array, little-endian/lsd order
+    remainder,
+    len = inputValues.length,
+    pos = 0,
+    i;
+  while (pos < len) { //while digits left in input array
+    remainder = 0; //set remainder to 0
+    for (i = pos; i < len; i++) {
+      //long integer division of input values divided by output base
+      //remainder is added to output array
+      remainder = inputValues[i] + remainder * inputBase;
+      inputValues[i] = Math.floor(remainder / outputBase);
+      remainder -= inputValues[i] * outputBase;
+      if (inputValues[i] == 0 && i == pos) {
+        pos++;
+      }
+    }
+    outputValues.push(remainder);
+  }
+  outputValues.reverse(); //transform to big-endian/msd order
+  return formatBigInt(outputValues, outputBase);
+}
+
+   }
+
 </script>
 
 

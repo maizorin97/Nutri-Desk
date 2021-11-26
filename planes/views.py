@@ -16,6 +16,7 @@ class lista_planes(ListView):
     template_name = "generar_plan.html"
     model = Plan
     context_object_name = "lista_planes"
+
     def get_context_data(self, **kwargs):
         context = super(lista_planes, self).get_context_data(**kwargs)
         infoUser = InfoUsuario.objects.get(usuario=self.request.user)
@@ -31,6 +32,7 @@ class lista_planes(ListView):
             #"listaGrupos": listaGrupos,
         })
         return context
+    
     def guardar_plan(self,req_post, current_user):
         nombre_plan = req_post.get("txtNombrePlan")
         print(req_post.get("txtAporteCalorico"))
@@ -65,11 +67,13 @@ class lista_planes(ListView):
         self.guardar_plan(request.POST, usuario)
         
         return redirect("planes") 
+        
     def delete(self,request, *args, **kwargs):
         plan_id=request.body.decode("UTF-8")
         obj_plan = get_object_or_404(Plan, idPlan=plan_id)
         obj_plan.delete()
         return HttpResponse(json.dumps({}))
+    
     def get(self, *args, **kwargs):
         plan_id=self.request.GET.get("plan_id")
         if (plan_id != None):
@@ -103,16 +107,20 @@ def get_datos(request):
     grupos=[]
     alimentos=[]
     for grupo in listaGrupos:
-        grupos.append({"nombre":grupo.nombre})
+       
+        grupos.append({
+                        "idGrupo":grupo.idGrupo,
+                        "nombre":grupo.nombre,
+                        "subgrupo":grupo.subgrupo,
+                        "energia":grupo.energia})
     for alimento in listaAlimentos:
         alimentos.append({
-            "idGrupo":alimento.idGrupo.nombre,
+            "idGrupo":alimento.idGrupo.idGrupo,
             "nombre":alimento.nombre,
             "idAlimento":alimento.idAlimento,
             "energia":alimento.idGrupo.energia,
             "proteina":alimento.idGrupo.proteina            
         })
-     
     return HttpResponse(json.dumps({"listaGrupos":grupos,"listaAlimentos":alimentos}))
 
 

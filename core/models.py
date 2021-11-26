@@ -9,6 +9,7 @@ class InfoUsuario(models.Model):
     fecha_nacimiento = models.DateField(verbose_name="Fecha de nacimiento", default=datetime.now)
     altura = models.FloatField(verbose_name="Altura en CM")
     peso = models.FloatField(verbose_name="Peso en KG")
+    foto = models.ImageField(upload_to='perfiles' , default="default.png", blank=True)
     SEXOS = (
         ('H','Hombre'),
         ('M','Mujer'),
@@ -62,8 +63,8 @@ class BitacoraUsuario(models.Model):
         ('0', 'Muy triste'),
         ('1', 'Triste'),
         ('2', 'Normal'),
-        ('2', 'Feliz'),
-        ('2', 'Muy feliz'),
+        ('3', 'Feliz'),
+        ('4', 'Muy feliz'),
     )
     estado_animo = models.CharField(max_length=20, choices=ESTADO_ANIMO, verbose_name="Estado usuario")
     BINARIO = (
