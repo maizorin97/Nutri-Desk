@@ -110,7 +110,7 @@ class DiagnosticoObesidad(models.Model):
         (2,'Algunas veces'),
         (3,'No'),
     )
-    calc = models.IntegerField(choices=ALCOHOL, verbose_name="Tiempo que usa dispositivos electrónicos al día")
+    calc = models.IntegerField(choices=ALCOHOL, verbose_name="Frecuencia de consumo de alcohol")
     TRANSPORTE = (
         (0,'Automóvil'),
         (1,'Motocicleta'),
