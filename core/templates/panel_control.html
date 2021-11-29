@@ -100,8 +100,8 @@
 
   <div class="row">
 
-    <!-- Area Chart -->
-    <div class="col-xl-8 col-lg-7">
+    <!-- ------- GRÁFICA DE PESO -------- -->
+    <div class="col-lg-6">
       <div class="card shadow mb-4">
         <!-- Card Header - Dropdown -->
         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -128,65 +128,9 @@
         </div>
       </div>
     </div>
+    <!-- ------- FIN GRÁFICA DE PESO -------- -->
 
-    <!-- Pie Chart -->
-    <div class="col-xl-4 col-lg-5">
-      <div class="card shadow mb-4">
-        <!-- Card Header - Dropdown -->
-        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-          <h6 class="m-0 font-weight-bold text-primary">Alimentos por Grupo</h6>
-        </div>
-        <!-- Card Body -->
-        <div class="card-body">
-          <div class="chart-pie pt-4 pb-2">
-            <canvas id="pie-chart"></canvas>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Content Row -->
-  <div class="row">
-
-    <!-- Content Column -->
-    <div class="col-lg-6 mb-4">
-
-      <!-- Project Card Example -->
-      <div class="card shadow mb-4">
-        <div class="card-header py-3">
-          <h6 class="m-0 font-weight-bold text-primary">Projects</h6>
-        </div>
-        <div class="card-body">
-          <h4 class="small font-weight-bold">Server Migration <span class="float-right">20%</span></h4>
-          <div class="progress mb-4">
-            <div class="progress-bar bg-danger" role="progressbar" style="width: 20%" aria-valuenow="20"
-              aria-valuemin="0" aria-valuemax="100"></div>
-          </div>
-          <h4 class="small font-weight-bold">Sales Tracking <span class="float-right">40%</span></h4>
-          <div class="progress mb-4">
-            <div class="progress-bar bg-warning" role="progressbar" style="width: 40%" aria-valuenow="40"
-              aria-valuemin="0" aria-valuemax="100"></div>
-          </div>
-          <h4 class="small font-weight-bold">Customer Database <span class="float-right">60%</span></h4>
-          <div class="progress mb-4">
-            <div class="progress-bar" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0"
-              aria-valuemax="100"></div>
-          </div>
-          <h4 class="small font-weight-bold">Payout Details <span class="float-right">80%</span></h4>
-          <div class="progress mb-4">
-            <div class="progress-bar bg-info" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0"
-              aria-valuemax="100"></div>
-          </div>
-          <h4 class="small font-weight-bold">Account Setup <span class="float-right">Complete!</span></h4>
-          <div class="progress">
-            <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100"
-              aria-valuemin="0" aria-valuemax="100"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
+    <!-- ------- ENCUESTA -------- -->
     <div class="col-lg-6 mb-4">
 
     
@@ -267,28 +211,34 @@
       </div>
     </form>
 
+    </div>
+    <!-- ------- FIN ENCUESTA -------- -->
 
-      <!-- Approach -->
-      <div class="col-12 mb-4">
 
-        <div class="card shadow mb-4">
-          <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Información Adicional</h6>
-          </div>
-          <div class="card-body">
-            <p class="text-justify">Desde hace muchos años México vive una problemática de salud pública muy grave,
-              donde
-              un 39.1% de los adultos mayores de 20 años padecen sobrepeso y un 36.1% obesidad, es decir, 3 de cada 4
-              personas tienen obesidad en el país.
-              En el último año 2019 esta tendencia siguió aumentando hasta casi un 75.2% . (Datos del INEGI y Sector
-              Salud
-              en diciembre de 2019).</p>
-            <p class=" text-justify mb-0">Nuestro objetivo siempre será reducir esa cifra, ayudando a todo aquel que
-              esté
-              dispuesto a recibir nuestro apoyo.</p>
-          </div>
+  </div>
+
+  <!-- Content Row -->
+  <div class="row">
+
+
+    <div class="col-lg-12 mb-4">
+
+      <div class="card shadow mb-4">
+        <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">Información Adicional</h6>
         </div>
-
+        <div class="card-body">
+          <p class="text-justify">Desde hace muchos años México vive una problemática de salud pública muy grave,
+            donde
+            un 39.1% de los adultos mayores de 20 años padecen sobrepeso y un 36.1% obesidad, es decir, 3 de cada 4
+            personas tienen obesidad en el país.
+            En el último año 2019 esta tendencia siguió aumentando hasta casi un 75.2% . (Datos del INEGI y Sector
+            Salud
+            en diciembre de 2019).</p>
+          <p class=" text-justify mb-0">Nuestro objetivo siempre será reducir esa cifra, ayudando a todo aquel que
+            esté
+            dispuesto a recibir nuestro apoyo.</p>
+        </div>
       </div>
 
     </div>
@@ -325,45 +275,6 @@
       config
     );
 
-    const pie_data = {
-      labels: [
-        'Cereales y Tubérculos',
-        'Verduras',
-        'Frutas',
-        'Origen Animal',
-        'Leche',
-        'Leguminosas',
-        'Grasas',
-        'Azucares',
-        'Libres en Energía'
-      ],
-      datasets: [{
-        label: 'My First Dataset',
-        data: [{{ cereales }}, {{ verduras }}, {{ frutas }}, {{ animal }}, {{ leche }}, {{ leguminosas }}, {{ grasas }}, {{ azucar }}, {{ libre }} ],
-        backgroundColor: [
-        '#ffe5d0',
-        '#d1e7dd',
-        '#fecba1',
-        '#f8d7da',
-        '#cff4fc',
-        '#ca6510',
-        '#fff3cd',
-        '#efadce',
-        '#c5b3e6'
-        ],
-        hoverOffset: 4
-      }]
-    };
-
-    const pie_config = {
-      type: 'doughnut',
-      data: pie_data,
-    };
-
-    const pie_chart = new Chart(
-      document.getElementById('pie-chart'),
-      pie_config
-    );
   </script>
 
 

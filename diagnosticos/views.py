@@ -19,7 +19,8 @@ def diagnostico(request):
             return render(request, "diagnostico.html",{"diagnos_form": diagnos_form})
     else:
         diagnos_form = forms.FormaDiagnosticoCardio()
-        return render(request, "diagnostico.html", {"diagnos_form": diagnos_form})
+        obes_form= forms.FormaDiagnosticoObesidad()
+        return render(request, "diagnostico.html", {"diagnos_form": diagnos_form, "obes_form":obes_form})
 
 
 STD_DATA = {

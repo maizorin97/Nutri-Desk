@@ -12,7 +12,11 @@
 {% block active-perfil %} active-div {% endblock %}
 
 {% block section1 %}
-
+<style>
+  .foto_container{
+    margin-bottom: 2rem;
+  }
+</style>
 <div class="container-fluid">
 
   <!-- Page Heading -->
@@ -30,12 +34,12 @@
               <div class="col-12">
                 <div class="row">
                   <div class="col-sm-12 col-md-4 align-self-center">
-                    <img alt="" style="width:100%;" title="" class="img-circle img-thumbnail isTooltip"
-                      src="{% static 'img/user1.png' %}" data-original-title="Usuario">
+                    <img alt="" style="width:100%;" title="" id="imagen_usuario" class="img-circle img-thumbnail isTooltip"
+                      src="/media/{{infoUser.foto}}" data-original-title="Usuario">
                   </div>
                   <div class="col-sm-12 col-md-8 align-self-center">
                     <div class="table-responsive align-content-center">
-                      <form method="POST">
+                      <form method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
                         <table class="table table-condensed table-responsive table-user-information">
                           <tbody>
@@ -72,8 +76,11 @@
                             </tr>
                           </tbody>
                         </table>
+                        <div class="foto_container">
+                          <p class="selecciona" >Foto de perfil:</p>
+                          {{info_form.foto}}
+                        </div>
                         <button type="submit" class="btn btn-primary">Actualizar datos</button>
-                        <button class="btn btn-dark btn-user">Modificar foto de perfil</button>
                       </form>
                     </div>
                   </div>
@@ -85,5 +92,12 @@
       </div>
     </div>
   </div>
-
+  <script>
+     document.addEventListener('DOMContentLoaded' ,function (){
+    let imagen_src=document.getElementById("imagen_usuario").src;
+    if (imagen_src[imagen_src.length-1]==='/'){
+      document.getElementById("imagen_usuario").src+="perfiles/default.png";
+    }
+  });
+  </script>
   {% endblock %}

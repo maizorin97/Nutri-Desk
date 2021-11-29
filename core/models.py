@@ -9,6 +9,7 @@ class InfoUsuario(models.Model):
     fecha_nacimiento = models.DateField(verbose_name="Fecha de nacimiento", default=datetime.now)
     altura = models.FloatField(verbose_name="Altura en CM")
     peso = models.FloatField(verbose_name="Peso en KG")
+    foto = models.ImageField(upload_to='perfiles' , default="default.png", blank=True)
     SEXOS = (
         ('H','Hombre'),
         ('M','Mujer'),
