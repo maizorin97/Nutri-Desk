@@ -64,7 +64,7 @@ def panel_control(request):
     exise_plan_hoy = CalendarioUsuario.objects.filter(usuario=request.user).count() > 0
     plan_hoy = None
     if exise_plan_hoy:
-        week_day_now = 0#fecha_actual.weekday()
+        week_day_now = fecha_actual.weekday()
         #plan_hoy = CalendarioUsuario.objects.get(usuario=request.user)._meta.get_field(week_day_map[week_day_now])
         plan_hoy = CalendarioUsuario.objects.get(usuario=request.user)
 
