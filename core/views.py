@@ -101,6 +101,8 @@ def panel_control(request):
             comer_sano = 1 if request.POST.get("manzana") == 'on' else 0,
         ).save()
 
+        existe_bitacora_hoy = True
+
 
     return render(request, 'panel_control.html', {
         'infoUser': infoUser, 
@@ -112,9 +114,6 @@ def panel_control(request):
         'plan_hoy': plan_hoy
     })
 
-
-#path('perfil/<int:id>/', views.perfil, name='perfil'),
-# def perfil(request,id):
 
 def perfil(request):
     if request.method == "POST":
