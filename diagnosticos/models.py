@@ -50,7 +50,7 @@ class DiagnosticoObesidad(models.Model):
         (0,'Mujer'),
         (1,'Hombre'),
     )
-    genero = models.CharField(max_length=1, choices=GENEROS, verbose_name="Genero")
+    genero = models.IntegerField(choices=GENEROS, verbose_name="Genero")
     edad = models.DateField(verbose_name="Fecha de nacimiento", default=datetime.now)
     altura = models.FloatField(verbose_name="Altura en M")
     peso = models.FloatField(verbose_name="Peso en KG")

@@ -97,9 +97,10 @@
                         {{diagnos_form.colesterol}}
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary btn-user btn-block my-3">Generar
+                <button type="submit" name="btnDiagnosticoCardio" class="btn btn-primary btn-user btn-block my-3">Generar
                     diagnóstico</button>
             </form>
+            <p style="color: red">{{diagnos_form.errors }}</p>
         </div>
     </div>
 
@@ -117,7 +118,7 @@
                 <div class="form-group row">
                     <div class="col-sm-4 align-self-center">
                         {{obes_form.fecha_nacimiento.label}}
-                        {{diagnos_form.fecha_nacimiento}}
+                        {{obes_form.fecha_nacimiento}}
                     </div>
                     <div class="col-sm-4 align-self-center">
                         {{obes_form.peso.label}}
@@ -130,8 +131,8 @@
                 </div>
                 <div class="form-group row">
                     <div class="col-sm-4">
-                        {{obes_form.sexo.label}}
-                        {{obes_form.sexo}}
+                        {{obes_form.genero.label}}
+                        {{obes_form.genero}}
                     </div>
                 </div>
                 <hr>
@@ -164,6 +165,20 @@
                         {{obes_form.smoke}}
                     </div>
                 </div>
+                <div class="form-group row">
+                    <div class="col-sm-4 align-self-center">
+                        {{obes_form.ch2o.label}}
+                        {{obes_form.ch2o}}
+                    </div>
+                    <div class="col-sm-4 align-self-center">
+                        {{obes_form.scc.label}}
+                        {{obes_form.scc}}
+                    </div>
+                    <div class="col-sm-4 align-self-center">
+                        {{obes_form.faf.label}}
+                        {{obes_form.faf}}
+                    </div>
+                </div>
                 <div class="form-group row my-2">
                     <div class="col-sm-4 align-self-center">
                         {{obes_form.tue.label}}
@@ -178,15 +193,16 @@
                         {{obes_form.mtrans}}
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary btn-user btn-block my-3">Generar
+                <button type="submit" name="btnDiagnosticoObesidad" class="btn btn-primary btn-user btn-block my-3">Generar
                     diagnóstico</button>
             </form>
+            <p style="color: red">{{obes_form.errors }}</p>
         </div>
     </div>
 
     <!-- ------- Fin Diagnóstico Obesidad ------- -->
 
-
+    
 </div>
 
 
@@ -195,6 +211,9 @@
 {% block extra-scripts %}
 
 <script>
+
+    {% if resultado != None %}
+    {% endif %}
 
     $(document).ready(function () {
         $("#onLoadModal").modal('show');

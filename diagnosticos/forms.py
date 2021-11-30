@@ -35,8 +35,8 @@ class FormaDiagnosticoObesidad(forms.ModelForm):
         attrs={'class':'form-control', 'placeholder':'Altura'}))
     peso = forms.FloatField(label="Peso en kilogramos", required=True, widget=forms.NumberInput(
         attrs={'class':'form-control', 'placeholder':'Peso'}))
-    sexo = forms.CharField(label="Sexo", required=True, widget=forms.Select(
-        attrs={'class':'form-control', 'placeholder':'Elige tu sexo'}, choices=(('H','Hombre'),('M','Mujer'))))
+    genero = forms.CharField(label="Genero", required=True, widget=forms.Select(
+        attrs={'class':'form-control', 'placeholder':'Elige tu sexo'}, choices=((1,'Hombre'),(0,'Mujer'))))
     historial_obesidad = forms.CharField(label="¿Existen antecedentes de obesidad en su familia?", required=True, widget=forms.Select(
         attrs={'class':'form-control', 'placeholder':'Antecedentes de Obesidad'}, choices=((0,'No'),(1,'Si'))))
     favc = forms.CharField(label="¿Consume frecuentemente alimentos altos en calorías?", required=True, widget=forms.Select(
@@ -64,5 +64,5 @@ class FormaDiagnosticoObesidad(forms.ModelForm):
 
     class Meta:
         model = DiagnosticoObesidad
-        fields = ('fecha_nacimiento', 'altura', 'peso', 'sexo', 'historial_obesidad', 
-        'favc', 'fcvc', 'npc', 'caec', 'smoke', 'scc', 'faf', 'tue', 'calc', 'mtrans')
+        fields = ('fecha_nacimiento', 'altura', 'peso', 'genero', 'historial_obesidad', 
+        'favc', 'fcvc', 'npc', 'caec', 'smoke', 'ch2o' ,'scc', 'faf', 'tue', 'calc', 'mtrans')
