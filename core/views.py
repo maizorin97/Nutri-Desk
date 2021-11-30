@@ -82,21 +82,6 @@ def panel_control(request):
             plan_hoy = plan_hoy.planSabado
         elif(week_day_now == 6):
             plan_hoy = plan_hoy.planDomingo
-        
-        if (plan_hoy == None):
-            print("No hay plan para el dia de hoy")
-        else:
-            print(plan_hoy)
-    
-    verduras= Alimento.objects.filter(idGrupo=1).count()
-    frutas= Alimento.objects.filter(idGrupo=2).count()
-    cereales= Alimento.objects.filter(idGrupo=3).count() +  Alimento.objects.filter(idGrupo=4).count()
-    leguminosas= Alimento.objects.filter(idGrupo=5).count()
-    animal= Alimento.objects.filter(idGrupo=6).count() + Alimento.objects.filter(idGrupo=7).count() + Alimento.objects.filter(idGrupo=8).count() + Alimento.objects.filter(idGrupo=9).count()
-    leche= Alimento.objects.filter(idGrupo=10).count() + Alimento.objects.filter(idGrupo=11).count() + Alimento.objects.filter(idGrupo=12).count() + Alimento.objects.filter(idGrupo=13).count()
-    azucar= Alimento.objects.filter(idGrupo=16).count() + Alimento.objects.filter(idGrupo=17).count()
-    libre= Alimento.objects.filter(idGrupo=18).count()
-    grasas= Alimento.objects.filter(idGrupo=21).count() + Alimento.objects.filter(idGrupo=22).count()
 
     for peso in pesosUser:
         data.append(peso['peso'])
@@ -120,15 +105,6 @@ def panel_control(request):
     return render(request, 'panel_control.html', {
         'infoUser': infoUser, 
         'pesosUser': pesosUser,
-        'verduras': verduras,
-        'frutas':frutas,
-        'cereales':cereales,
-        'leguminosas':leguminosas,
-        'animal':animal,
-        'leche':leche,
-        'azucar':azucar,
-        'libre':libre,
-        'grasas':grasas,
         'data': data,
         'labels' : labels,
         'fecha': fecha_actual,
