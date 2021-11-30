@@ -9,4 +9,5 @@ urlpatterns = [
     path('perfil/', views.perfil, name='perfil'),
     path('cerrar/', views.cerrar.as_view(), name='cerrar'),
     path('error/', views.error.as_view(), name='error'),
+    path('contacto/', views.contacto.as_view(), name='contacto'),
 ]

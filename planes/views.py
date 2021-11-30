@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import CreateView, ListView, TemplateView
 
 from .models import Plan, TipoComida, Colacion
-from core.models import InfoUsuario
+from core.models import InfoUsuario, CalendarioUsuario
 from smae.models import Alimento, Grupo
 from django.contrib.auth.models import User
 import json
@@ -64,8 +64,13 @@ class lista_planes(ListView):
 
     def post(self, request, *args, **kwargs):
         usuario: User = InfoUsuario.objects.get(usuario=request.user).usuario
-        self.guardar_plan(request.POST, usuario)
-        
+        if request.method == "POST" and "btnGuardarPlan" in request.POST:
+            self.guardar_plan(request.POST, usuario)
+        elif request.method == "POST" and "btnGuardarCalendario" in request.POST:
+            print("btnGuardarCalendario")
+            #calendario: CalendarioUsuario = CalendarioUsuario.objects.get(usuario=usuario)
+            #if request.POST.get("lunes") != None:
+            #    calendario["lunes"] = 
         return redirect("planes") 
         
     def delete(self,request, *args, **kwargs):

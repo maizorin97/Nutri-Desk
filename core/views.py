@@ -64,7 +64,7 @@ def panel_control(request):
     exise_plan_hoy = CalendarioUsuario.objects.filter(usuario=request.user).count() > 0
     plan_hoy = None
     if exise_plan_hoy:
-        week_day_now = 0#fecha_actual.weekday()
+        week_day_now = fecha_actual.weekday()
         #plan_hoy = CalendarioUsuario.objects.get(usuario=request.user)._meta.get_field(week_day_map[week_day_now])
         plan_hoy = CalendarioUsuario.objects.get(usuario=request.user)
 
@@ -82,21 +82,6 @@ def panel_control(request):
             plan_hoy = plan_hoy.planSabado
         elif(week_day_now == 6):
             plan_hoy = plan_hoy.planDomingo
-        
-        if (plan_hoy == None):
-            print("No hay plan para el dia de hoy")
-        else:
-            print(plan_hoy)
-    
-    verduras= Alimento.objects.filter(idGrupo=1).count()
-    frutas= Alimento.objects.filter(idGrupo=2).count()
-    cereales= Alimento.objects.filter(idGrupo=3).count() +  Alimento.objects.filter(idGrupo=4).count()
-    leguminosas= Alimento.objects.filter(idGrupo=5).count()
-    animal= Alimento.objects.filter(idGrupo=6).count() + Alimento.objects.filter(idGrupo=7).count() + Alimento.objects.filter(idGrupo=8).count() + Alimento.objects.filter(idGrupo=9).count()
-    leche= Alimento.objects.filter(idGrupo=10).count() + Alimento.objects.filter(idGrupo=11).count() + Alimento.objects.filter(idGrupo=12).count() + Alimento.objects.filter(idGrupo=13).count()
-    azucar= Alimento.objects.filter(idGrupo=16).count() + Alimento.objects.filter(idGrupo=17).count()
-    libre= Alimento.objects.filter(idGrupo=18).count()
-    grasas= Alimento.objects.filter(idGrupo=21).count() + Alimento.objects.filter(idGrupo=22).count()
 
     for peso in pesosUser:
         data.append(peso['peso'])
@@ -116,19 +101,12 @@ def panel_control(request):
             comer_sano = 1 if request.POST.get("manzana") == 'on' else 0,
         ).save()
 
+        existe_bitacora_hoy = True
+
 
     return render(request, 'panel_control.html', {
         'infoUser': infoUser, 
         'pesosUser': pesosUser,
-        'verduras': verduras,
-        'frutas':frutas,
-        'cereales':cereales,
-        'leguminosas':leguminosas,
-        'animal':animal,
-        'leche':leche,
-        'azucar':azucar,
-        'libre':libre,
-        'grasas':grasas,
         'data': data,
         'labels' : labels,
         'fecha': fecha_actual,
@@ -136,9 +114,6 @@ def panel_control(request):
         'plan_hoy': plan_hoy
     })
 
-
-#path('perfil/<int:id>/', views.perfil, name='perfil'),
-# def perfil(request,id):
 
 def perfil(request):
     if request.method == "POST":
@@ -167,6 +142,8 @@ def perfil(request):
         
         return render(request, "perfil.html", {'info_form': info_form,'infoUser':info_user})
 
+class contacto(TemplateView):
+    template_name = "contacto.html"
 
 class cerrar(LogoutView):
     template_name = "cerrar.html"
