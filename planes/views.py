@@ -116,6 +116,7 @@ def get_datos(request):
     for alimento in listaAlimentos:
         alimentos.append({
             "idGrupo":alimento.idGrupo.idGrupo,
+            "nombreGrupo":alimento.idGrupo.nombre,
             "nombre":alimento.nombre,
             "idAlimento":alimento.idAlimento,
             "energia":alimento.idGrupo.energia,
