@@ -38,7 +38,10 @@ def diagnostico(request):
     else:
         diagnos_form = forms.FormaDiagnosticoCardio()
         obes_form= forms.FormaDiagnosticoObesidad()
-        return render(request, "diagnostico.html", {"diagnos_form": diagnos_form, "obes_form":obes_form})
+        result_cardio= DiagnosticoCardio.objects.all()
+        result_obes= DiagnosticoObesidad.objects.all()
+        print(result_cardio)
+        return render(request, "diagnostico.html", {"diagnos_form": diagnos_form, "obes_form":obes_form, "result_cardio":result_cardio, "result_obes":result_obes})
 
 
 def genera_diagnostico_cardio(info:DiagnosticoCardio):

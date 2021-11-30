@@ -11,7 +11,8 @@
 
 {% block section1 %}
 
-<div id="onLoadModal" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false">
+<!-- <div id="onLoadModal" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false"> -->
+<div id="onLoadModal" class="modal fade">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -20,10 +21,17 @@
             <div class="modal-body">
                 <p>¿Qué tipo de diagnóstico deseas realizar?</p>
                 <div class="d-flex justify-content-center">
-                    <button id="cardio-btn" class="btn btn-primary mx-3">Diagnóstico Cardiovascular <br> <i
+                    <button id="cardio-btn" class="btn btn-primary me-2">Diagnóstico Cardiovascular <br> <i
                             class="fas fa-heartbeat"></i> </button>
                     <button id="obesidad-btn" class="btn btn-primary">Diagnóstico Obesidad <br> <i
                             class="fas fa-weight"></i></button>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <button id="result-btn" class="btn btn-primary my-2" style="width: 100%;">
+                        Resultados
+                        <br>
+                        <i class="fas fa-poll"></i>
+                    </button>
                 </div>
             </div>
         </div>
@@ -97,7 +105,8 @@
                         {{diagnos_form.colesterol}}
                     </div>
                 </div>
-                <button type="submit" name="btnDiagnosticoCardio" class="btn btn-primary btn-user btn-block my-3">Generar
+                <button type="submit" name="btnDiagnosticoCardio"
+                    class="btn btn-primary btn-user btn-block my-3">Generar
                     diagnóstico</button>
             </form>
             <p style="color: red">{{diagnos_form.errors }}</p>
@@ -193,7 +202,8 @@
                         {{obes_form.mtrans}}
                     </div>
                 </div>
-                <button type="submit" name="btnDiagnosticoObesidad" class="btn btn-primary btn-user btn-block my-3">Generar
+                <button type="submit" name="btnDiagnosticoObesidad"
+                    class="btn btn-primary btn-user btn-block my-3">Generar
                     diagnóstico</button>
             </form>
             <p style="color: red">{{obes_form.errors }}</p>
@@ -202,7 +212,94 @@
 
     <!-- ------- Fin Diagnóstico Obesidad ------- -->
 
-    
+    <!-- ------- Diagnósticos ------- -->
+
+    <div id="obesidad-card" class="card" style="">
+        <div class="card-header">
+            <h5>Resultados</h5>
+        </div>
+        <div class="card-body">
+            <div class="d-flex">
+                <div class="col-6">
+                    <h6 class="text-center">Diagnósticos Cardiovasculares</h6>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Fecha</th>
+                                <th scope="col">Resultado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for resultado in result_cardio %}
+                            <tr>
+                                <th scope="row">{{resultado.fecha_creacion | date:'Y-m-d H:i'}}</th>
+                                {% if resultado.resultado == 0 %}
+                                <td class="table-success"> 
+                                    Negativo
+                                </td>
+                                {% else %}
+                                <td class="table-danger"> 
+                                    Positivo
+                                </td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-6">
+                    <h6 class="text-center">Diagnósticos Obesidad</h6>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Fecha</th>
+                                <th scope="col">Resultado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for resultado in result_obes %}
+                            <tr>
+                                <th scope="row">{{resultado.fecha_creacion | date:'Y-m-d H:i'}}</th>
+                                {% if resultado.nobeyesdad == 0 %}
+                                <td class="table-warning"> 
+                                    Peso Insuficiente
+                                </td>
+                                {% elif resultado.nobeyesdad == 1 %}
+                                <td class="table-success"> 
+                                    Peso Normal
+                                </td>
+                                {% elif resultado.nobeyesdad == 2 %}
+                                <td class="table-info"> 
+                                    Sobrepeso Nivel 1
+                                </td>
+                                {% elif resultado.nobeyesdad == 3 %}
+                                <td class="table-primary"> 
+                                    Sobrepeso Nivel 2
+                                </td>
+                                {% elif resultado.nobeyesdad == 4 %}
+                                <td class="table-danger"> 
+                                    Obesidad Tipo 1
+                                </td>
+                                {% elif resultado.nobeyesdad == 5 %}
+                                <td class="table-danger"> 
+                                    Obesidad Tipo 2
+                                </td>
+                                {% elif resultado.nobeyesdad == 6 %}
+                                <td class="table-danger"> 
+                                    Obesidad Tipo 3
+                                </td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ------- Diagnósticos ------- -->
+
 </div>
 
 
@@ -211,9 +308,6 @@
 {% block extra-scripts %}
 
 <script>
-
-    {% if resultado != None %}
-    {% endif %}
 
     $(document).ready(function () {
         $("#onLoadModal").modal('show');
@@ -227,6 +321,11 @@
     document.getElementById('obesidad-btn').onclick = function () {
         $("#onLoadModal").modal('hide');
         $("#obesidad-card").css("display", "block");
+    };
+
+    document.getElementById('result-btn').onclick = function () {
+        $("#onLoadModal").modal('hide');
+        $("#result-card").css("display", "block");
     };
 
 </script>
