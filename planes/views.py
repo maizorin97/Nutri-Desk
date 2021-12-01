@@ -67,10 +67,23 @@ class lista_planes(ListView):
         if request.method == "POST" and "btnGuardarPlan" in request.POST:
             self.guardar_plan(request.POST, usuario)
         elif request.method == "POST" and "btnGuardarCalendario" in request.POST:
-            print("btnGuardarCalendario")
-            #calendario: CalendarioUsuario = CalendarioUsuario.objects.get(usuario=usuario)
-            #if request.POST.get("lunes") != None:
-            #    calendario["lunes"] = 
+            idPlan = int(request.POST.get("idPlan"))
+            plan = Plan.objects.get(idPlan=idPlan)
+            calendario = CalendarioUsuario.objects.filter(usuario=usuario)
+            if request.POST.get("lunes") != None:
+                calendario.update(planLunes=idPlan)
+            if request.POST.get("martes") != None:
+                calendario.update(planMartes=idPlan)
+            if request.POST.get("miercoles") != None:
+                calendario.update(planMiercoles=idPlan)
+            if request.POST.get("jueves") != None:
+                calendario.update(planJueves=idPlan)
+            if request.POST.get("viernes") != None:
+                calendario.update(planViernes=idPlan)
+            if request.POST.get("sabado") != None:
+                calendario.update(planSabado=idPlan)
+            if request.POST.get("domingo") != None:
+                calendario.update(planDomingo=idPlan)
         return redirect("planes") 
         
     def delete(self,request, *args, **kwargs):
