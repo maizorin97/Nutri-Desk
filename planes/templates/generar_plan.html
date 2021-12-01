@@ -279,6 +279,7 @@
         </div>
         <form method="POST">
         {% csrf_token %}
+          <input type="hidden" id="idPlanModal">
           <div class="modal-footer d-flex justify-content-center">
             <p>Recordar:</p>
             <div class="form-check form-check-inline">
@@ -719,6 +720,7 @@
               )
             },
             success: function (result) {
+              document.getElementById("idPlanModal").value=idPlan
               let tablaDesayuno = document.getElementById("desayuno-table");
               let tablaColacion1 = document.getElementById("colacion1-table");
               let tablaComida = document.getElementById("comida-table");
