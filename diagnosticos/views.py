@@ -38,8 +38,14 @@ def diagnostico(request):
     else:
         diagnos_form = forms.FormaDiagnosticoCardio()
         obes_form= forms.FormaDiagnosticoObesidad()
-        result_cardio= DiagnosticoCardio.objects.all()
-        result_obes= DiagnosticoObesidad.objects.all()
+        if DiagnosticoCardio.objects.filter(idUsuario=request.user).exists():
+            result_cardio= DiagnosticoCardio.objects.filter(idUsuario=request.user)
+        else:
+            result_cardio= DiagnosticoCardio.objects.none()
+        if DiagnosticoObesidad.objects.filter(idUsuario=request.user).exists() :
+            result_obes= DiagnosticoObesidad.objects.filter(idUsuario=request.user)
+        else:
+            result_obes=DiagnosticoObesidad.objects.none()
         print(result_cardio)
         return render(request, "diagnostico.html", {"diagnos_form": diagnos_form, "obes_form":obes_form, "result_cardio":result_cardio, "result_obes":result_obes})
 
