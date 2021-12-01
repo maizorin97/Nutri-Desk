@@ -1,7 +1,9 @@
+from django.conf.urls import url
+from django.contrib.auth.models import User
 from django.views.generic.detail import DetailView
 from nutriblog.models import Articulo
-from django.shortcuts import render
-from .models import Articulo
+from django.shortcuts import redirect, render
+from .models import Articulo, Comentario
 from django.views.generic import TemplateView, ListView
 from django.core.paginator import Paginator
 # Create your views here.
@@ -14,9 +16,25 @@ class nutriblog(ListView):
     ordering = ['-id']
 
 
-class detalleArticulo(DetailView):
-    model = Articulo
-    template_name = "detalle_articulo.html"
+# class detalleArticulo(DetailView):
+#     model = Articulo
+#     template_name = "detalle_articulo.html"
+
+def detalleArticulo(request, pk):
+    articulo= Articulo.objects.get(pk = pk)
+
+    if request.method == "POST":
+        nuevo_comentario = Comentario(
+            articulo= Articulo.objects.get(pk=pk),
+            nombre= request.user.first_name + " " + request.user.last_name,
+            body = request.POST.get("txtComentario")
+        )
+        if nuevo_comentario.body != "":
+            nuevo_comentario.save()
+        return redirect('/nutriblog/articulo/'+str(pk))
+    else:
+        return render(request, 'detalle_articulo.html',
+                        {'articulo':articulo})
 
 
 def busqueda(request):
