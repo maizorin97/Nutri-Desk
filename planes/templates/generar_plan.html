@@ -101,7 +101,7 @@
             </div>
 
             <div class="row my-2">
-              <div class="col-sm-4 align-self-center center-align" id="div-cargadorBoton">
+              <div class="col-sm-12 align-self-center center-align" id="div-cargadorBoton">
                 <div class="spinner-border text-primary" role="status">
                   <span class="visually-hidden">Loading...</span>
                 </div>
@@ -390,7 +390,9 @@
 <script>
   var dic_al;
   var dict_alimentos;
-  function calcular_requisitos() {
+  var dict_alimentos2;
+  function calcular_requisitos(e) {
+    e.preventDefault();
     var peso = {{ infoUser.peso }};
     var altura = {{ infoUser.altura }}/100;
     var sexo = '{{infoUser.sexo}}';
@@ -407,8 +409,16 @@
     txt_msj_imc.innerHTML = indice_masa_corporal(imc);
     var tmb = tasa_metabolica_basal(sexo, edad, peso, altura, objetivo, actividad);
     txt_tmb.innerHTML = tmb;
-    mostrar_plan(tmb);
-    document.getElementById("cargadorBoton").setAttribute("disabled","")
+    console.log(e.target.id)
+    switch(e.target.id){
+      case 'cargadorBotonAG':
+        mostrar_plan_ag(tmb);
+      break;
+      case 'cargadorBotonTablas':
+        mostrar_plan_tablas(tmb);
+      break;
+    }
+    
   }
 
   function indice_masa_corporal(imc) {
@@ -479,49 +489,31 @@
     return tmb.toPrecision(4);
   }
 
-  function mostrar_plan(tmb) {
-    var plan = get_plan(tmb);
+  function mostrar_plan_ag(tmb) {
+    var plan = get_plan_ag(tmb);
     var tabla_plan = document.getElementsByClassName("select-column");
-    tabla_plan[0].innerHTML = construir_colacion(0, plan[0], dict_alimentos); //desayuno
-    tabla_plan[1].innerHTML += construir_colacion(1, plan[1], dict_alimentos); //colacion1
-    tabla_plan[2].innerHTML += construir_colacion(2, plan[2], dict_alimentos); //comida
-    tabla_plan[3].innerHTML += construir_colacion(3, plan[3], dict_alimentos); //colacon2
-    tabla_plan[4].innerHTML += construir_colacion(4, plan[4], dict_alimentos); //cena
+    tabla_plan[0].innerHTML = construir_colacion_ag(0, plan[0], dict_alimentos); //desayuno
+    tabla_plan[1].innerHTML = construir_colacion_ag(1, plan[1], dict_alimentos); //colacion1
+    tabla_plan[2].innerHTML = construir_colacion_ag(2, plan[2], dict_alimentos); //comida
+    tabla_plan[3].innerHTML = construir_colacion_ag(3, plan[3], dict_alimentos); //colacon2
+    tabla_plan[4].innerHTML = construir_colacion_ag(4, plan[4], dict_alimentos); //cena
     agregar_listeners();
   }
 
 
 
-  function get_plan(kcal) {
-          /* [[desayuno],[colacion1],[comida],[colacion2],[cena]]
-          [CEREALES Y TUBÉRCULOS,VERDURAS,FRUTAS,ALIMENTOS DE ORIGEN ANIMAL,LECHE Y SUSTITUTOS,
-          LEGUMINOSAS,GRASAS,AZÚCARES,ALIMENTOS LIBRES DE ENERGÍA]*/
+  function get_plan_ag(kcal) {
           let alimentos=[]
           alimentos[0]=algoritmo_genetico(kcal*0.2666)
           alimentos[1]=algoritmo_genetico(kcal*0.1)
           alimentos[2]=algoritmo_genetico(kcal*0.2666)
           alimentos[3]=algoritmo_genetico(kcal*0.1)
           alimentos[4]=algoritmo_genetico(kcal*0.2666)
-          /*
-          if (kcal < 1000) {
-              return [[1, 1, 1, 1, 1, 0, 1, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [2, 2, 1, 1, 1, 0, 1, 0, 0], [0, 0, 0, 0, 1, 0, 0, 0, 0], [1, 1, 1, 0, 0, 0, 0, 0, 1]];
-          } else if (kcal < 1200) {
-              return [[2, 1, 1, 0, 0, 0, 1, 0, 1], [1, 0, 0, 0, 1, 0, 0, 0, 0], [2, 2, 1, 2, 1, 0, 1, 0, 0], [0, 1, 0, 0, 1, 0, 0, 0, 0], [1, 1, 0, 0, 1, 0, 0, 0, 0]];
-          } else if (kcal < 1400) {
-              return [[2, 1, 1, 1, 1, 0, 1, 0, 0], [0, 0, 1, 0, 1, 0, 0, 0, 0], [2, 2, 0, 2, 0, 0, 1, 0, 0], [1, 0, 0, 0, 1, 0, 0, 0, 0], [1, 1, 1, 1, 1, 0, 0, 0, 0]];
-          } else if (kcal < 1600) {
-              return [[2, 2, 1, 0, 1, 0, 1, 0, 0], [0, 1, 0, 1, 0, 0, 0, 0, 0], [2, 2, 1, 2, 1, 0, 1, 0, 0], [1, 0, 1, 0, 0, 0, 0, 0, 0], [1, 2, 1, 1, 0, 0, 0, 0, 1]];
-          } else if (kcal < 1800) {
-              return [[3, 1, 2, 1, 1, 0, 1, 0, 0], [1, 1, 0, 0, 0, 0, 0, 0, 0], [2, 2, 1, 2, 1, 0, 1, 0, 0], [1, 0, 0, 0, 1, 0, 0, 0, 0], [1, 2, 1, 1, 0, 0, 0, 0, 1]];
-          } else if (kcal < 2000) {
-              return [[3, 1, 2, 2, 1, 0, 1, 0, 0], [1, 1, 0, 0, 0, 0, 0, 0, 0], [2, 2, 1, 2, 1, 0, 1, 0, 1], [1, 0, 1, 0, 0, 0, 0, 0, 0], [1, 2, 1, 1, 1, 0, 0, 0, 0]];
-          }
-          */
          return alimentos
       }
 
   
-  function construir_colacion(tc, plan, dic) {
+  function construir_colacion_ag(tc, plan, dic) {
     var llave_comida = ["Desayuno", "Colacion1", "Comida", "Colacion2", "Cena"]
     var llave_alimentos = ["Cereales y tubérculos", "Verduras", "Frutas", "Alimentos de origen animal",
       "Leche", "Leguminosas", "Grasas", "Azúcares", "Alimentos libres en energía"];
@@ -563,7 +555,69 @@
     return html_code;
   }
 
+  function mostrar_plan_tablas(tmb) {
+    console.log(
+      "hi"
+    )
+    var plan = get_plan_tablas(tmb);
+    var tabla_plan = document.getElementsByClassName("select-column");
+    tabla_plan[0].innerHTML = construir_colacion_tablas(0, plan[0], dict_alimentos2); //desayuno
+    tabla_plan[1].innerHTML = construir_colacion_tablas(1, plan[1], dict_alimentos2); //colacion1
+    tabla_plan[2].innerHTML = construir_colacion_tablas(2, plan[2], dict_alimentos2); //comida
+    tabla_plan[3].innerHTML = construir_colacion_tablas(3, plan[3], dict_alimentos2); //colacon2
+    tabla_plan[4].innerHTML = construir_colacion_tablas(4, plan[4], dict_alimentos2); //cena
+    agregar_listeners();
+  }
 
+
+
+  function get_plan_tablas(kcal) {
+    /* [[desayuno],[colacion1],[comida],[colacion2],[cena]]
+    [CEREALES Y TUBÉRCULOS,VERDURAS,FRUTAS,ALIMENTOS DE ORIGEN ANIMAL,LECHE Y SUSTITUTOS,
+    LEGUMINOSAS,GRASAS,AZÚCARES,ALIMENTOS LIBRES DE ENERGÍA]*/
+    if (kcal < 1000) {
+      return [[1, 1, 1, 1, 1, 0, 1, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [2, 2, 1, 1, 1, 0, 1, 0, 0], [0, 0, 0, 0, 1, 0, 0, 0, 0], [1, 1, 1, 0, 0, 0, 0, 0, 1]];
+    } else if (kcal < 1200) {
+      return [[2, 1, 1, 0, 0, 0, 1, 0, 1], [1, 0, 0, 0, 1, 0, 0, 0, 0], [2, 2, 1, 2, 1, 0, 1, 0, 0], [0, 1, 0, 0, 1, 0, 0, 0, 0], [1, 1, 0, 0, 1, 0, 0, 0, 0]];
+    } else if (kcal < 1400) {
+      return [[2, 1, 1, 1, 1, 0, 1, 0, 0], [0, 0, 1, 0, 1, 0, 0, 0, 0], [2, 2, 0, 2, 0, 0, 1, 0, 0], [1, 0, 0, 0, 1, 0, 0, 0, 0], [1, 1, 1, 1, 1, 0, 0, 0, 0]];
+    } else if (kcal < 1600) {
+      return [[2, 2, 1, 0, 1, 0, 1, 0, 0], [0, 1, 0, 1, 0, 0, 0, 0, 0], [2, 2, 1, 2, 1, 0, 1, 0, 0], [1, 0, 1, 0, 0, 0, 0, 0, 0], [1, 2, 1, 1, 0, 0, 0, 0, 1]];
+    } else if (kcal < 1800) {
+      return [[3, 1, 2, 1, 1, 0, 1, 0, 0], [1, 1, 0, 0, 0, 0, 0, 0, 0], [2, 2, 1, 2, 1, 0, 1, 0, 0], [1, 0, 0, 0, 1, 0, 0, 0, 0], [1, 2, 1, 1, 0, 0, 0, 0, 1]];
+    } else if (kcal < 2000) {
+      return [[3, 1, 2, 2, 1, 0, 1, 0, 0], [1, 1, 0, 0, 0, 0, 0, 0, 0], [2, 2, 1, 2, 1, 0, 1, 0, 1], [1, 0, 1, 0, 0, 0, 0, 0, 0], [1, 2, 1, 1, 1, 0, 0, 0, 0]];
+    }
+  }
+
+  function construir_colacion_tablas(tc, plan, dic) {
+    var llave_comida = ["Desayuno", "Colacion1", "Comida", "Colacion2", "Cena"]
+    var llave_alimentos = ["Cereales y tubérculos", "Verduras", "Frutas", "Alimentos de origen animal",
+      "Leche", "Leguminosas", "Grasas", "Azúcares", "Alimentos libres en energía"];
+    var colors={
+      "Cereales y tubérculos": "bg-cereales", 
+      "Verduras": "bg-verduras", 
+      "Frutas": "bg-frutas", 
+      "Alimentos de origen animal": "bg-animal",
+      "Leche": "bg-leche", 
+      "Leguminosas": "bg-leguminosas", 
+      "Grasas": "bg-grasas", 
+      "Azúcares": "bg-azucares", 
+      "Alimentos libres en energía": "bg-libre"
+    };
+    var html_code = "<div>";
+    for (var i = 0; i < plan.length; i++) {//[]
+      for (var j = 0; j < plan[i]; j++) {//n
+        html_code += "<div><select class='form-select "+ colors[llave_alimentos[i]] + " border-light rounded-3' name='" + llave_comida[tc] + "'>"
+        for (var k = 0; k < dic[llave_alimentos[i]].length; k++) {
+          html_code += "<option class='bg-light' value = '" + dic[llave_alimentos[i]][k][1] + "'>" + dic[llave_alimentos[i]][k][0] + "</option>"
+        }
+        html_code += "</select></div>";
+      }
+    }
+    html_code += "</div>";
+    return html_code;
+  }
 
   function agregar_listeners() {
     var llave_comida = ["Desayuno", "Colacion1", "Comida", "Colacion2", "Cena"];
@@ -741,12 +795,20 @@
       headers: { 'X-CSRFToken': '{{ csrf_token }}' },
       dataType: "json",
       success: function(result) {
+              console.log("Se recibieorn los alimentos");
+              dict_alimentos2={};
               dic_al={};
               dict_alimentos=[];
               dict_alimentos_aux={}
               result.listaAlimentos.forEach((alimento)=>{
                 dic_al[alimento.idAlimento]=[alimento.energia,alimento.proteina];
               });
+              result.listaGrupos.forEach((grupo) => {
+          dict_alimentos2[grupo.nombre] = []
+        });
+        result.listaAlimentos.forEach((alimento) => {
+          dict_alimentos2[alimento.nombreGrupo].push([alimento.nombre, alimento.idAlimento]);
+        });
               result.listaGrupos.forEach((grupo)=>{
                 dict_alimentos_aux[grupo.idGrupo]=[grupo.energia,grupo.idGrupo]
               });
@@ -758,11 +820,15 @@
                   dict_alimentos.push(value)
                 }
               }
-              console.log(dict_alimentos)
+             
               document.getElementById("div-cargadorBoton").innerHTML = `
-              <button id="cargadorBoton" class="align-middle btn btn-primary"
-              onclick="calcular_requisitos()">
-                Calcular requerimientos
+              <button id="cargadorBotonAG" class="align-middle btn btn-primary"
+              onclick="calcular_requisitos(event)">
+                Generar Plan AG
+              </button>
+              <button id="cargadorBotonTablas" class="align-middle btn btn-primary"
+              onclick="calcular_requisitos(event)">
+                Generar Plan Tablas
               </button>
         `
             }
