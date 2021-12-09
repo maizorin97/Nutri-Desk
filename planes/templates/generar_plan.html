@@ -482,10 +482,10 @@
         tmb *= 1;
         break;
       case 1:
-        tmb *= 0.75; // 15%-20%
+        tmb *= 1.15; // 15%-20%
         break;
       default:
-        tmb *= 1.15;
+        tmb *= 0.85;
     }
     return tmb.toPrecision(4);
   }
@@ -496,7 +496,7 @@
     tabla_plan[0].innerHTML = construir_colacion_ag(0, plan[0], dict_alimentos); //desayuno
     tabla_plan[1].innerHTML = construir_colacion_ag(1, plan[1], dict_alimentos); //colacion1
     tabla_plan[2].innerHTML = construir_colacion_ag(2, plan[2], dict_alimentos); //comida
-    tabla_plan[3].innerHTML = construir_colacion_ag(3, plan[3], dict_alimentos); //colacon2
+    tabla_plan[3].innerHTML = construir_colacion_ag(3, plan[3], dict_alimentos); //colacion2
     tabla_plan[4].innerHTML = construir_colacion_ag(4, plan[4], dict_alimentos); //cena
     agregar_listeners();
   }
