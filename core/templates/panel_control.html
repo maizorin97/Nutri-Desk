@@ -133,83 +133,87 @@
     <!-- ------- ENCUESTA -------- -->
     <div class="col-lg-6 mb-4">
 
-    
-    <form method="post">
-    {% csrf_token %}
-      <div class="card shadow mb-4">
-        <div class="card-header py-3">
-          <h6 class="m-0 font-weight-bold text-primary">Recordatorios</h6>
+
+      <form method="post">
+        {% csrf_token %}
+        <div class="card shadow mb-4">
+          <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Recordatorios</h6>
+          </div>
+          <div class="card-body">
+            <h6> Hoy es: {{ fecha | date:"l j F Y "}} </h6>
+            {% if plan_hoy == None %}
+            <div class="bg-warning d-flex justify-content-center rounded text-dark">No tienes Planes asignados para hoy
+            </div>
+            {% else %}
+            <a href="{% url 'planes' %}">
+              <div class="bg-success d-flex justify-content-center rounded text-white"> Plan asignado para hoy: {{
+                plan_hoy.descripcion }} </div>
+            </a>
+            {% endif %}
+            <hr>
+
+            {% if existe_bitacora_hoy == False %}
+            <h6>Encuesta Diaria</h6>
+            <div class="d-flex flex-wrap justify-content-between">
+              <div>
+                <p>¿Como te sientes hoy?</p>
+              </div>
+              <div class="btn-group" data-toggle="buttons">
+
+                <input type="radio" class="btn-check" name="sentimientos" id="deprimido" autocomplete="off" value="0">
+                <label class="btn btn-outline-danger radio-btn" for="deprimido"><i class="fas fa-sad-tear"></i></label>
+
+                <input type="radio" class="btn-check" name="sentimientos" id="triste" autocomplete="off" value="1">
+                <label class="btn btn-outline-warning radio-btn" for="triste"><i class="fas fa-frown"></i></label>
+
+                <input type="radio" class="btn-check" name="sentimientos" id="neutral" autocomplete="off" checked
+                  value="2">
+                <label class="btn btn-outline-secondary radio-btn" for="neutral"><i class="fas fa-meh"></i></label>
+
+                <input type="radio" class="btn-check" name="sentimientos" id="feliz" autocomplete="off" value="3">
+                <label class="btn btn-outline-info radio-btn" for="feliz"><i class="fas fa-smile"></i></label>
+
+                <input type="radio" class="btn-check" name="sentimientos" id="pleno" autocomplete="off" value="4">
+                <label class="btn btn-outline-success radio-btn" for="pleno"><i class="fas fa-grin"></i></label>
+              </div>
+            </div>
+
+            <div class="d-flex flex-wrap justify-content-between mt-2">
+              <div class="me-5">
+                <p>Hábitos de Hoy</p>
+              </div>
+              <div class="btn-group ms-5" data-toggle="buttons">
+
+                <input type="checkbox" class="btn-check" name="agua" id="agua" autocomplete="off">
+                <label class="btn btn-outline-info radio-btn" for="agua"><i class="fas fa-tint"></i></label>
+
+                <input type="checkbox" class="btn-check" name="run" id="run" autocomplete="off">
+                <label class="btn btn-outline-warning radio-btn" for="run"><i class="fas fa-running"></i></label>
+
+                <input type="checkbox" class="btn-check" name="manzana" id="manzana" autocomplete="off">
+                <label class="btn btn-outline-success radio-btn" for="manzana"><i class="fas fa-apple-alt"></i></label>
+
+                <input type="checkbox" class="btn-check" name="cama" id="cama" autocomplete="off">
+                <label class="btn btn-outline-secondary radio-btn" for="cama"><i class="fas fa-bed"></i></label>
+
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-end mt-4">
+              <div class="me-5">
+                <p>Comentario del día</p>
+              </div>
+              <textarea class="form-control me-2" name="txtComentario" aria-label="With textarea"
+                maxlength="200"></textarea>
+              <button type="submit" class="btn btn-primary">Registrar respuesta</button>
+            </div>
+            {% else %}
+            ¡Eso es todo por hoy, haz terminado con tu encuesta diaria!
+            {% endif %}
+          </div>
         </div>
-        <div class="card-body">
-          <h6> Hoy es: {{ fecha | date:"l j F Y "}} </h6>
-          {% if plan_hoy == None %}
-          <div class="bg-warning d-flex justify-content-center rounded text-dark">No tienes Planes asignados para hoy</div>
-          {% else %}
-          <a href="{% url 'planes' %}">
-          <div class="bg-success d-flex justify-content-center rounded text-white">  Plan asignado para hoy: {{ plan_hoy.descripcion }} </div>
-          </a>
-          {% endif %}
-          <hr>
-
-          {% if existe_bitacora_hoy == False %}
-          <h6>Encuesta Diaria</h6>
-          <div class="d-flex flex-wrap justify-content-between">
-            <div>
-              <p>¿Como te sientes hoy?</p>
-            </div>
-            <div class="btn-group" data-toggle="buttons">
-
-              <input type="radio" class="btn-check" name="sentimientos" id="deprimido" autocomplete="off" value="0">
-              <label class="btn btn-outline-danger radio-btn" for="deprimido"><i class="fas fa-sad-tear"></i></label>
-  
-              <input type="radio" class="btn-check" name="sentimientos" id="triste" autocomplete="off" value="1">
-              <label class="btn btn-outline-warning radio-btn" for="triste"><i class="fas fa-frown"></i></label>
-  
-              <input type="radio" class="btn-check" name="sentimientos" id="neutral" autocomplete="off" checked value="2">
-              <label class="btn btn-outline-secondary radio-btn" for="neutral"><i class="fas fa-meh"></i></label>
-  
-              <input type="radio" class="btn-check" name="sentimientos" id="feliz" autocomplete="off" value="3">
-              <label class="btn btn-outline-info radio-btn" for="feliz"><i class="fas fa-smile"></i></label>
-  
-              <input type="radio" class="btn-check" name="sentimientos" id="pleno" autocomplete="off" value="4">
-              <label class="btn btn-outline-success radio-btn" for="pleno"><i class="fas fa-grin"></i></label>
-            </div>
-          </div>
-        
-          <div class="d-flex flex-wrap justify-content-between mt-2">
-            <div class="me-5">
-              <p>Hábitos de Hoy</p>
-            </div>
-            <div class="btn-group ms-5" data-toggle="buttons">
-
-              <input type="checkbox" class="btn-check" name="agua" id="agua" autocomplete="off">
-              <label class="btn btn-outline-info radio-btn" for="agua"><i class="fas fa-tint"></i></label>
-  
-              <input type="checkbox" class="btn-check"  name="run" id="run" autocomplete="off">
-              <label class="btn btn-outline-warning radio-btn" for="run"><i class="fas fa-running"></i></label>
-  
-              <input type="checkbox" class="btn-check" name="manzana" id="manzana" autocomplete="off">
-              <label class="btn btn-outline-success radio-btn" for="manzana"><i class="fas fa-apple-alt"></i></label>
-  
-              <input type="checkbox" class="btn-check" name="cama" id="cama" autocomplete="off">
-              <label class="btn btn-outline-secondary radio-btn" for="cama"><i class="fas fa-bed"></i></label>
-
-            </div>
-          </div>
-
-          <div class="d-flex justify-content-end mt-4">
-            <div class="me-5">
-              <p>Comentario del día</p>
-            </div>
-            <textarea class="form-control me-2" name="txtComentario" aria-label="With textarea" maxlength="200"></textarea>
-            <button type="submit" class="btn btn-primary">Registrar respuesta</button>
-          </div>
-          {% else %}
-          ¡Eso es todo por hoy, haz terminado con tu encuesta diaria!
-          {% endif %}
-        </div>
-      </div>
-    </form>
+      </form>
 
     </div>
     <!-- ------- FIN ENCUESTA -------- -->
@@ -219,9 +223,44 @@
 
   <!-- Content Row -->
   <div class="row">
+    <div class="col-lg-6 mb-4">
 
+      <div class="card shadow mb-4">
+        <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">Calendario</h6>
+        </div>
+        <div class="card-body" id="calendario">
 
-    <div class="col-lg-12 mb-4">
+          <div class="row">
+            <div id="doms" class="col d-flex flex-column" style="padding: 0%;">
+              <div class="border"> Dom </div>
+            </div>
+            <div id="luns" class="col d-flex flex-column" style="padding: 0%;">
+              <div class="border"> Lun </div>
+            </div>
+            <div id="mars" class="col d-flex flex-column" style="padding: 0%;">
+              <div class="border"> Mar </div>
+            </div>
+            <div id="mies" class="col d-flex flex-column" style="padding: 0%;">
+              <div class="border"> Mie </div>
+            </div>
+            <div id="jues" class="col d-flex flex-column" style="padding: 0%;">
+              <div class="border"> Jue </div>
+            </div>
+            <div id="vies" class="col d-flex flex-column" style="padding: 0%;">
+              <div class="border"> Vie </div>
+            </div>
+            <div id="sabs" class="col d-flex flex-column" style="padding: 0%;">
+              <div class="border"> Sab </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <div class="col-lg-6 mb-4">
 
       <div class="card shadow mb-4">
         <div class="card-header py-3">
@@ -250,8 +289,143 @@
   {% block extra-scripts %}
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js@3.6.0/dist/chart.min.js"></script>
-
   <script>
+    // ------- GESTIÓN DEL CALENDARIO --------
+    nombre_mes = {
+      0: "Ene",
+      1: "Feb",
+      2: "Mar",
+      3: "Abr",
+      4: "May",
+      5: "Jun",
+      6: "Jul",
+      7: "Ago",
+      8: "Sep",
+      9: "Oct",
+      10: "Nov",
+      11: "Dic"
+    }
+
+    dias_mes = {
+      0: 31,
+      1: 28,
+      2: 31,
+      3: 30,
+      4: 31,
+      5: 30,
+      6: 31,
+      7: 31,
+      8: 30,
+      9: 31,
+      10: 30,
+      11: 31
+    }
+
+    dias_id = {
+      0: "doms",
+      1: "luns",
+      2: "mars",
+      3: "mies",
+      4: "jues",
+      5: "vies",
+      6: "sabs"
+    }
+
+    //Obtener datos actuales de la fecha
+    const fecha = new Date();
+    const mes = fecha.getMonth()
+    var dia = fecha.getDate()
+    var dia_semana = fecha.getDay()
+    var fechas = {}
+
+    // Calcular día de la semana del inicio del mes 
+    function get_inicio_mes(dia, dia_semana) {
+      primero = ((((dia_semana - dia + 1) % 7)) + 7) % 7; // En JS a mod(n)= ((a % n ) + n ) % n
+      return primero;
+    }
+
+    var inicio_mes = get_inicio_mes(dia, dia_semana);
+
+    // Llenar días anteriores con el nombre del mes pasado
+    if (inicio_mes != 0) {
+      for (let index = inicio_mes - 1; index >= 0; index--) {
+        document.getElementById(dias_id[index]).innerHTML +=
+          '<div class="border date">' + nombre_mes[mes - 1] + '</div>';
+      }
+    }
+
+    // Llenar calendario a partir de inicio del mes 
+    for (let index = 1; index <= dias_mes[mes]; index++) {
+      console.log(index + " " + inicio_mes);
+      document.getElementById(dias_id[inicio_mes]).innerHTML +=
+        '<div class="border date">' + index + '</div>';
+      inicio_mes++;
+      if (inicio_mes > 6) {
+        inicio_mes = 0;
+      }
+    }
+
+    // Obtener elementos del calendario
+    var fechas = document.getElementsByClassName("date");
+
+    console.log(fechas);
+
+    var fechas_dic={};
+
+    // Ordenarlos por fecha
+    for (let index = 0; index < fechas.length; index++) {
+      fechas_dic[fechas[index].innerHTML]= fechas[index];
+    }
+
+    // Retirar del diccionario aquellos que pertenecen al mes pasado
+    delete fechas_dic[nombre_mes[mes-1]];
+
+    console.log(fechas_dic)
+
+    // Colorear día con respecto al estado de ánimo
+    {% for bitacora in bitacoras %}
+      var animo= {{bitacora.estado_animo}};
+      var fecha_animo= {{bitacora.fecha_registro.day}};
+      var elemento= fechas_dic[fecha_animo]
+      // console.log({{ bitacora.fecha_registro.day }} + " " + {{bitacora.estado_animo}});
+      if (animo == 0) {
+        elemento.classList.add("bg-danger")
+        elemento.classList.add("border-danger")
+        elemento.classList.add("text-light") 
+      }
+
+      else if (animo == 1) {
+        elemento.classList.add("bg-warning")
+        elemento.classList.add("border-warning")
+        elemento.classList.add("text-dark") 
+      }
+
+      else if (animo == 2) {
+        elemento.classList.add("bg-secondary")
+        elemento.classList.add("border-secondary")
+        elemento.classList.add("text-dark") 
+      }
+
+      else if (animo == 3) {
+        elemento.classList.add("bg-info")
+        elemento.classList.add("border-info")
+        elemento.classList.add("text-dark") 
+      }
+
+      else {
+        elemento.classList.add("bg-success")
+        elemento.classList.add("border-success")
+        elemento.classList.add("text-light") 
+      }
+
+      elemento.setAttribute("data-bs-toggle","tooltip");
+      elemento.setAttribute("title","Comentario del Día: {{bitacora.comentario}}");
+
+    {% endfor %}
+
+    // ------- FIN GESTIÓN DEL CALENDARIO --------
+
+
     const labels = {{ labels| safe}};
 
     const data = {
@@ -260,9 +434,9 @@
         label: 'Peso en kgs',
         backgroundColor: 'rgb(255, 99, 132)',
         borderColor: 'rgb(255, 99, 132)',
-        data: {{ data| safe}}
+        data: {{ data| safe }}
       }]
-  };
+    };
 
     const config = {
       type: 'line',

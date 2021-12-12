@@ -62,6 +62,17 @@ def panel_control(request):
     fecha_actual= datetime.now()
     existe_bitacora_hoy = BitacoraUsuario.objects.filter(usuario=request.user).filter(fecha_registro=datetime.now()).count() > 0
     exise_plan_hoy = CalendarioUsuario.objects.filter(usuario=request.user).count() > 0
+
+    bitacoras_sentimiento = BitacoraUsuario.objects.filter(usuario = request.user)
+    bitacoras_mes = []
+   
+
+    print(bitacoras_sentimiento)
+
+    for x in bitacoras_sentimiento:
+        if x.fecha_registro.month == datetime.now().month:
+            bitacoras_mes.append(x)
+
     plan_hoy = None
     if exise_plan_hoy:
         week_day_now = fecha_actual.weekday()
@@ -111,7 +122,8 @@ def panel_control(request):
         'labels' : labels,
         'fecha': fecha_actual,
         'existe_bitacora_hoy': existe_bitacora_hoy,
-        'plan_hoy': plan_hoy
+        'plan_hoy': plan_hoy,
+        'bitacoras': bitacoras_mes
     })
 
 
