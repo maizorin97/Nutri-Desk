@@ -395,10 +395,10 @@
   function calcular_requisitos(e) {
     e.preventDefault();
     var peso = {{ infoUser.peso }};
-    var altura = {{ infoUser.altura }}/100;
+    var altura = {{ infoUser.altura }};
     var sexo = '{{infoUser.sexo}}';
     var edad = {{ edad }};
-    var imc = (peso / Math.pow(altura, 2));
+    var imc = (peso / Math.pow(altura/100, 2));
     var objetivo = document.getElementById("txtObjetivo").selectedIndex;
     var actividad = document.getElementById("txtActividadFisica").selectedIndex;
 
@@ -410,13 +410,15 @@
     txt_msj_imc.innerHTML = indice_masa_corporal(imc);
     var tmb = tasa_metabolica_basal(sexo, edad, peso, altura, objetivo, actividad);
     txt_tmb.innerHTML = tmb;
-    console.log(e.target.id)
     switch(e.target.id){
       case 'cargadorBotonAG':
         mostrar_plan_ag(tmb);
       break;
       case 'cargadorBotonTablas':
         mostrar_plan_tablas(tmb);
+      break;
+      case 'cargadorBotonTablasAG':
+        mostrar_plan_tablas_algo(tmb);
       break;
     }
     
@@ -459,7 +461,6 @@
       default:
         tmb = -1;
     }
-
     switch (actividad_fisica) {
       case 0://nada de ejercicio
         tmb *= 1.2;
@@ -482,10 +483,10 @@
         tmb *= 1;
         break;
       case 1:
-        tmb *= 0.75; // 15%-20%
+        tmb *= 1.15; // 15%-20%
         break;
       default:
-        tmb *= 1.15;
+        tmb *= 0.85;
     }
     return tmb.toPrecision(4);
   }
@@ -496,7 +497,7 @@
     tabla_plan[0].innerHTML = construir_colacion_ag(0, plan[0], dict_alimentos); //desayuno
     tabla_plan[1].innerHTML = construir_colacion_ag(1, plan[1], dict_alimentos); //colacion1
     tabla_plan[2].innerHTML = construir_colacion_ag(2, plan[2], dict_alimentos); //comida
-    tabla_plan[3].innerHTML = construir_colacion_ag(3, plan[3], dict_alimentos); //colacon2
+    tabla_plan[3].innerHTML = construir_colacion_ag(3, plan[3], dict_alimentos); //colacion2
     tabla_plan[4].innerHTML = construir_colacion_ag(4, plan[4], dict_alimentos); //cena
     agregar_listeners();
   }
@@ -542,10 +543,12 @@
       18: "bg-libre",
       19: "bg-libre"
     };
+    console.log(plan)
     var html_code = "<div>";
     for (var i = 0; i < plan.length; i++) {//[]
       for (var j = 0; j < plan[i]; j++) {//n
         html_code += "<div><select class='form-select "+ colors[dic[i][1]] + " border-light rounded-3' name='" + llave_comida[tc] + "'>"
+        // Las primeras 2 posiciones del arreglo dic[i] son la energia y el id del grupo respectivamente
         for (var k = 0; k < dic[i].length-2; k++) {
           html_code += "<option class='bg-light' value = '" + dic[i][k+2][1] + "'>" + dic[i][k+2][0] + "</option>"
         }
@@ -557,9 +560,6 @@
   }
 
   function mostrar_plan_tablas(tmb) {
-    console.log(
-      "hi"
-    )
     var plan = get_plan_tablas(tmb);
     var tabla_plan = document.getElementsByClassName("select-column");
     tabla_plan[0].innerHTML = construir_colacion_tablas(0, plan[0], dict_alimentos2); //desayuno
@@ -569,8 +569,34 @@
     tabla_plan[4].innerHTML = construir_colacion_tablas(4, plan[4], dict_alimentos2); //cena
     agregar_listeners();
   }
-
-
+  function mostrar_plan_tablas_algo(tmb){
+    var plan = get_plan_tablas_algo(tmb);
+    var tabla_plan = document.getElementsByClassName("select-column");
+    tabla_plan[0].innerHTML = construir_colacion_ag(0, plan[0], dict_alimentos); //desayuno
+    tabla_plan[1].innerHTML = construir_colacion_ag(1, plan[1], dict_alimentos); //colacion1
+    tabla_plan[2].innerHTML = construir_colacion_ag(2, plan[2], dict_alimentos); //comida
+    tabla_plan[3].innerHTML = construir_colacion_ag(3, plan[3], dict_alimentos); //colacon2
+    tabla_plan[4].innerHTML = construir_colacion_ag(4, plan[4], dict_alimentos); //cena
+    agregar_listeners();
+  }
+  function get_plan_tablas_algo(kcal){
+      /* [[desayuno],[colacion1],[comida],[colacion2],[cena]]
+    [CEREALES Y TUBÉRCULOS,VERDURAS,FRUTAS,ALIMENTOS DE ORIGEN ANIMAL,LECHE Y SUSTITUTOS,
+    LEGUMINOSAS,GRASAS,AZÚCARES,ALIMENTOS LIBRES DE ENERGÍA]*/
+    if (kcal < 1000) {
+      return algoritmo_genetico_tablas([[1, 1, 1, 1, 1, 0, 1, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [2, 2, 1, 1, 1, 0, 1, 0, 0], [0, 0, 0, 0, 1, 0, 0, 0, 0], [1, 1, 1, 0, 0, 0, 0, 0, 1]],kcal);
+    } else if (kcal < 1200) {
+      return algoritmo_genetico_tablas([[2, 1, 1, 0, 0, 0, 1, 0, 1], [1, 0, 0, 0, 1, 0, 0, 0, 0], [2, 2, 1, 2, 1, 0, 1, 0, 0], [0, 1, 0, 0, 1, 0, 0, 0, 0], [1, 1, 0, 0, 1, 0, 0, 0, 0]],kcal);
+    } else if (kcal < 1400) {
+      return algoritmo_genetico_tablas([[2, 1, 1, 1, 1, 0, 1, 0, 0], [0, 0, 1, 0, 1, 0, 0, 0, 0], [2, 2, 0, 2, 0, 0, 1, 0, 0], [1, 0, 0, 0, 1, 0, 0, 0, 0], [1, 1, 1, 1, 1, 0, 0, 0, 0]],kcal);
+    } else if (kcal < 1600) {
+      return algoritmo_genetico_tablas([[2, 2, 1, 0, 1, 0, 1, 0, 0], [0, 1, 0, 1, 0, 0, 0, 0, 0], [2, 2, 1, 2, 1, 0, 1, 0, 0], [1, 0, 1, 0, 0, 0, 0, 0, 0], [1, 2, 1, 1, 0, 0, 0, 0, 1]],kcal);
+    } else if (kcal < 1800) {
+      return algoritmo_genetico_tablas([[3, 1, 2, 1, 1, 0, 1, 0, 0], [1, 1, 0, 0, 0, 0, 0, 0, 0], [2, 2, 1, 2, 1, 0, 1, 0, 0], [1, 0, 0, 0, 1, 0, 0, 0, 0], [1, 2, 1, 1, 0, 0, 0, 0, 1]],kcal);
+    } else  {
+      return algoritmo_genetico_tablas([[3, 1, 2, 2, 1, 0, 1, 0, 0], [1, 1, 0, 0, 0, 0, 0, 0, 0], [2, 2, 1, 2, 1, 0, 1, 0, 1], [1, 0, 1, 0, 0, 0, 0, 0, 0], [1, 2, 1, 1, 1, 0, 0, 0, 0]],kcal);
+    }
+  }
 
   function get_plan_tablas(kcal) {
     /* [[desayuno],[colacion1],[comida],[colacion2],[cena]]
@@ -586,7 +612,7 @@
       return [[2, 2, 1, 0, 1, 0, 1, 0, 0], [0, 1, 0, 1, 0, 0, 0, 0, 0], [2, 2, 1, 2, 1, 0, 1, 0, 0], [1, 0, 1, 0, 0, 0, 0, 0, 0], [1, 2, 1, 1, 0, 0, 0, 0, 1]];
     } else if (kcal < 1800) {
       return [[3, 1, 2, 1, 1, 0, 1, 0, 0], [1, 1, 0, 0, 0, 0, 0, 0, 0], [2, 2, 1, 2, 1, 0, 1, 0, 0], [1, 0, 0, 0, 1, 0, 0, 0, 0], [1, 2, 1, 1, 0, 0, 0, 0, 1]];
-    } else if (kcal < 2000) {
+    } else /*if (kcal < 2000)*/ {
       return [[3, 1, 2, 2, 1, 0, 1, 0, 0], [1, 1, 0, 0, 0, 0, 0, 0, 0], [2, 2, 1, 2, 1, 0, 1, 0, 1], [1, 0, 1, 0, 0, 0, 0, 0, 0], [1, 2, 1, 1, 1, 0, 0, 0, 0]];
     }
   }
@@ -644,7 +670,6 @@
       for (var j = 0; j < selects[llave_comida[i]].length; j++) {
         var casilla = selects[llave_comida[i]][j]
         suma += dic_al[casilla.value][0];
-        console.log(casilla.value)
       }
     }
     var txt_aporte_calorico = document.getElementById("txtAporteCalorico");
@@ -801,7 +826,7 @@
               dict_alimentos2={};
               dic_al={};
               dict_alimentos=[];
-              dict_alimentos_aux={}
+              let dict_alimentos_aux={}
               result.listaAlimentos.forEach((alimento)=>{
                 dic_al[alimento.idAlimento]=[alimento.energia,alimento.proteina];
               });
@@ -832,6 +857,10 @@
               onclick="calcular_requisitos(event)">
                 Generar Plan Tablas
               </button>
+              <button id="cargadorBotonTablasAG" class="align-middle btn btn-primary"
+              onclick="calcular_requisitos(event)">
+                Generar Plan Tablas y AG
+              </button>
         `
             }
     });
@@ -846,31 +875,296 @@
     `;
     return innerHTML;
   }
+  /*
+     * Funciones de bisect // https://stackoverflow.com/questions/43359623/javascripts-equivalent-of-rs-findinterval-or-pythons-bisect-bisect-left
+    */
+    function bisect(sortedList, el){
+  
+  if(!sortedList.length) return 0;
+
+  if(sortedList.length == 1) {
+    return el > sortedList[0] ? 1 : 0;
+  }
+
+  let lbound = 0;
+  let rbound = sortedList.length - 1;
+  return bisect(lbound, rbound);
+
+// note that this function depends on closure over lbound and rbound
+// to work correctly
+  function bisect(lb, rb){
+    if(rb - lb == 1){
+      if(sortedList[lb] < el && sortedList[rb] >= el){
+        return lb + 1;
+      }
+
+      if(sortedList[lb] == el){
+        return lb;
+      }
+    }
+
+    if(sortedList[lb] > el){
+      return 0;
+    }
+
+    if(sortedList[rb] < el){
+      return sortedList.length
+    }
+
+    let midPoint = lb + (Math.floor((rb - lb) / 2));
+    let midValue = sortedList[midPoint];
+
+    if(el <= midValue){
+      rbound = midPoint
+    }
+
+    else if(el > midValue){
+      lbound = midPoint
+    }
+
+    return bisect(lbound, rbound);
+  }
+}
+    /*
+      * Funciones de manejo de arreglos
+    */
+    function zeros(longitud){
+      let arr=[];
+
+      for( i= 0 ; i<longitud ; i++){
+        arr.push(0)
+      }
+      
+      return arr
+    }
+    //https://stackoverflow.com/questions/20477177/creating-an-array-of-cumulative-sum-in-javascript/45658551
+    function cumsum(vector){
+      const cumulativeSum = (sum => value => sum += value)(0);
+      return vector.map(cumulativeSum);
+    }
+    function divide_vect(vector,divisor){
+      return vector.map(valor=> valor/divisor)
+    }
+    function suma_vect(vector){
+      let suma=0
+      vector.forEach(valor=>suma+=valor)
+      return suma
+    }
       /*
   * Funaciones auxiliares
 */
 String.prototype.replaceAt = function(index, replacement) {
     return this.substr(0, index) + replacement + this.substr(index + replacement.length);
 }
+  /*
+   * Funciones  para el manejo de bigints //https://stackoverflow.com/questions/39334494/converting-large-numbers-from-binary-to-decimal-and-back-in-javascript
+  */
+    function parseBigInt(bigint, base) {
+  //convert bigint string to array of digit values
+  for (var values = [], i = 0; i < bigint.length; i++) {
+    values[i] = parseInt(bigint.charAt(i), base);
+  }
+  return values;
+}
+
+function formatBigInt(values, base) {
+  //convert array of digit values to bigint string
+  for (var bigint = '', i = 0; i < values.length; i++) {
+    bigint += values[i].toString(base);
+  }
+  return bigint;
+}
+
+function convertBase(bigint, inputBase, outputBase) {
+  //takes a bigint string and converts to different base
+  var inputValues = parseBigInt(bigint, inputBase),
+    outputValues = [], //output array, little-endian/lsd order
+    remainder,
+    len = inputValues.length,
+    pos = 0,
+    i;
+  while (pos < len) { //while digits left in input array
+    remainder = 0; //set remainder to 0
+    for (i = pos; i < len; i++) {
+      //long integer division of input values divided by output base
+      //remainder is added to output array
+      remainder = inputValues[i] + remainder * inputBase;
+      inputValues[i] = Math.floor(remainder / outputBase);
+      remainder -= inputValues[i] * outputBase;
+      if (inputValues[i] == 0 && i == pos) {
+        pos++;
+      }
+    }
+    outputValues.push(remainder);
+  }
+  outputValues.reverse(); //transform to big-endian/msd order
+  return formatBigInt(outputValues, outputBase);
+}
+function concat_zeros(no_bin,n_bits){
+      while(no_bin.length<n_bits){
+        no_bin="0"+no_bin
+      }
+      return no_bin
+    }
     var precision=0
     var n_bits
     var n_alimentos
     var n_individuos=30
-   function algoritmo_genetico(kcal){
-    let max_raciones_por_alimento=3
-    let n_iteraciones=200
-    let resultado
-    n_alimentos=dict_alimentos.length
-    n_bits=get_n_bits(max_raciones_por_alimento)
-    let poblacion = gen_poblacion_inicial(n_individuos)
-    for (let i=0 ; i<n_iteraciones-1;i++){
-      poblacion = gen_nueva_poblacion(poblacion,kcal)
+    var n_iteraciones=200
+    var n_bits_alimento
+    /**
+     * @param tabla 
+     tabla[0]=Cereales y tuberculos
+     tabla[1]=Verduras
+     tabla[2]=Frutas
+     tabla[3]=Alimento de origen animal
+     tabla[4]=Leche y sustitutos
+     tabla[5]=Leguminosas
+     tabla[6]=Grasas
+     tabla[7]=Azucares
+     tabla[8]=Alimento libres de energia
+    */
+   function algoritmo_genetico_tablas(tablas,objetivo){
+     //Objetivo sin contar los alimentos estaticos (frutas,verduras,etc)
+     let nuevo_objetivo=get_nuevo_objetivo(tablas,objetivo)
+     console.log(nuevo_objetivo);
+    // nbits y n _bits_alimento son arreglos donde cada posicion representa una comida[Desayuno,Colacion,Comida,Colacion,Cena]
+    [n_bits,n_bits_alimento]=get_n_bits_tablas(tablas)
+    console.log("n_bit_alimentos")
+    console.log(n_bits_alimento)
+    let poblacion = gen_poblacion_inicial_tablas(tablas)
+    for (let i=0 ; i<n_iteraciones;i++){
+      poblacion = gen_nueva_poblacion(poblacion,nuevo_objetivo,tablas)
+      // console.log("res:"+get_z(poblacion[0],nuevo_objetivo))
     }
-    console.log("resultado:"+get_z(poblacion[0],kcal))
-    return get_alimentos(poblacion[0])
-
-    function cruce(numeroA,numeroB,posicion){
-      let numeroB_bin=convertBase(numeroB,10,2)
+    return poblador_to_res(poblacion[0])
+    function poblador_to_res(poblador){
+      let res=[]
+      let estaticos={"0":1,"1":2,"4":5,"13":8}
+      let arr_id_alimento={"alimentosOrigenAnimal":[5,6,7,8],
+    "cerealesYTuberculos":[2,3],"leche":[9,10],"grasas":[14,15,16],"azucares":[11,12]}
+      poblador.forEach((comida,selector_comida) =>{
+        let aux=[]
+        for(const indice in estaticos){
+          aux[parseInt(indice,0)]=tablas[selector_comida][estaticos[indice]]
+        }
+        let alimentos = get_alimentos(comida,n_bits_alimento[selector_comida],n_bits[selector_comida])
+        for(const alimento in alimentos){
+          alimentos[alimento].forEach((n,index)=>{
+            aux[arr_id_alimento[alimento][index]]=n
+          })
+          
+        }
+        res[selector_comida]=aux
+      })
+      return res 
+    }
+    function  gen_nueva_poblacion(poblacion,objetivo,tablas){
+      let resultados=[]
+      let resultado2
+      for( let poblador of poblacion){
+        resultados.push(get_z(poblador,objetivo))
+      }
+      resultados2=resultados.map(z =>{
+        return 1/(1+z)
+      })
+      // Suma de todos los resultados
+      let suma=suma_vect(resultados2)
+      // Obtencion de vector con porcentajes acumulados
+      let acum=cumsum(divide_vect(resultados2,suma))
+      let vect_padres=zeros(poblacion.length)
+      //Seleccion aleatoria de los mejores vectores
+      for (let poblador of poblacion)
+        vect_padres[bisect(acum, Math.random())] += 1
+      // juntamos el vector de los padres seleccionados y la poblacion
+      let arr_padres_poblacion = vect_padres.map((valor,index)=>{
+        return [valor,poblacion[index]]
+      })
+      //ordenamos ese vector
+      arr_padres_poblacion.sort((a,b)=>{
+        return b[0]-a[0]
+      })
+      //regresamos a su forma original los vectores
+      vect_padres =arr_padres_poblacion.map((valor,index)=>{
+        poblacion[index]=valor[1]
+        return valor[0]
+      })
+      // numero de vectores diferentes de zero
+      let vectores_dif_zero=0
+      for (vector of vect_padres){
+        if(vector !== 0){
+          vectores_dif_zero+=1
+        }
+      }
+      //calculo de hijos a generar
+    let num_hijos=n_individuos-vectores_dif_zero
+    let n_total=0
+    n_bits.forEach(n=>{
+      n_total+=n
+    })
+   //generacion de los hijos
+    for (let i=0; i< num_hijos;i++){
+        if (vectores_dif_zero >= 2){
+            let aleat=Math.floor(Math.random()*(2*n_total))
+            if(aleat-n_total >= 0){
+                poblacion[vectores_dif_zero+i] = cruce(poblacion[0],poblacion[1],aleat-n_total,tablas)
+              }
+            else{
+                poblacion[vectores_dif_zero+i] = mutacion(poblacion[0],aleat,tablas)
+              }
+        }
+        else{
+            aleat=Math.floor(Math.random()*(n_total))
+            poblacion[vectores_dif_zero+i] = mutacion(poblacion[0],aleat,tablas)
+          }
+    }
+      return poblacion
+    }
+    function cruce(poblador1,poblador2,aleat,tablas){
+     
+      let aux=aleat
+      let selector_comida
+      n_bits.some((n,index)=>{
+        aux-=n
+        if(aux<0){
+          selector_comida=index
+          return true
+        }
+        return false
+      })
+      let posicion = n_bits[selector_comida]+aux
+      let poblador_res=[]
+      for(let i= 0 ; i< selector_comida ; i++){
+        poblador_res.push(poblador1[i])
+      }
+      let numeroA_bin=concat_zeros(convertBase(poblador1[selector_comida],10,2),n_bits[selector_comida])
+      let numeroB_bin=concat_zeros(convertBase(poblador2[selector_comida],10,2),n_bits[selector_comida])
+      aux=[]
+      for(i=n_bits[selector_comida]-1; i> posicion;i--){
+        aux[i]=numeroB_bin[numeroB_bin.length-1+(i-(n_bits[selector_comida]-1))]
+      }
+      for(i=posicion;i>=0;i--){
+        let posicionA=numeroA_bin.length-1+(i-(n_bits[selector_comida]-1))
+        if(posicionA >=0 )
+          aux[i]=numeroA_bin[posicionA]
+        else
+          break
+      }
+      let comida_bin=aux.join("")
+      comida_bin=cumplir_tablas(comida_bin,
+      n_bits_alimento[selector_comida],tablas[selector_comida],posicion,
+      n_bits[selector_comida])
+      poblador_res.push(convertBase(comida_bin,2,10))
+      if(!cumpleTablas(poblador_res[poblador_res.length-1],
+      tablas[selector_comida],n_bits_alimento[selector_comida],n_bits[selector_comida])){
+        console.error("No cumplio (cruce)")
+      }
+      for(let i=selector_comida+1; i<poblador2.length ;i++){
+        poblador_res.push(poblador2[i])
+      }
+      return poblador_res
+      /*
+     let numeroB_bin=convertBase(numeroB,10,2)
       let numeroA_bin=convertBase(numeroA,10,2)
       aux=[]
       for(i=n_bits-1; i> posicion;i--){
@@ -878,6 +1172,317 @@ String.prototype.replaceAt = function(index, replacement) {
       }
       for(i=posicion;i>0;i--){
         let posicionA=numeroA_bin.length-1+(i-n_bits-1)
+        if(posicionA >=0 )
+          aux[i]=numeroA_bin[posicionA]
+        else
+          break
+      }
+      return convertBase(aux.join(""),2,10)
+      */
+
+    }
+    function mutacion(poblador,aleat,tablas){
+      aux=aleat
+      let selector_comida
+      n_bits.some((n,index)=>{
+        aux-=n
+        if(aux<0){
+          selector_comida=index
+          return true
+        }
+        return false
+      })
+      let posicion=n_bits[selector_comida]+aux
+      let comida_poblador_bin=convertBase(poblador[selector_comida],10,2)
+      comida_poblador_bin=concat_zeros(comida_poblador_bin,n_bits[selector_comida])
+      if(comida_poblador_bin[posicion] === '1'){
+        comida_poblador_bin=comida_poblador_bin.replaceAt(posicion,'0')  
+      }
+      else{
+        comida_poblador_bin=comida_poblador_bin.replaceAt(posicion,'1')
+      }
+      comida_poblador_bin=cumplir_tablas(comida_poblador_bin,
+      n_bits_alimento[selector_comida],tablas[selector_comida],posicion,n_bits[selector_comida])
+      poblador[selector_comida]=convertBase(comida_poblador_bin,2,10)
+      if(!cumpleTablas(convertBase(comida_poblador_bin,2,10),
+      tablas[selector_comida],n_bits_alimento[selector_comida],n_bits[selector_comida])){
+        console.error("No cumple(Mutacion)")
+      }
+      return poblador
+    }
+    function cumplir_tablas(bin,n_bits_alimento,tabla,bit_modificado,n_bits){
+      let categoria
+      let posicion_categoria;
+      let alimentos;
+      [categoria,posicion_categoria]=get_categoria(n_bits_alimento,bit_modificado)
+      alimentos=get_alimentos(convertBase(bin,2,10),n_bits_alimento,n_bits)
+      let restante = tabla[n_bits_alimento[categoria][2]]-alimentos[categoria][posicion_categoria]
+      while(restante < 0){
+        alimentos[categoria][posicion_categoria]-=1
+        restante = tabla[n_bits_alimento[categoria][2]]-alimentos[categoria][posicion_categoria]
+      }
+      
+      alimentos[categoria].forEach((n,index)=>{
+        if(index !== posicion_categoria){
+          if(restante !== 0){
+            if ((posicion_categoria === alimentos[categoria].length-1) && 
+            (index === alimentos[categoria].length-2)){
+              alimentos[categoria][index]=restante
+              restante =0
+            }
+            else if(index === alimentos[categoria].length-1){
+              alimentos[categoria][index]=restante
+              restante =0
+            }
+            else{
+              if(restante >= n ){
+                restante-=n
+              }
+              else{
+                alimentos[categoria][index]=Math.floor(Math.random()*restante)
+                restante-=alimentos[categoria][index]
+              }
+            }
+          }
+          else{
+            alimentos[categoria][index]=0
+          }
+        }
+      })
+      
+      let auxi=get_alimentos(convertBase(
+        alimento_to_bin(alimentos,n_bits_alimento,n_bits),2,10),n_bits_alimento,n_bits)
+      return alimento_to_bin(alimentos,n_bits_alimento,n_bits)
+    }
+    function alimento_to_bin(alimentos,n_bits_alimento,n_bits){
+      aux=""
+      for(const alimento in alimentos){
+        alimentos[alimento].forEach((n,index)=>{
+          if(n_bits_alimento[alimento][0] !== 0)
+            aux+=concat_zeros(n.toString(2),
+            (n_bits_alimento[alimento][0]/n_bits_alimento[alimento][1]))
+        })
+      }
+      return aux
+    }
+    function get_categoria(n_bits,bit_modificado){
+      let aux=bit_modificado
+      for(const alimento in n_bits){
+        aux-=n_bits[alimento][0]
+        if(aux <0 ){
+          return [alimento,Math.floor((n_bits[alimento][0]+aux)/
+          //bits por alimento
+          (n_bits[alimento][0]/n_bits[alimento][1]))]
+        }
+      }
+    }
+    function get_z(poblador,objetivo){
+      let acum_kcal=0
+      //id de los alimentos en dict_alimentos
+      let arr_id_alimento={"alimentosOrigenAnimal":[5,6,7,8],
+    "cerealesYTuberculos":[2,3],"leche":[9,10],"grasas":[14,15,16],"azucares":[11,12]}
+      let n_alimentos
+      poblador.forEach((comida_poblador,index) => {
+        n_alimentos=get_alimentos(comida_poblador,n_bits_alimento[index],n_bits[index])
+        for( const alimento in n_alimentos){
+          n_alimentos[alimento].forEach((n,index)=>{
+            acum_kcal+=n*dict_alimentos[arr_id_alimento[alimento][index]][0]
+          })
+        }
+      })
+      return Math.abs(objetivo-acum_kcal)
+    }
+    function get_alimentos(comida_poblador,n_bits_alimento,n_bits){
+      let arr_alimentos={}
+      let comida_bin=convertBase(comida_poblador,10,2)
+      while (n_bits >comida_bin.length )
+        comida_bin="0"+comida_bin
+      //auxiliar para ir recorriendo la cadena de bits
+      let aux=0
+      let salto
+      for (const alimento in n_bits_alimento){
+        arr_alimentos[alimento]=[]
+        salto=n_bits_alimento[alimento][0]/n_bits_alimento[alimento][1] 
+        for(let i=1;i<=n_bits_alimento[alimento][1];i++){
+          if(salto==0){
+            arr_alimentos[alimento].push(0)
+          }
+          else{
+            arr_alimentos[alimento].push(parseInt(convertBase(comida_bin.substring(aux+salto*(i-1),aux+salto*(i)),2,10),10))
+          }
+        }
+        aux+=salto*n_bits_alimento[alimento][1]
+      }
+      return arr_alimentos
+   
+      /*
+      let alimentos=[]
+      let valor_bin=convertBase(valor,10,2)
+      let bits_por_alimento=n_bits/n_alimentos
+      let bits_sobrantes=n_bits-valor_bin.length
+      for(let i=0;i<bits_sobrantes;i++){
+        valor_bin="0"+valor_bin
+      }
+      for(let i=bits_por_alimento;i<(n_bits+bits_por_alimento);i+=bits_por_alimento){
+        alimentos.push(Math.round(
+          parseInt(
+            convertBase(valor_bin.substring(i-bits_por_alimento,i),2,10))/
+        Math.pow(10,precision)))
+      }
+      return alimentos
+      */
+    }
+    function get_nuevo_objetivo(tablas,objetivo){
+      let kcal_acum=0
+      // id de los alimentos en tablas
+      let alimentos_estaticos=[1,2,5,8]
+      //id de los alimentos en dict_alimentos
+      let dict_alimetos_estaticos=[0,1,4,13]
+      tablas.forEach(tabla=>{
+        alimentos_estaticos.forEach((idAlimento,index) =>{
+          kcal_acum+=tabla[idAlimento]*dict_alimentos[dict_alimetos_estaticos[index]][0]
+        })
+      })
+      return objetivo-kcal_acum
+     
+
+    }
+    function gen_poblacion_inicial_tablas(tablas){
+      let poblacion = []
+      let poblador
+      for(let i=0;i<n_individuos;i++){
+        poblador=getPoblador(tablas)
+        poblacion.push(poblador)
+      }
+      return poblacion
+    }
+    function get_random_int_tablas(tabla,n_bits_alimento){
+      //aux_bin es la variable donde de guardara el entero generado en forma binaria
+      let aux_bin=""
+      for( const alimento in n_bits_alimento){
+        let indice_tabla = n_bits_alimento[alimento][2]
+        let no_subgrupos = n_bits_alimento[alimento][1]
+        let n_bits_tipo_alimento = n_bits_alimento[alimento][0]
+        let n_bits_subgrupo_alimento =n_bits_tipo_alimento/no_subgrupos
+        let no_aleatorio
+        let restante=tabla[indice_tabla]
+        if(n_bits_subgrupo_alimento != 0){
+        for(let i=0 ; i< no_subgrupos;i++){
+          if(restante == 0){
+            aux_bin+=concat_zeros("0",n_bits_subgrupo_alimento)
+          }
+          else if(i== no_subgrupos-1){
+            aux_bin+=concat_zeros(restante.toString(2),n_bits_subgrupo_alimento)
+            restante=0
+            
+          }
+          else{
+            no_aleatorio=Math.floor(Math.random()*(restante+1))
+            aux_bin+=concat_zeros(no_aleatorio.toString(2),n_bits_subgrupo_alimento)
+            restante=restante-no_aleatorio
+            
+          }
+        }
+      }
+      }
+      return convertBase(aux_bin,2,10)
+    }
+    function getPoblador(tablas){
+      let poblador = []
+      //poblador es un arreglo de comida_poblador
+      let comida_poblador
+      tablas.forEach((tabla,index) =>{
+        comida_poblador=get_random_int_tablas(tabla,n_bits_alimento[index])
+        while(!cumpleTablas(comida_poblador,tabla,n_bits_alimento[index],n_bits[index])){
+          console.error("No cumplio")
+          comida_poblador=get_random_int_tablas(tabla,n_bits_alimento[index])
+        }
+        poblador.push(comida_poblador)
+      })
+      return poblador
+
+    }
+    function cumpleTablas(comida_poblador,tabla,n_bits_alimento,n_bits){
+      let alimentos = get_alimentos(comida_poblador,n_bits_alimento,n_bits)
+      let n_alimentos
+      for (const alimento in alimentos){
+        n_alimentos=0
+        alimentos[alimento].forEach(n => {
+          n_alimentos+=n
+        })
+        if(n_alimentos != tabla[n_bits_alimento[alimento][2]]){
+          console.log(alimento)
+          console.log(n_alimentos)
+          console.log("isdif")
+          console.log(tabla[n_bits_alimento[alimento][2]])
+          return false
+        }
+      }
+      return true
+      //auxiliar para ir recorriendo la cadena de bits
+      /*
+      let n_alimentos
+      for (const alimento in n_bits_alimento){
+        n_alimentos=BigInt(0);
+        salto=n_bits_alimento[alimento][0]/n_bits_alimento[alimento][1] 
+        for(let i=1;i<=n_bits_alimento[alimento][1];i++){
+          n_alimentos+=BigInt(convertBase(comida_bin.substring(aux+salto*(i-1),aux+salto*(i)),2,10))
+        }
+        if(n_alimentos != tabla[n_bits_alimento[alimento][2]]){
+          return false
+        }
+        aux+=salto*n_bits_alimento[alimento][1]
+      }*/
+    }
+  function get_n_bits_tablas(tablas){
+    let arr_n_bits=[]
+    let arr_n_bits_alimento=[]
+    tablas.forEach(tabla =>{
+      let n_bits=0
+      let n_bits_alimento={}
+      // bits de cereales y tuberculos;2=[Con Grasa , Sin grasa]
+      n_bits_alimento["cerealesYTuberculos"]=[2*Math.ceil(Math.log2((tabla[0]+1)*Math.pow(10,precision))),2,0]
+      n_bits+=n_bits_alimento["cerealesYTuberculos"][0]
+      // bits de alimentos de origen animal;4=[¨Muy bajo aporte de grasa,Bajo aporte de grasa,
+      // Moderado aportr de grasa]
+      n_bits_alimento["alimentosOrigenAnimal"]=[4*Math.ceil(Math.log2((tabla[3]+1)*Math.pow(10,precision))),4,3]
+      n_bits+= n_bits_alimento["alimentosOrigenAnimal"][0]
+      // bits de leche y sustitutos ; 2=[Descremada,entera]
+      n_bits_alimento["leche"]=[2*Math.ceil(Math.log2((tabla[4]+1)*Math.pow(10,precision))),2,4]
+      n_bits+=n_bits_alimento["leche"][0]
+      //bits de grasas ;3 =[fuente de monoinssaturadas,fuente de poliinsaturadas,
+                        //funte de saturadas y trans]
+      n_bits_alimento["grasas"]=[3*Math.ceil(Math.log2((tabla[6]+1)*Math.pow(10,precision))),3,6]
+      n_bits+=n_bits_alimento["grasas"][0]
+      //bits de azucares ; 2=[sin grasa,con grasa]
+      n_bits_alimento["azucares"]=[2*Math.ceil(Math.log2((tabla[7]+1)*Math.pow(10,precision))),2,7]
+      n_bits+=n_bits_alimento["azucares"][0]
+      arr_n_bits.push( n_bits)
+      arr_n_bits_alimento.push(n_bits_alimento)
+    })
+    return [arr_n_bits,arr_n_bits_alimento]
+   }
+   }
+ 
+   function algoritmo_genetico(kcal){
+    let max_raciones_por_alimento=3
+    n_alimentos=dict_alimentos.length
+    n_bits=get_n_bits(max_raciones_por_alimento)
+    let poblacion = gen_poblacion_inicial(n_individuos)
+    for (let i=0 ; i<n_iteraciones;i++){
+      poblacion = gen_nueva_poblacion(poblacion,kcal)
+    }
+    return get_alimentos(poblacion[0])
+
+    function cruce(numeroA,numeroB,posicion){
+      let numeroB_bin=concat_zeros(convertBase(numeroB,10,2),n_bits-1)
+      let numeroA_bin=concat_zeros(convertBase(numeroA,10,2),n_bits-1)
+      let aux=[]
+      for(i=n_bits-1; i> posicion;i--){
+        aux[i]=numeroB_bin[numeroB_bin.length-1+(i-(n_bits-1))]
+      }
+      for(i=posicion;i>=0;i--){
+        let posicionA=numeroA_bin.length-1+(i-(n_bits-1))
         if(posicionA >=0 )
           aux[i]=numeroA_bin[posicionA]
         else
@@ -955,81 +1560,7 @@ String.prototype.replaceAt = function(index, replacement) {
       return poblacion
 
     }
-    /*
-     * Funciones de bisect // https://stackoverflow.com/questions/43359623/javascripts-equivalent-of-rs-findinterval-or-pythons-bisect-bisect-left
-    */
-    function bisect(sortedList, el){
-  
-  if(!sortedList.length) return 0;
-
-  if(sortedList.length == 1) {
-    return el > sortedList[0] ? 1 : 0;
-  }
-
-  let lbound = 0;
-  let rbound = sortedList.length - 1;
-  return bisect(lbound, rbound);
-
-// note that this function depends on closure over lbound and rbound
-// to work correctly
-  function bisect(lb, rb){
-    if(rb - lb == 1){
-      if(sortedList[lb] < el && sortedList[rb] >= el){
-        return lb + 1;
-      }
-
-      if(sortedList[lb] == el){
-        return lb;
-      }
-    }
-
-    if(sortedList[lb] > el){
-      return 0;
-    }
-
-    if(sortedList[rb] < el){
-      return sortedList.length
-    }
-
-    let midPoint = lb + (Math.floor((rb - lb) / 2));
-    let midValue = sortedList[midPoint];
-
-    if(el <= midValue){
-      rbound = midPoint
-    }
-
-    else if(el > midValue){
-      lbound = midPoint
-    }
-
-    return bisect(lbound, rbound);
-  }
-}
-    /*
-      * Funciones de manejo de arreglos
-    */
-    function zeros(longitud){
-      let arr=[];
-
-      for( i= 0 ; i<longitud ; i++){
-        arr.push(0)
-      }
-      
-      return arr
-    }
-    //https://stackoverflow.com/questions/20477177/creating-an-array-of-cumulative-sum-in-javascript/45658551
-    function cumsum(vector){
-      const cumulativeSum = (sum => value => sum += value)(0);
-      return vector.map(cumulativeSum);
-    }
-    function divide_vect(vector,divisor){
-      return vector.map(valor=> valor/divisor)
-    }
-    function suma_vect(vector){
-      let suma=0
-      vector.forEach(valor=>suma+=valor)
-      return suma
-    }
+    
 
     /*
      * Funciones correspondientes al algoritmo
@@ -1062,7 +1593,7 @@ String.prototype.replaceAt = function(index, replacement) {
         alimentos.push(Math.round(
           parseInt(
             convertBase(valor_bin.substring(i-bits_por_alimento,i),2,10))/
-            Math.pow(10,precision)))
+        Math.pow(10,precision)))
       }
       return alimentos
     }
@@ -1091,50 +1622,6 @@ String.prototype.replaceAt = function(index, replacement) {
       aux+=(Math.floor(Math.random()*(Math.pow(2,residuo)))).toString(2)
       return convertBase(aux,2,10)
     }
-  /*
-   * Funciones  para el manejo de bigints //https://stackoverflow.com/questions/39334494/converting-large-numbers-from-binary-to-decimal-and-back-in-javascript
-  */
-    function parseBigInt(bigint, base) {
-  //convert bigint string to array of digit values
-  for (var values = [], i = 0; i < bigint.length; i++) {
-    values[i] = parseInt(bigint.charAt(i), base);
-  }
-  return values;
-}
-
-function formatBigInt(values, base) {
-  //convert array of digit values to bigint string
-  for (var bigint = '', i = 0; i < values.length; i++) {
-    bigint += values[i].toString(base);
-  }
-  return bigint;
-}
-
-function convertBase(bigint, inputBase, outputBase) {
-  //takes a bigint string and converts to different base
-  var inputValues = parseBigInt(bigint, inputBase),
-    outputValues = [], //output array, little-endian/lsd order
-    remainder,
-    len = inputValues.length,
-    pos = 0,
-    i;
-  while (pos < len) { //while digits left in input array
-    remainder = 0; //set remainder to 0
-    for (i = pos; i < len; i++) {
-      //long integer division of input values divided by output base
-      //remainder is added to output array
-      remainder = inputValues[i] + remainder * inputBase;
-      inputValues[i] = Math.floor(remainder / outputBase);
-      remainder -= inputValues[i] * outputBase;
-      if (inputValues[i] == 0 && i == pos) {
-        pos++;
-      }
-    }
-    outputValues.push(remainder);
-  }
-  outputValues.reverse(); //transform to big-endian/msd order
-  return formatBigInt(outputValues, outputBase);
-}
 
    }
 
