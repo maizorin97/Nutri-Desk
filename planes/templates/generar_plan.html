@@ -1040,7 +1040,7 @@ function concat_zeros(no_bin,n_bits){
     let poblacion = gen_poblacion_inicial_tablas(tablas)
     for (let i=0 ; i<n_iteraciones;i++){
       poblacion = gen_nueva_poblacion(poblacion,nuevo_objetivo,tablas)
-      // console.log("res:"+get_z(poblacion[0],nuevo_objetivo))
+      //console.log("res:"+get_z(poblacion[0],nuevo_objetivo))
     }
     return poblador_to_res(poblacion[0])
     function poblador_to_res(poblador){
@@ -1476,6 +1476,7 @@ function concat_zeros(no_bin,n_bits){
     for (let i=0 ; i<n_iteraciones;i++){
       poblacion = gen_nueva_poblacion(poblacion,kcal)
     }
+    //console.log("res:"+get_z(poblacion[0],kcal))
     return get_alimentos(poblacion[0])
 
     function cruce(numeroA,numeroB,posicion){
