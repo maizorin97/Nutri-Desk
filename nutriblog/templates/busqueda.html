@@ -38,13 +38,13 @@
     <div class="container d-flex justify-content-between align-items-center">
 
       <div class="logo">
-        <h1><a href="#">Nutriblog</a></h1>
+        <h1><a href="/">Nutriblog</a></h1>
       </div>
 
       <nav id="navbar" class="navbar">
         <ul>
           <li><a class="" href="/">Nutri-Desk</a></li>
-          <li><a class="active" href="#">Blog</a></li>
+          <li><a class="active" href="{% url 'nutriblog' %}">Blog</a></li>
           <li><a href="#">Contacto</a></li>
           <form class="d-flex" method="POST" action="{% url 'busqueda' %}">
             {% csrf_token %}
