@@ -6,7 +6,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Blog - SoftLand Bootstrap Template</title>
+  <title>Nutriblog</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -44,7 +44,7 @@
       <nav id="navbar" class="navbar">
         <ul>
           <li><a class="" href="/">Nutri-Desk</a></li>
-          <li><a class="active" href="#">Blog</a></li>
+          <li><a class="active" href="{% url 'nutriblog' %}">Blog</a></li>
           <li><a href="#">Contacto</a></li>
           <form class="d-flex" method="POST" action="{% url 'busqueda' %}">
             {% csrf_token %}
