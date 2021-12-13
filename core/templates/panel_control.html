@@ -216,6 +216,9 @@
         </div>
         <div class="card-body" id="calendario">
 
+          <div class="row border rounded-top d-flex justify-content-center bg-primary">
+            {{mes}}
+          </div>
           <div class="row">
             <div id="doms" class="col d-flex flex-column" style="padding: 0%;">
               <div class="border"> Dom </div>
@@ -316,6 +319,10 @@
       6: "sabs"
     }
 
+    booleano = {
+      0: "No",
+      1: "Si"
+    }
     //Obtener datos actuales de la fecha
     const fecha = new Date();
     const mes = fecha.getMonth()
@@ -405,7 +412,7 @@
 
       elemento.setAttribute("data-bs-toggle","tooltip");
       elemento.setAttribute("data-bs-html","true");
-      elemento.setAttribute("title","<b>Comentario del Día:</b> {{bitacora.comentario}}");
+      elemento.setAttribute("title","<b>Comentario del Día:</b> {{bitacora.comentario}} <br> <b>Agua: </b>" + booleano[{{bitacora.agua}}] + "<br> <b>Ejercicio: </b>" + booleano[{{bitacora.ejercicio}}] + "<br> <b>Buen Sueño: </b>" + booleano[{{bitacora.buen_suenio}}] + "<br> <b>Comida Sana: </b>" + booleano[{{bitacora.comer_sano}}]);
 
     {% endfor %}
 

@@ -123,7 +123,8 @@ def panel_control(request):
         'fecha': fecha_actual,
         'existe_bitacora_hoy': existe_bitacora_hoy,
         'plan_hoy': plan_hoy,
-        'bitacoras': bitacoras_mes
+        'bitacoras': bitacoras_mes,
+        'mes': fecha_actual.strftime("%B")
     })
 
 
