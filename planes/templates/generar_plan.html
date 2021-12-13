@@ -543,14 +543,19 @@
       18: "bg-libre",
       19: "bg-libre"
     };
-    console.log(plan)
     var html_code = "<div>";
     for (var i = 0; i < plan.length; i++) {//[]
       for (var j = 0; j < plan[i]; j++) {//n
         html_code += "<div><select class='form-select "+ colors[dic[i][1]] + " border-light rounded-3' name='" + llave_comida[tc] + "'>"
-        // Las primeras 2 posiciones del arreglo dic[i] son la energia y el id del grupo respectivamente
+        let random = Math.floor(Math.random()*(dic[i].length-2))
+          // Las primeras 2 posiciones del arreglo dic[i] son la energia y el id del grupo respectivamente
         for (var k = 0; k < dic[i].length-2; k++) {
-          html_code += "<option class='bg-light' value = '" + dic[i][k+2][1] + "'>" + dic[i][k+2][0] + "</option>"
+          if( k === 0)
+            html_code += "<option class='bg-light' value = '" + dic[i][random+2][1] + "'>" + dic[i][random+2][0] + "</option>"
+          else if ( k === random)
+            html_code += "<option class='bg-light' value = '" + dic[i][2][1] + "'>" + dic[i][2][0] + "</option>" 
+          else
+            html_code += "<option class='bg-light' value = '" + dic[i][k+2][1] + "'>" + dic[i][k+2][0] + "</option>"
         }
         html_code += "</select></div>";
       }
@@ -1380,7 +1385,6 @@ function concat_zeros(no_bin,n_bits){
             no_aleatorio=Math.floor(Math.random()*(restante+1))
             aux_bin+=concat_zeros(no_aleatorio.toString(2),n_bits_subgrupo_alimento)
             restante=restante-no_aleatorio
-            
           }
         }
       }
