@@ -82,14 +82,18 @@ WSGI_APPLICATION = 'nutridesk.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'nutridesk',
-        'USER': 'root',
-        'PASSWORD': 'gaia3200',
-        'HOST': '40.76.48.154',
-        'PORT': '3306',
+    'default' : {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
+    #'default': {
+    #    'ENGINE': 'django.db.backends.mysql',
+    #    'NAME': 'nutridesk',
+    #    'USER': 'root',
+    #    'PASSWORD': 'gaia3200',
+    #    'HOST': '40.76.48.154',
+    #    'PORT': '3306',
+    #}
 }
 
 
@@ -153,6 +157,3 @@ LOGOUT_REDIRECT_URL = '/'
 # python manage.py createsuperuser
 # user: root
 # password: ntr56.#$%
-
-# sam
-# qVDZ7s-6
