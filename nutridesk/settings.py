@@ -157,3 +157,6 @@ LOGOUT_REDIRECT_URL = '/'
 # python manage.py createsuperuser
 # user: root
 # password: ntr56.#$%
+# usuario para pruebas del sistema
+# user: pruebas@gmail.com
+# password: arbolito67
